@@ -1,0 +1,5 @@
+#import <Foundation/Foundation.h>
+@interface PodsDummy_Pods_Rider_ridesharerates_Rider_rideshareratesUITests : NSObject
+@end
+@implementation PodsDummy_Pods_Rider_ridesharerates_Rider_rideshareratesUITests
+@end
