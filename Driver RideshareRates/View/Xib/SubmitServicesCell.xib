@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Regular.ttf">
+            <string>Roboto-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SubmitServicesCell" rowHeight="103" id="KGk-i7-Jjw" customClass="SubmitServicesCell" customModule="Driver_RideshareRates" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="325" height="103"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="325" height="103"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6mp-ku-bmR">
+                        <rect key="frame" x="0.0" y="0.0" width="325" height="100"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rp1-6w-XcZ">
+                                <rect key="frame" x="40" y="10" width="100" height="34"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="3NO-sp-iq2"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="cpt-j1-bN9"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <inset key="imageEdgeInsets" minX="190" minY="0.0" maxX="-190" maxY="0.0"/>
+                                <state key="normal" title="Submit">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gni-dr-GgT">
+                                <rect key="frame" x="160" y="9.5" width="100" height="35"/>
+                                <color key="backgroundColor" red="0.74117647058823533" green="0.054901960784313725" blue="0.10196078431372549" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="O0M-iE-jkL"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <inset key="imageEdgeInsets" minX="190" minY="0.0" maxX="-190" maxY="0.0"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6PU-Cj-OlF" userLabel="Note :- You can select multiple services which  Vehicle type added into your profile">
+                                <rect key="frame" x="5" y="49" width="315" height="33"/>
+                                <string key="text">Note :- You can select multiple services which 
+Vehicle type added into your profile</string>
+                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="14"/>
+                                <color key="textColor" name="app_theme"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="6PU-Cj-OlF" firstAttribute="leading" secondItem="6mp-ku-bmR" secondAttribute="leading" constant="5" id="8n6-Z2-xHl"/>
+                            <constraint firstAttribute="trailing" secondItem="6PU-Cj-OlF" secondAttribute="trailing" constant="5" id="EXR-ZX-sA9"/>
+                            <constraint firstAttribute="height" constant="100" id="O4U-VQ-CYg"/>
+                            <constraint firstItem="rp1-6w-XcZ" firstAttribute="top" secondItem="6mp-ku-bmR" secondAttribute="top" constant="10" id="QTE-Xn-92j"/>
+                            <constraint firstItem="gni-dr-GgT" firstAttribute="centerY" secondItem="rp1-6w-XcZ" secondAttribute="centerY" id="aBj-ge-gjR"/>
+                            <constraint firstItem="gni-dr-GgT" firstAttribute="width" secondItem="rp1-6w-XcZ" secondAttribute="width" id="eBL-uz-5e1"/>
+                            <constraint firstItem="rp1-6w-XcZ" firstAttribute="leading" secondItem="6mp-ku-bmR" secondAttribute="leading" constant="40" id="g2C-AH-f6s"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="6PU-Cj-OlF" secondAttribute="bottom" constant="10" id="n1S-3V-qsr"/>
+                            <constraint firstItem="gni-dr-GgT" firstAttribute="leading" secondItem="rp1-6w-XcZ" secondAttribute="trailing" constant="20" id="rFC-vc-3rL"/>
+                            <constraint firstItem="6PU-Cj-OlF" firstAttribute="top" secondItem="rp1-6w-XcZ" secondAttribute="bottom" constant="5" id="rvB-Lb-qPR"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="6mp-ku-bmR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="HMg-E0-HDP"/>
+                    <constraint firstAttribute="trailing" secondItem="6mp-ku-bmR" secondAttribute="trailing" id="r8j-NE-IYI"/>
+                    <constraint firstItem="6mp-ku-bmR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="wVS-1K-hd4"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="mCancelBTN" destination="gni-dr-GgT" id="0w6-e6-Zqy"/>
+                <outlet property="submitBtn" destination="rp1-6w-XcZ" id="fx3-Qm-WAF"/>
+            </connections>
+            <point key="canvasLocation" x="-13.768115942028986" y="107.47767857142857"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="app_theme">
+            <color red="0.82745098039215681" green="0.5490196078431373" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>

@@ -1,0 +1,6 @@
+framework module Pods_Driver_RideshareRates_Driver_RideshareRatesUITests {
+  umbrella header "Pods-Driver RideshareRates-Driver RideshareRatesUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

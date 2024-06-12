@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Italic-VariableFont_wght.ttf">
+            <string>MontserratItalic-SemiBold</string>
+        </array>
+        <array key="Montserrat-VariableFont_wght.ttf">
+            <string>MontserratRoman-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="207" id="KGk-i7-Jjw" customClass="VechileDetailsTableViewCell" customModule="Driver_RideshareRates" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="390" height="207"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="390" height="207"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LBR-I9-bRl" customClass="SetView" customModule="Driver_RideshareRates" customModuleProvider="target">
+                        <rect key="frame" x="20" y="0.0" width="350" height="210"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model Name :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tbL-cz-scO">
+                                <rect key="frame" x="115" y="10" width="230" height="16"/>
+                                <fontDescription key="fontDescription" name="MontserratItalic-SemiBold" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" name="green"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Audi Q3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Pp-qz-Juy">
+                                <rect key="frame" x="115" y="28" width="230" height="16"/>
+                                <fontDescription key="fontDescription" name="MontserratRoman-Regular" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vehicle Type :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J27-3p-UQz">
+                                <rect key="frame" x="115" y="46" width="94" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="94" id="zTT-Hv-hZS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MontserratItalic-SemiBold" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" name="green"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Audi Q3" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eOe-zE-nuR">
+                                <rect key="frame" x="115" y="64" width="59" height="16"/>
+                                <fontDescription key="fontDescription" name="MontserratRoman-Regular" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="upload" translatesAutoresizingMaskIntoConstraints="NO" id="eH5-G9-QG7" customClass="SetImageView" customModule="Driver_RideshareRates" customModuleProvider="target">
+                                <rect key="frame" x="10" y="10" width="65" height="65"/>
+                                <color key="backgroundColor" name="green"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="65" id="Ee0-dP-ZZk"/>
+                                    <constraint firstAttribute="height" constant="65" id="hDg-dF-IWo"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Color :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXT-jV-Onm">
+                                <rect key="frame" x="10" y="80" width="94" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="94" id="Jdv-EF-VWb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MontserratItalic-SemiBold" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" name="green"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Audi Q3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hah-T1-8Dm">
+                                <rect key="frame" x="10" y="101" width="52" height="16"/>
+                                <fontDescription key="fontDescription" name="MontserratRoman-Regular" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lwR-g4-9bI">
+                                <rect key="frame" x="115" y="80" width="94" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="94" id="npv-CD-IdY"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MontserratItalic-SemiBold" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" name="green"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Audi Q3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wrv-yw-96j">
+                                <rect key="frame" x="115" y="101" width="59" height="16"/>
+                                <fontDescription key="fontDescription" name="MontserratRoman-Regular" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vehicle No :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p2d-sh-PaI">
+                                <rect key="frame" x="10" y="122" width="94" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="94" id="73l-TE-Elj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MontserratItalic-SemiBold" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" name="green"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Audi Q3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NAd-u3-RiB">
+                                <rect key="frame" x="10" y="143" width="52" height="16"/>
+                                <fontDescription key="fontDescription" name="MontserratRoman-Regular" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seat No :" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rdf-0g-AKo">
+                                <rect key="frame" x="115" y="122" width="94" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="94" id="Mza-Qw-JUS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MontserratItalic-SemiBold" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" name="green"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Audi Q3" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Yr-3p-IED">
+                                <rect key="frame" x="115" y="143" width="59" height="16"/>
+                                <fontDescription key="fontDescription" name="MontserratRoman-Regular" family="Montserrat" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="faP-9D-tMB" customClass="SetButton" customModule="Driver_RideshareRates" customModuleProvider="target">
+                                <rect key="frame" x="8" y="157.5" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="F3g-72-TU7"/>
+                                    <constraint firstAttribute="width" constant="16" id="g3v-Ik-pOQ"/>
+                                </constraints>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" image="uncheck">
+                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" image="check"/>
+                            </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Active" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4q8-ws-I0y">
+                                <rect key="frame" x="32" y="157" width="43.5" height="17.5"/>
+                                <fontDescription key="fontDescription" name="MontserratRoman-Regular" family="Montserrat" pointSize="14"/>
+                                <color key="textColor" name="app_theme"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6py-8Q-Kgj" customClass="SetButton" customModule="Driver_RideshareRates" customModuleProvider="target">
+                                <rect key="frame" x="140" y="169.5" width="70" height="30"/>
+                                <color key="backgroundColor" name="green"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="11Y-xT-64q"/>
+                                    <constraint firstAttribute="height" constant="30" id="86c-8I-ah3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="  EDIT  ">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected" image="check"/>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="gX4-Hw-XoP">
+                                <rect key="frame" x="105.5" y="165.5" width="224.5" height="0.0"/>
+                                <subviews>
+                                    <button hidden="YES" opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ZL-dK-V92">
+                                        <rect key="frame" x="224.5" y="0.0" width="16" height="16"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="16" id="P68-2h-hzG"/>
+                                            <constraint firstAttribute="height" constant="16" id="guI-xD-kYD"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="deleteNew">
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <state key="selected" image="check"/>
+                                        <connections>
+                                            <action selector="actionDropDown:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="kkY-2Y-CcQ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.14901960780000001" green="0.14901960780000001" blue="0.14901960780000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="p2d-sh-PaI" firstAttribute="leading" secondItem="KXT-jV-Onm" secondAttribute="leading" id="11k-Gw-32r"/>
+                            <constraint firstItem="KXT-jV-Onm" firstAttribute="top" secondItem="eH5-G9-QG7" secondAttribute="bottom" constant="5" id="3w0-c7-xMv"/>
+                            <constraint firstItem="6py-8Q-Kgj" firstAttribute="centerX" secondItem="LBR-I9-bRl" secondAttribute="centerX" id="4OC-Vv-w14"/>
+                            <constraint firstItem="NAd-u3-RiB" firstAttribute="top" secondItem="p2d-sh-PaI" secondAttribute="bottom" constant="5" id="5Eo-an-Xzi"/>
+                            <constraint firstItem="wrv-yw-96j" firstAttribute="leading" secondItem="lwR-g4-9bI" secondAttribute="leading" id="5cN-0x-oQR"/>
+                            <constraint firstItem="6Pp-qz-Juy" firstAttribute="centerX" secondItem="tbL-cz-scO" secondAttribute="centerX" id="9bW-NZ-1I3"/>
+                            <constraint firstItem="lwR-g4-9bI" firstAttribute="leading" secondItem="tbL-cz-scO" secondAttribute="leading" id="BTn-yw-4Nb"/>
+                            <constraint firstItem="KXT-jV-Onm" firstAttribute="leading" secondItem="eH5-G9-QG7" secondAttribute="leading" id="Bwo-bV-E7Z"/>
+                            <constraint firstItem="4q8-ws-I0y" firstAttribute="leading" secondItem="faP-9D-tMB" secondAttribute="trailing" constant="8" id="GPW-nq-xG7"/>
+                            <constraint firstItem="rdf-0g-AKo" firstAttribute="leading" secondItem="lwR-g4-9bI" secondAttribute="leading" id="IDS-GT-MAW"/>
+                            <constraint firstItem="hah-T1-8Dm" firstAttribute="leading" secondItem="KXT-jV-Onm" secondAttribute="leading" id="JtA-PD-oWT"/>
+                            <constraint firstItem="6py-8Q-Kgj" firstAttribute="top" secondItem="gX4-Hw-XoP" secondAttribute="bottom" constant="4" id="MVL-DL-7OC"/>
+                            <constraint firstItem="eH5-G9-QG7" firstAttribute="leading" secondItem="LBR-I9-bRl" secondAttribute="leading" constant="10" id="QhJ-IH-KKc"/>
+                            <constraint firstItem="NAd-u3-RiB" firstAttribute="leading" secondItem="KXT-jV-Onm" secondAttribute="leading" id="SqL-0o-Al6"/>
+                            <constraint firstItem="faP-9D-tMB" firstAttribute="leading" secondItem="LBR-I9-bRl" secondAttribute="leading" constant="8" id="Tfs-T2-42T"/>
+                            <constraint firstItem="eOe-zE-nuR" firstAttribute="top" secondItem="J27-3p-UQz" secondAttribute="bottom" constant="2" id="UVR-uZ-47H"/>
+                            <constraint firstItem="gX4-Hw-XoP" firstAttribute="centerY" secondItem="4q8-ws-I0y" secondAttribute="centerY" id="UdW-zm-IJa"/>
+                            <constraint firstItem="J27-3p-UQz" firstAttribute="top" secondItem="6Pp-qz-Juy" secondAttribute="bottom" constant="2" id="VOV-1r-K7r"/>
+                            <constraint firstItem="p2d-sh-PaI" firstAttribute="top" secondItem="hah-T1-8Dm" secondAttribute="bottom" constant="5" id="ZXh-oW-1hh"/>
+                            <constraint firstAttribute="trailing" secondItem="6Pp-qz-Juy" secondAttribute="trailing" constant="5" id="aMt-B2-a5P"/>
+                            <constraint firstItem="eOe-zE-nuR" firstAttribute="leading" secondItem="J27-3p-UQz" secondAttribute="leading" id="bic-J9-o7D"/>
+                            <constraint firstAttribute="height" constant="210" id="btn-YD-4Yi"/>
+                            <constraint firstItem="tbL-cz-scO" firstAttribute="top" secondItem="eH5-G9-QG7" secondAttribute="top" id="bw9-g7-dct"/>
+                            <constraint firstItem="rdf-0g-AKo" firstAttribute="top" secondItem="wrv-yw-96j" secondAttribute="bottom" constant="5" id="cCV-oz-TwQ"/>
+                            <constraint firstAttribute="trailing" secondItem="gX4-Hw-XoP" secondAttribute="trailing" constant="20" id="eI4-F6-Gjb"/>
+                            <constraint firstItem="eH5-G9-QG7" firstAttribute="top" secondItem="LBR-I9-bRl" secondAttribute="top" constant="10" id="iSN-XC-kqH"/>
+                            <constraint firstItem="hah-T1-8Dm" firstAttribute="top" secondItem="KXT-jV-Onm" secondAttribute="bottom" constant="5" id="iWN-Ku-iLT"/>
+                            <constraint firstItem="6Pp-qz-Juy" firstAttribute="leading" secondItem="tbL-cz-scO" secondAttribute="leading" id="ibo-qu-dBI"/>
+                            <constraint firstItem="tbL-cz-scO" firstAttribute="leading" secondItem="eH5-G9-QG7" secondAttribute="trailing" constant="40" id="mIT-7l-pWw"/>
+                            <constraint firstItem="6Pp-qz-Juy" firstAttribute="top" secondItem="tbL-cz-scO" secondAttribute="bottom" constant="2" id="meZ-XN-B74"/>
+                            <constraint firstItem="J27-3p-UQz" firstAttribute="leading" secondItem="tbL-cz-scO" secondAttribute="leading" id="nDj-Mc-9hG"/>
+                            <constraint firstItem="4q8-ws-I0y" firstAttribute="centerY" secondItem="faP-9D-tMB" secondAttribute="centerY" id="nNj-Vz-abB"/>
+                            <constraint firstItem="lwR-g4-9bI" firstAttribute="centerY" secondItem="KXT-jV-Onm" secondAttribute="centerY" id="pJr-KL-u4t"/>
+                            <constraint firstItem="faP-9D-tMB" firstAttribute="top" secondItem="LBR-I9-bRl" secondAttribute="top" constant="157.5" id="q9H-an-L4X"/>
+                            <constraint firstItem="2Yr-3p-IED" firstAttribute="top" secondItem="rdf-0g-AKo" secondAttribute="bottom" constant="5" id="s6G-Tm-hOz"/>
+                            <constraint firstItem="gX4-Hw-XoP" firstAttribute="leading" secondItem="4q8-ws-I0y" secondAttribute="trailing" constant="30" id="sbs-zh-FgR"/>
+                            <constraint firstItem="2Yr-3p-IED" firstAttribute="leading" secondItem="rdf-0g-AKo" secondAttribute="leading" id="sxs-E5-7gN"/>
+                            <constraint firstItem="wrv-yw-96j" firstAttribute="top" secondItem="lwR-g4-9bI" secondAttribute="bottom" constant="5" id="zE9-Cv-Vir"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="CornerRadius">
+                                <real key="value" value="10"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="LBR-I9-bRl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="9gg-1e-dDG"/>
+                    <constraint firstAttribute="bottom" secondItem="LBR-I9-bRl" secondAttribute="bottom" id="KOd-dE-ytF"/>
+                    <constraint firstAttribute="trailing" secondItem="LBR-I9-bRl" secondAttribute="trailing" constant="20" id="UQ5-RF-wHZ"/>
+                    <constraint firstItem="LBR-I9-bRl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="b5c-7r-Z6d"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="carInsurance" destination="eH5-G9-QG7" id="yMb-xH-xiA"/>
+                <outlet property="color_lbl" destination="hah-T1-8Dm" id="VkW-3R-eJW"/>
+                <outlet property="delete_btn" destination="3ZL-dK-V92" id="LH3-xS-U2y"/>
+                <outlet property="edit_btn" destination="6py-8Q-Kgj" id="qTS-lB-jn8"/>
+                <outlet property="modelName_lbl" destination="6Pp-qz-Juy" id="cb1-YA-NpF"/>
+                <outlet property="seatNo_lbl" destination="2Yr-3p-IED" id="O17-jz-qjK"/>
+                <outlet property="tick_btn" destination="faP-9D-tMB" id="MMz-Hs-xsJ"/>
+                <outlet property="vechileNo_lbl" destination="NAd-u3-RiB" id="vBO-5n-NbN"/>
+                <outlet property="vechileType_lbl" destination="eOe-zE-nuR" id="pqA-3R-0ia"/>
+                <outlet property="year_lbl" destination="wrv-yw-96j" id="PTy-8y-R9Z"/>
+            </connections>
+            <point key="canvasLocation" x="-62.318840579710148" y="130.24553571428572"/>
+        </tableViewCell>
+    </objects>
+    <designables>
+        <designable name="eH5-G9-QG7">
+            <size key="intrinsicContentSize" width="210" height="210"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="check" width="19.5" height="19.5"/>
+        <image name="deleteNew" width="30" height="38"/>
+        <image name="uncheck" width="24" height="24"/>
+        <image name="upload" width="210" height="210"/>
+        <namedColor name="app_theme">
+            <color red="0.82745098039215681" green="0.5490196078431373" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="green">
+            <color red="0.99215686274509807" green="0.96078431372549022" blue="0.69019607843137254" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>

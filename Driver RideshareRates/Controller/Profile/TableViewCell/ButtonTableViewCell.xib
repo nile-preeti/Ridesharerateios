@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-Italic-VariableFont_wght.ttf">
+            <string>MontserratItalic-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="112" id="KGk-i7-Jjw" customClass="ButtonTableViewCell" customModule="OcoryDriver" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="420" height="112"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="420" height="112"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="GiT-H0-5D5">
+                        <rect key="frame" x="20" y="68" width="380" height="40"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rTq-e9-NuY" customClass="SetButton" customModule="OcoryDriver" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="185" height="40"/>
+                                <color key="backgroundColor" name="app_theme"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="fMu-La-qzL"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MontserratItalic-SemiBold" family="Montserrat" pointSize="14"/>
+                                <state key="normal" title="UPDATE">
+                                    <color key="titleColor" name="white"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="CornRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bmw-pK-VwG" customClass="SetButton" customModule="OcoryDriver" customModuleProvider="target">
+                                <rect key="frame" x="195" y="0.0" width="185" height="40"/>
+                                <color key="backgroundColor" name="app_theme"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="gFI-tb-bSb"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MontserratItalic-SemiBold" family="Montserrat" pointSize="14"/>
+                                <state key="normal" title="CHANGE PASSWORD">
+                                    <color key="titleColor" name="white"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="CornRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
+                    </stackView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4dJ-fj-89H" customClass="SetButton" customModule="OcoryDriver" customModuleProvider="target">
+                        <rect key="frame" x="20" y="8" width="380" height="40"/>
+                        <color key="backgroundColor" name="app_theme"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="l4j-zC-Ksg"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="MontserratItalic-SemiBold" family="Montserrat" pointSize="14"/>
+                        <state key="normal" title="ADD VEHICLE">
+                            <color key="titleColor" name="white"/>
+                        </state>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="CornRadius">
+                                <integer key="value" value="20"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" name="light_green_clr"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="4dJ-fj-89H" secondAttribute="trailing" constant="20" id="MdN-Pz-wNx"/>
+                    <constraint firstItem="GiT-H0-5D5" firstAttribute="trailing" secondItem="4dJ-fj-89H" secondAttribute="trailing" id="PxR-zV-U87"/>
+                    <constraint firstItem="4dJ-fj-89H" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="WoV-hu-oxn"/>
+                    <constraint firstItem="4dJ-fj-89H" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="iYZ-hX-fC7"/>
+                    <constraint firstItem="GiT-H0-5D5" firstAttribute="top" secondItem="4dJ-fj-89H" secondAttribute="bottom" constant="20" id="nhg-2p-555"/>
+                    <constraint firstItem="GiT-H0-5D5" firstAttribute="leading" secondItem="4dJ-fj-89H" secondAttribute="leading" id="o1o-gX-9MF"/>
+                    <constraint firstItem="GiT-H0-5D5" firstAttribute="centerX" secondItem="4dJ-fj-89H" secondAttribute="centerX" id="p1B-HP-Y8m"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="addVechile_btn" destination="4dJ-fj-89H" id="Mbk-sU-Nht"/>
+                <outlet property="changePass_btn" destination="Bmw-pK-VwG" id="Ody-oS-QBe"/>
+                <outlet property="update_btn" destination="rTq-e9-NuY" id="3J7-uF-zGQ"/>
+            </connections>
+            <point key="canvasLocation" x="-153.62318840579712" y="97.767857142857139"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="app_theme">
+            <color red="0.50588235294117645" green="0.74117647058823533" blue="0.098039215686274508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="light_green_clr">
+            <color red="0.92549019607843142" green="0.98431372549019602" blue="0.82352941176470584" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="white">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
