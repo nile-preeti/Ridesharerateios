@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google LLC. All rights reserved.
+ * Copyright 2016 Google Inc. All rights reserved.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -15,15 +15,13 @@
 
 #import "GooglePlacesDemos/DemoData.h"
 
-#import <GooglePlaces/GooglePlaces.h>
-#import "GooglePlacesDemos/Samples/Autocomplete/AutocompleteBaseViewController.h"
 #import "GooglePlacesDemos/Samples/Autocomplete/AutocompleteModalViewController.h"
 #import "GooglePlacesDemos/Samples/Autocomplete/AutocompletePushViewController.h"
 #import "GooglePlacesDemos/Samples/Autocomplete/AutocompleteWithCustomColors.h"
 #import "GooglePlacesDemos/Samples/Autocomplete/AutocompleteWithSearchViewController.h"
 #import "GooglePlacesDemos/Samples/Autocomplete/AutocompleteWithTextFieldController.h"
-#import "GooglePlacesDemos/Samples/FindPlaceLikelihoodListViewController.h"
 #import "GooglePlacesDemos/Support/BaseDemoViewController.h"
+
 
 @implementation Demo {
   Class _viewControllerClass;
@@ -37,9 +35,11 @@
   return self;
 }
 
-- (UIViewController *)createViewControllerWithAutocompleteFilter:
-                          (GMSAutocompleteFilter *)autocompleteFilter
-                                                     placeFields:(GMSPlaceField)placeFields {
+- (UIViewController *)
+    createViewControllerWithAutocompleteBoundsMode:(GMSAutocompleteBoundsMode)autocompleteBoundsMode
+                                autocompleteBounds:(GMSCoordinateBounds *)autocompleteBounds
+                                autocompleteFilter:(GMSAutocompleteFilter *)autocompleteFilter
+                                       placeFields:(GMSPlaceField)placeFields {
   // Construct the demo view controller.
   UIViewController *demoViewController = [[_viewControllerClass alloc] init];
 
@@ -47,9 +47,12 @@
   if ([demoViewController isKindOfClass:[AutocompleteBaseViewController class]]) {
     AutocompleteBaseViewController *controller =
         (AutocompleteBaseViewController *)demoViewController;
+    controller.autocompleteBoundsMode = autocompleteBoundsMode;
+    controller.autocompleteBounds = autocompleteBounds;
     controller.autocompleteFilter = autocompleteFilter;
     controller.placeFields = placeFields;
   }
+
   return demoViewController;
 }
 
@@ -79,18 +82,13 @@
       [[Demo alloc] initWithViewControllerClass:[AutocompleteWithTextFieldController class]],
     ];
 
-    NSArray<Demo *> *findPlaceLikelihoodDemos = @[ [[Demo alloc]
-        initWithViewControllerClass:[FindPlaceLikelihoodListViewController class]] ];
 
     _sections = @[
       [[DemoSection alloc]
           initWithTitle:NSLocalizedString(@"Demo.Section.Title.Autocomplete",
                                           @"Title of the autocomplete demo section")
                   demos:autocompleteDemos],
-      [[DemoSection alloc]
-          initWithTitle:NSLocalizedString(@"Demo.Section.Title.FindPlaceLikelihood",
-                                          @"Title of the findPlaceLikelihood demo section")
-                  demos:findPlaceLikelihoodDemos],
+
     ];
   }
   return self;

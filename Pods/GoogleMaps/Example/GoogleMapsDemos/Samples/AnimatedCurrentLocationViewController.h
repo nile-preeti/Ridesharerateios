@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google LLC. All rights reserved.
+ * Copyright 2016 Google Inc. All rights reserved.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -16,6 +16,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <UIKit/UIKit.h>
 
-@interface AnimatedCurrentLocationViewController : UIViewController <CLLocationManagerDelegate>
+#import <GoogleMaps/GoogleMaps.h>
+
+@interface AnimatedCurrentLocationViewController : UIViewController<CLLocationManagerDelegate>
 
 @end

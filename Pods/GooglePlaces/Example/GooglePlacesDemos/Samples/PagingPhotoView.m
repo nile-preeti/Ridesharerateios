@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google LLC. All rights reserved.
+ * Copyright 2016 Google Inc. All rights reserved.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -15,7 +15,9 @@
 
 #import "GooglePlacesDemos/Samples/PagingPhotoView.h"
 
-/** Class to store the image and text views that display the image and attributions. */
+/**
+ * Class to store the image and text views that display the image and attributions.
+ */
 @interface ImageViewAndAttribution : NSObject
 
 @property(nonatomic, strong) UIImageView *imageView;
@@ -34,23 +36,18 @@
 @end
 
 @implementation PagingPhotoView {
-  /**
-   * An array of |ImageViewAndAttribution| objects representing the actual views that are being
-   * displayed.
-   */
+  // An array of |ImageViewAndAttribution| objects representing the actual views that are
+  // being displayed.
   NSMutableArray *_photoImageViews;
-
-  /**
-   * Whether we should update the image and attribution view frames on the next |layoutSubviews|
-   * call. This should be set to YES whenever the frame is updated or the photos change.
-   */
+  // Whether we should update the image and attribution view frames on the next |layoutSubviews|
+  // call. This should be set to YES whenever the frame is updated or the photos change.
   BOOL _imageLayoutUpdateNeeded;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if ((self = [super initWithFrame:frame])) {
     _photoImageViews = [NSMutableArray array];
-    self.backgroundColor = [UIColor systemBackgroundColor];
+    self.backgroundColor = [UIColor whiteColor];
     self.pagingEnabled = YES;
   }
   return self;
@@ -144,7 +141,9 @@
       CGSizeMake(_photoImageViews.count * self.frame.size.width, usableScrollViewHeight);
 }
 
-/** Updates the frames of the images and attributions. */
+/**
+ * Updates the frames of the images and attributions.
+ */
 - (void)layoutImages {
   CGFloat contentWidth = 0;
   CGFloat scrollViewWidth = self.bounds.size.width;
@@ -160,10 +159,14 @@
     CGFloat imageHeight = usableScrollViewHeight - attributionHeight;
     CGFloat safeAreaX = 0.0f;
 
+#if defined(__IPHONE_11_0) && (__IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_11_0)
     // Take into account the safe areas of the device screen and do not use that space for the
     // attribution text.
-    imageHeight -= self.safeAreaInsets.bottom;
-    safeAreaX = self.safeAreaInsets.left;
+    if (@available(iOS 11.0, *)) {
+      imageHeight -= self.safeAreaInsets.bottom;
+      safeAreaX = self.safeAreaInsets.left;
+    }
+#endif
 
     // Put the attribution view aligned to the same left edge as the photo, in the bottom left
     // corner of the screen.

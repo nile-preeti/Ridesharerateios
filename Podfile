@@ -1,39 +1,31 @@
 # Uncomment the next line to define a global platform for your project
- platform :ios, '10.0'
+platform :ios, '13.0'
 
-target 'Driver RideshareRates' do
+target 'Rider ridesharerates' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for Driver RideshareRates
+  # Pods for Rider ridesharerates
 
-  target 'Driver RideshareRatesTests' do
+  target 'Rider rideshareratesTests' do
     inherit! :search_paths
     # Pods for testing
   end
 
-  target 'Driver RideshareRatesUITests' do
+  target 'Rider rideshareratesUITests' do
     # Pods for testing
   end
-  pod 'DropDown'
-  pod 'GoogleMaps'
-  pod 'GooglePlaces'
-  pod 'Alamofire'
+  
+pod 'Alamofire'
   pod 'TOCropViewController'
-  pod 'SDWebImage'
-  pod 'iOSDropDown'
-  pod 'IQKeyboardManager'
-  pod 'IBAnimatable'
   pod 'Charts'
-    # Add the Firebase pod for Google Analytics
-   
-    pod "Popover"
+  pod 'SDWebImage'
+    pod 'IQKeyboardManager'
+   pod 'ReachabilitySwift'
+    pod 'Stripe'
+     pod 'GoogleMaps'
+     pod 'GooglePlaces'
+     pod 'GooglePlacePicker'
+    pod 'GooglePlacePicker'
     pod 'FSCalendar'
-    pod'SwiftyJSON'
-    project.targets.each do |target|
-       target.build_configurations.each do |config|
-         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
-       end
-     end
-   end
 end

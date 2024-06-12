@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Google LLC. All rights reserved.
+ * Copyright 2016 Google Inc. All rights reserved.
  *
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
@@ -17,8 +17,10 @@
 
 #import <GooglePlaces/GooglePlaces.h>
 
-// This file contains a set of data objects which represent the list of demos which are provided by
-// this sample app.
+/*
+ * This file contains a set of data objects which represent the list of demos which are provided by
+ * this sample app.
+ */
 
 /**
  * Represents a specific demo sample, stores the title and the name of the view controller which
@@ -26,7 +28,9 @@
  */
 @interface Demo : NSObject
 
-/** The title of the demo. This is displayed in the list of demos. */
+/**
+ * The title of the demo. This is displayed in the list of demos.
+ */
 @property(nonatomic, readonly) NSString *title;
 
 /**
@@ -41,22 +45,33 @@
  * Construct and return a new UIViewController instance which contains the view to present when the
  * demo is selected from the list.
  *
+ * @param autocompleteBoundsMode The |GMSAutocompleteBoundsMode| to determine whether this should
+ *     be biased or restricted to the coordinate bounds.
+ * @param autocompleteBounds The |GMSCoordinateBounds| to restrict the autcomplete results within.
  * @param autocompleteFilter The |GMSAutocompleteFilter| that filters on types and countries.
  * @param placeField The |GMSPlaceField| to request individual fields for the |GMSPlace| result.
  */
-- (UIViewController *)createViewControllerWithAutocompleteFilter:
-                          (GMSAutocompleteFilter *)autocompleteFilter
-                                                     placeFields:(GMSPlaceField)placeField;
+- (UIViewController *)
+    createViewControllerWithAutocompleteBoundsMode:(GMSAutocompleteBoundsMode)autocompleteBoundsMode
+                                autocompleteBounds:(GMSCoordinateBounds *)autocompleteBounds
+                                autocompleteFilter:(GMSAutocompleteFilter *)autocompleteFilter
+                                       placeFields:(GMSPlaceField)placeField;
 
 @end
 
-/** A group of demos which comprise a section in the list of demos. */
+/**
+ * A group of demos which comprise a section in the list of demos.
+ */
 @interface DemoSection : NSObject
 
-/** The title of the section. */
+/**
+ * The title of the section.
+ */
 @property(nonatomic, readonly) NSString *title;
 
-/** The list of demos which are contained in the section. */
+/**
+ * The list of demos which are contained in the section.
+ */
 @property(nonatomic, readonly) NSArray<Demo *> *demos;
 
 /**
@@ -69,13 +84,19 @@
 
 @end
 
-/** A class which encapsulates the data required to create and display demos. */
+/**
+ * A class which encapsulates the data required to create and display demos.
+ */
 @interface DemoData : NSObject
 
-/** A list of sections to display. */
+/**
+ * A list of sections to display.
+ */
 @property(nonatomic, readonly) NSArray<DemoSection *> *sections;
 
-/** The first demo to display when launched in side-by-side mode. */
+/**
+ * The first demo to display when launched in side-by-side mode.
+ */
 @property(nonatomic, readonly) Demo *firstDemo;
 
 @end

@@ -1,0 +1,6 @@
+framework module Pods_Rider_ridesharerates {
+  umbrella header "Pods-Rider ridesharerates-umbrella.h"
+
+  export *
+  module * { export * }
+}

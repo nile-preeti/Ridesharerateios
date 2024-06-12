@@ -1,6 +1,0 @@
-framework module Pods_Driver_RideshareRates {
-  umbrella header "Pods-Driver RideshareRates-umbrella.h"
-
-  export *
-  module * { export * }
-}
