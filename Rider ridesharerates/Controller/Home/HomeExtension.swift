@@ -39,7 +39,7 @@ extension HomeViewController: UITableViewDataSource{
         
         if kNotificationAction == "ACCEPTED"  || kConfirmationAction == "ACCEPTED" && kRideId != "" {
             self.chooseRide_view.isHidden = false
-            self.mtopviewwithlocation.isHidden = true
+            
             if popupheight == "full"{
                 self.chooseRideViewHeight_const.constant = 350
             }else{
@@ -54,8 +54,6 @@ extension HomeViewController: UITableViewDataSource{
         else if kNotificationAction == "NOT_CONFIRMED" || kConfirmationAction == "NOT_CONFIRMED" {
             self.chooseRideViewHeight_const.constant = 150
             self.chooseRide_view.isHidden = false
-            self.mtopviewwithlocation.isHidden = true
-
             self.rideNow_btn.isHidden = true
             chooseLbl.text = ""
             self.ride_tableView.isHidden = false
@@ -63,8 +61,6 @@ extension HomeViewController: UITableViewDataSource{
         }
         else if kNotificationAction == "COMPLETED" || kConfirmationAction == "COMPLETED" && kRideId != "" {
             self.chooseRideViewHeight_const.constant = 250
-            self.mtopviewwithlocation.isHidden = false
-
             self.chooseRide_view.isHidden = false
             chooseLbl.text = "Ride Completed!"
             self.rideNow_btn.isHidden = true
@@ -74,8 +70,6 @@ extension HomeViewController: UITableViewDataSource{
         }
         else  if kNotificationAction == "FEEDBACK" || kConfirmationAction == "FEEDBACK" && kRideId != "" {
             self.chooseRideViewHeight_const.constant = 300
-            self.mtopviewwithlocation.isHidden = false
-
             self.chooseRide_view.isHidden = false
             chooseLbl.text = "Ride Completed!"
             self.rideNow_btn.isHidden = true
@@ -84,8 +78,6 @@ extension HomeViewController: UITableViewDataSource{
             return 1
         }
         else  if kNotificationAction == "CANCELLED" || kConfirmationAction == "CANCELLED" && kRideId != "" {
-            self.mtopviewwithlocation.isHidden = false
-
             if chooseVehicleList == .hide{
                 self.mapView.clear()
                 self.chooseRide_view.isHidden = true
@@ -106,8 +98,6 @@ extension HomeViewController: UITableViewDataSource{
         }
         else  if kNotificationAction == "PENDING" || kConfirmationAction == "PENDING" && kRideId != "" {
             self.chooseRideViewHeight_const.constant = 160
-            self.mtopviewwithlocation.isHidden = true
-
             self.chooseRide_view.isHidden = false
             self.rideNow_btn.isHidden = true
             chooseLbl.text = ""
@@ -116,8 +106,6 @@ extension HomeViewController: UITableViewDataSource{
             return 1
         }
         else  if kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE" && kRideId != "" {
-            self.mtopviewwithlocation.isHidden = true
-
             self.chooseRide_view.isHidden = false
             self.rideNow_btn.isHidden = true
             self.chooseRideViewHeight_const.constant = 140

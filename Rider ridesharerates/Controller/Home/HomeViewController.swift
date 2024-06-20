@@ -31,7 +31,6 @@ class HomeViewController: UIViewController {
     
     @IBOutlet var timerTitle : UILabel!
     @IBOutlet var mTimerView: UIView!
-    @IBOutlet var mtopviewwithlocation : UIView!
     @IBOutlet var mTimerLBL: UILabel!
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var pickUpAddress_lbl: UILabel!
@@ -81,7 +80,7 @@ class HomeViewController: UIViewController {
     var update = true
     var profileDetails : ProfileData?
     var locations = [CLLocation]()
-    
+    var holdalert = UIAlertController()
     var pathdrawtimer = ""
     var driverConfirmation = driverConfirmStatus.notConfirmed
     var action  =  ""
@@ -150,9 +149,9 @@ class HomeViewController: UIViewController {
     //MARK:- Default Func
     override func viewDidLoad() {
         super.viewDidLoad()
-      //  updateAppVersionPopup()
+       // updateAppVersionPopup()
         self.mTimerView.isHidden = true
-        // appUpdateAvailable()
+      //  appUpdateAvailable()
         //        mNewRidesView.isHidden = true
         //        mSecTableV.isHidden = true
         //  updateAppVersionPopup()
@@ -210,7 +209,7 @@ class HomeViewController: UIViewController {
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-      //  updateAppVersionPopup()
+        //updateAppVersionPopup()
         self.title = "Book a Ride"
         self.stoptimer = ""
         self.navigationController?.isNavigationBarHidden = false
@@ -275,24 +274,71 @@ class HomeViewController: UIViewController {
         task.resume()
     }
     func showUpdatePopup() {
-        let alertController = UIAlertController(title: "New Version Available", message: "Please update to the latest version of the app.", preferredStyle: .alert)
-   // https://apps.apple.com/in/app/rider-ridesharerates/id6476266125
-        let updateAction = UIAlertAction(title: "Update", style: .cancel) { (_) in
+        
+        
+        
+        
+        let refreshAlert = UIAlertController(title: "New Version Available" , message: "Please update to the latest version of the app.", preferredStyle: UIAlertController.Style.alert)
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+        ]
+        let messageAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 15),
+            .foregroundColor: UIColor.white,
+        ]
+
+        let attributedTitle = NSAttributedString(string: "New Version Available", attributes: titleAttributes)
+        let attributedMessage = NSAttributedString(string: "Please update to the latest version of the app.", attributes: messageAttributes)
+
+        // Set the attributed title and message
+        refreshAlert.setValue(attributedTitle, forKey: "attributedTitle")
+        refreshAlert.setValue(attributedMessage, forKey: "attributedMessage")
+        refreshAlert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
+        
+        refreshAlert.addAction(UIAlertAction(title: "UPDATE", style: .cancel, handler: { (action: UIAlertAction!) in
             guard let appStoreURL = URL(string: "itms-apps://itunes.apple.com/app/rider-ridesharerates/id6476266125") else {
                 return
             }
             UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
-        }
-        
-        alertController.addAction(updateAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
-        alertController.addAction(cancelAction)
-        
-        // Present the alert controller
+//            DispatchQueue.main.async {
+//                NavigationManager.pushToLoginVC(from: self)
+//            }
+           // self.DeleteAccount()
+          //  self.updateStatus(updateStatus: "3")
+
+        }))
+//        refreshAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
+//        }))
         DispatchQueue.main.async {
-            UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+            UIApplication.shared.keyWindow?.rootViewController?.present(refreshAlert, animated: true, completion: nil)
         }
+        
+        
+        
+        
+        
+        
+        
+//        let alertController = UIAlertController(title: "New Version Available", message: "Please update to the latest version of the app.", preferredStyle: .alert)
+//   // https://apps.apple.com/in/app/rider-ridesharerates/id6476266125
+//        let updateAction = UIAlertAction(title: "Update", style: .cancel) { (_) in
+//            guard let appStoreURL = URL(string: "itms-apps://itunes.apple.com/app/rider-ridesharerates/id6476266125") else {
+//                return
+//            }
+//            UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
+//        }
+//
+//        alertController.addAction(updateAction)
+//
+////        let cancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+////        alertController.addAction(cancelAction)
+//
+//        // Present the alert controller
+//        DispatchQueue.main.async {
+//            UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+//        }
     }
     
     
@@ -748,16 +794,6 @@ class HomeViewController: UIViewController {
         vc.modalPresentationStyle = .overFullScreen
         self.present(vc, animated: true, completion: nil)
     }
-    @IBAction func addstopbtn(_ sender: Any) {
-        let vc = self.storyboard?.instantiateViewController(identifier: "addStopVCID") as! addStopVC
-       // vc.modalPresentationStyle = .overFullScreen
-        vc.modalPresentationStyle = .overFullScreen
-        vc.delegate = self
-        self.present(vc, animated: true, completion: nil)
-       // self.navigationController?.pushViewController(vc, animated: true)
-        
-    }
-    
     
 }
 extension HomeViewController: UITextFieldDelegate{

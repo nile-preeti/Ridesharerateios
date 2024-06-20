@@ -232,7 +232,6 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                  //   kCurrentAddress = currentAddress
                         // kCurrentAddress = currentAddress
                     NSUSERDEFAULT.setValue("\(currentAddress)", forKey: kCurrentAddress)
-                    NSUSERDEFAULT.value(forKey: kCurrentAddress)
                     marker.title = currentAddress
                     marker.map = self.mapView
                 }

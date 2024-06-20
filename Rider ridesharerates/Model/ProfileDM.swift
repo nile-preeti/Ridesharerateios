@@ -14,6 +14,7 @@ struct ProfileData: Codable {
     let userID, name,name_title,last_name, email, mobile,country_code: String?
     let country, state, city: String?
     let profilePic: String?
+    let user_status : String?
     let rider_total_rating : String?
     let identification_document_id : String?
     let identification_document_name : String?
@@ -29,6 +30,7 @@ struct ProfileData: Codable {
 //    let profileImage: String?
     enum CodingKeys: String, CodingKey {
         case userID = "user_id"
+        case user_status = "user_status"
         case last_name = "last_name"
         case name_title = "name_title"
         case rider_total_rating = "rider_total_rating"

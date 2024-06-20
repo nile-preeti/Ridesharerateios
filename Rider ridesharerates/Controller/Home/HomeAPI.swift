@@ -33,6 +33,8 @@ extension HomeViewController {
             finalPickUpLatTap =   kPickUpLatFinal
             finalPickUpLongTap = kPickUpLongFinal
         }
+        
+        
         print(finalPickUpLatTap)
         print(finalPickUpLongTap)
         
@@ -164,8 +166,8 @@ extension HomeViewController {
 //        let vehicleTypeIdMinus =  vehicleTypeIdInt - 1
 //        print(vehicleTypeIdMinus)
         
-        var finalPickUpLatTap : String?
-        var finalPickUpLongTap : String?
+        var finalPickUpLatTap = ""
+        var finalPickUpLongTap = ""
         
         
         if locationPickUpEditStatus == false && locationDropUpEditStatus == true{
@@ -181,21 +183,20 @@ extension HomeViewController {
         print(finalPickUpLatTap)
         print(finalPickUpLongTap)
         
-        let param : [String : Any] = [  "pickup_lat" : finalPickUpLatTap ?? kCurrentLocaLat ,
-                                        "pickup_long": finalPickUpLongTap ?? kCurrentLocaLong ,
+        let param : [String : Any] = [  "pickup_lat" : finalPickUpLatTap ,
+                                        "pickup_long": finalPickUpLongTap ,
                                         "pickup_adress" : self.pickUpAddress_lbl.text ?? "" ,
                                         "pikup_location" : self.pickUpAddress_lbl.text ?? "" ,
                                         "drop_address": kDropAddress,
                                         "drop_locatoin": kDropAddress,
                                         "drop_lat": kDropLat ,
                                         "drop_long": kDropLong,
-                                        "distance": kDistanceInMiles ,
+                                        "distance": self.rideDistance ,
                                         "user_id" : NSUSERDEFAULT.value(forKey: kUserID) as? String ?? "",
                                         "amount": rideAmount ,
                                         "vehicle_type_id": "\(vehicleTypeId)",
                                         "txn_id" : txnID,
-                                        "card_id": cardID,
-                                        "stops": kstops,
+                                        "card_id": cardID
                                         //vehicleTypeId
                                         
         ] as [String : Any]
@@ -266,6 +267,9 @@ extension HomeViewController {
                         NSUSERDEFAULT.set((self.profileDetails?.last_name ?? ""), forKey: kName)
                         NSUSERDEFAULT.set((self.profileDetails?.email ?? ""), forKey: kEmail)
                         NSUSERDEFAULT.set((self.profileDetails?.profilePic ?? ""), forKey: kProfilePic)
+                        if self.profileDetails?.user_status == "inactive"{
+                            self.showAlert("Rider RideshareRates", message: "Your account is inactive. Please contact to admin at info@ridesharerates.com")
+                        }
                     }catch{
                         print(error.localizedDescription)
                     }
@@ -289,11 +293,13 @@ extension HomeViewController {
         param["lat"] = lat as AnyObject
         param["long"] = long as AnyObject
         //   print(param)
+        
         DispatchQueue.main.async {
             NavigationManager.pushToLoginVC(from: self)
         }
+        let url = "nearby?lat=\(lat)&long=\(long)"
         Indicator.shared.showProgressView(self.view)
-        self.conn.startNewConnectionWithGetTypeWithParam(getUrlString: "nearby", authRequired : true, params: param) { (value) in
+        self.conn.startNewConnectionWithGetTypeWithParam(getUrlString: url, authRequired : true, params: (["":""] as AnyObject) as! [String : AnyObject]) { (value) in
             print("Getting Nearby Data Api  \(value)")
             Indicator.shared.hideProgressView()
             if self.conn.responseCode == 1{
@@ -531,6 +537,7 @@ extension HomeViewController {
                 let msg = (value["message"] as? String ?? "")
                 if ((value["status"] as? Int ?? 0) == 1){
                     // self.dropAddress_lbl.text = ""
+                    self.mTimerView.isHidden = true
                     self.dropAddress_lbl.text = "Enter Drop Location"
                     self.pickupBtn.isUserInteractionEnabled = true
                     self.dropBtn.isUserInteractionEnabled = true
@@ -538,6 +545,9 @@ extension HomeViewController {
                     self.dropBtnCancel.isUserInteractionEnabled = true
                     self.chooseRideViewHeight_const.constant = 0
                     self.mapView.clear()
+//                    if let alert = self.holdalert {
+//                                alert.dismiss(animated: true, completion: nil)
+//                            }
                     kNotificationAction = ""
                     kConfirmationAction = ""
                     kRideId = ""
@@ -549,8 +559,12 @@ extension HomeViewController {
                     }else{
                         self.showAlert("Rider RideshareRates", message: "Ride has been successfully cancelled.")
                         self.getLastRideDataApi()
+                       
                     }
-                  
+                //    if let alert = self.holdalert {
+                       
+                  //  }
+                    
                     //   self.ride_tableView.reloadData()
                 }else{
                     self.showAlert("Rider RideshareRates", message: "No Driver available near to your Pick up location. Please Try again after sometime.")
@@ -628,8 +642,6 @@ extension HomeViewController {
                         
                         if rideStatusData != ""{
                             if rideStatusData == "CANCELLED"{
-                                self.mtopviewwithlocation.isHidden = false
-
                                 self.mapView.clear()
                                 kNotificationAction = ""
                                 kConfirmationAction = ""
@@ -666,9 +678,11 @@ extension HomeViewController {
                             if rideStatusData == "ACCEPTED"{
                                 kNotificationAction = "ACCEPTED"
                                 kConfirmationAction = "ACCEPTED"
-                                
-                                
-                                
+//                                if self.lastRideData?.hold_amount_status == "not_paid"{
+//                                   
+//                                    self.preauth()
+//                                    
+//                                }
                             }
                             //  if "START_RIDE"
                             if rideStatusData == "START_RIDE"{
@@ -676,8 +690,6 @@ extension HomeViewController {
                                 kConfirmationAction = "START_RIDE"
                             }
                             if rideStatusData == "COMPLETED"{
-                                self.mtopviewwithlocation.isHidden = false
-
                             //    self.getRideStatus(ride_id: kRideId)
                                 kNotificationAction = "COMPLETED"
                                 kConfirmationAction = "COMPLETED"
@@ -735,8 +747,6 @@ extension HomeViewController {
                             
                         }
                         if paymentStatusData == "COMPLETED"{
-                            self.mtopviewwithlocation.isHidden = false
-
                             kRideId = ""
                             //                            if is_technical_issue == "Yes"{
                             //                                self.showAlert("Rider RideshareRates", message: "Sorry your last ride was completed due to technical issue")
@@ -1002,16 +1012,27 @@ extension HomeViewController {
 //           
  //       }else{
             if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED"{
-               if lastRideData?.on_location == "YES"{
+                if lastRideData?.on_location == "YES"{
                     timerTitle.text = "Waiting time:"
                     mTimerView.isHidden = false
-                }else{
-                    if count > 240{
-                        stopTimer()
-                        mTimerView.isHidden = true
-                    }else{
-                        mTimerView.isHidden = false
-                    }
+                                    }else{
+                                        if count > 240{
+//                                            if lastRideData?.hold_amount_status == "not_paid"{
+//                                                if kRideId != ""{
+//                    
+//                                                  //  self.holdalert.dismiss(animated: true, completion: nil)
+//                    
+//                                                    // self.holdalert!.dismiss(animated: true, completion: nil)
+//                                                    self.cancelRideStatus(rideId: kRideId)
+//                                                }
+//                                            }else{
+                                                stopTimer()
+                                                mTimerView.isHidden = true
+                                         //   }
+                                        }else{
+                                            mTimerView.isHidden = false
+                                        }
+                   
                 }
             }else  if kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE"{
                 if lastRideData?.on_location == "YES"{
@@ -1132,7 +1153,7 @@ extension HomeViewController{
 extension HomeViewController : RideStart{
     func RideStart(button: String?) {
         if button == "ridenow"{
-            mtopviewwithlocation.isHidden = true
+        //    mtopviewwithlocation.isHidden = true
             if Double(holdAmount)! < Double(rideAmount)!{
                 self.showAlert("Rider RideshareRates", message: "Your Pre-authorized amount is less than your ride Amount. Please contact to admin at info@ridesharerates.com")
                 
@@ -1188,7 +1209,7 @@ extension HomeViewController : RideStart{
                 if (value["status"] as? Int ?? 0) == 1{
                     txnID = value["txn_id"] as? String ?? ""
                     holdAmount = ""
-                    self.showAlert("Rider RideshareRates", message: msg)
+                  //  self.showAlert("Rider RideshareRates", message: msg)
                     self.rideNowApi()
                 }
                 else{
@@ -1202,91 +1223,4 @@ extension HomeViewController : RideStart{
     
     
     
-}
-extension HomeViewController: addstop{
-    func addstop(totalDistance: Int?, totalDuration: Int?) {
-        getVechilelist(totalDistance: totalDistance, totalDuration: totalDuration)
-        
-    }
-    
-    func getVechilelist(totalDistance: Int?, totalDuration: Int?){
-     //   self.routingLines(origin: kCurrentLocaLatLongTap ,destination: kDestinationLatLongTap)
-
-      
-       
-        
-        let param : [String : Any] = ["pickup_lat" : kPickLat,
-                                      "pickup_long" : kPickLong,
-                                      "drop_lat" : kDropLat ,
-                                      "distance" : totalDistance as Any,
-                                      "duration" : totalDuration as Any,
-                                      "drop_long" : kDropLong] as [String : Any]
-        
-//        kCurrentLocaLatLongTap =   "\(finalPickUpLatTap)" + "," + "\(finalPickUpLongTap)"
-//        kDestinationLatLongTap =  "\(kDropLat)" + "," + "\(kDropLong)"
-        print(param)
-        Indicator.shared.showProgressView(self.view)
-        let urlString = "\(baseURL)vehicle-category"
-        let url = URL.init(string: urlString)
-        var headers: HTTPHeaders = [:]
-        headers = ["Authorization" : "Bearer " + (UserDefaults.standard.value(forKey: "token") as? String ?? "")
-        ]
-        print(headers)
-        print(param)
-        AF.request(urlString, method: .post, parameters: param, encoding: URLEncoding.default, headers: headers)
-            .responseString { response in
-                print("responseString: \(response)")
-                Indicator.shared.hideProgressView()
-                switch (response.result) {
-                case .success(let JSON):
-                    print("JSON: \(JSON)")
-                    let str =  "\(JSON)"
-                    let dict = self.convertStringToDictionary(text: str)
-                    print("Finally dict is here=======\(dict)")
-                    if let detailsDict = dict as NSDictionary? {
-                        print("Parse Data")
-                        let msg = detailsDict["message"] as? String ?? "Something went wrong"
-                        print(msg)
-                        if (dict?["status"] as? Int ?? 0) == 1 {                        //self.chooseRide_view.isHidden = true
-                            let  data = (dict?["data"] as? [[String:AnyObject]] ?? [[:]])
-                            print(data)
-                          //  self.rideDistance = (dict?["distance"] as? String ?? "")
-                            kDistanceInMiles = (dict?["distance"] as? String ?? "")
-                            kFinalAmountMile = (dict?["amount"] as? String ?? "")
-                            do{
-                                let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
-                                var getAllVechileData = try newJSONDecoder().decode(vechile.self, from: jsonData)
-                                var chooseVehicleList = chooseRideList.show
-                                //   self.getNearbyDrivers()
-                               
-                                let next = self.storyboard!.instantiateViewController(withIdentifier: "vehiclecategoryViewID") as! vehiclecategoryView
-                                next.allData = getAllVechileData
-                                next.delegate = self
-                                next.modalPresentationStyle = .overFullScreen
-                                self.present(next, animated: true, completion: nil)
-                                //  self.ride_tableView.reloadData()
-                                //  print(self.getAllVechileData)
-                            }catch{
-                                print(error.localizedDescription)
-                            }
-                        }
-                        else{
-                            self.showAlert("Rider RideshareRates", message: "\(msg)")
-                        }
-                    }
-                    //                    if let responseString = dict as? [String : AnyObject] ?? [:] {
-                    //
-                    //                    }
-                    //                    let msg = responseString["message"] as? String ?? ""
-                    //
-                    
-                    break;
-                case .failure(let error):
-                    print(error)
-                    self.showAlert("Rider RideshareRates", message: "\(error.localizedDescription)")
-                    break
-                }
-            }
-       
-    }
 }
