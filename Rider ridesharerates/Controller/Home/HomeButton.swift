@@ -105,6 +105,12 @@ extension HomeViewController {
                 else  if kNotificationAction == "PENDING" {
                     self.ride_tableView.reloadData()
                 }
+                else  if kNotificationAction == "DRIVER_AT_STOP" {
+                    self.ride_tableView.reloadData()
+                }
+                else  if kNotificationAction == "START_FROM_STOP" {
+                    self.ride_tableView.reloadData()
+                }
                 else  if kNotificationAction == "START_RIDE" {
                     self.ride_tableView.reloadData()
                 }
@@ -158,6 +164,12 @@ extension HomeViewController {
                 else  if kNotificationAction == "START_RIDE" {
                     self.ride_tableView.reloadData()
                 }
+                else  if kNotificationAction == "DRIVER_AT_STOP" {
+                    self.ride_tableView.reloadData()
+                }
+                else  if kNotificationAction == "START_FROM_STOP" {
+                    self.ride_tableView.reloadData()
+                }
                 else{
                     print("Nothing")
                 }
@@ -185,6 +197,7 @@ extension HomeViewController {
         if pickupBtnCancel.currentImage == UIImage(named: "cancel"){
             pickupBtnCancel.setImage(UIImage(named: "loc"), for: .normal)
             self.pickUpAddress_lbl.text = "Enter Current Location"
+            
             self.chooseRide_view.isHidden = true
             self.rideNow_btn.isHidden = true
             self.chooseRideViewHeight_const.constant = 0

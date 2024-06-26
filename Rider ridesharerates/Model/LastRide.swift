@@ -12,6 +12,7 @@ struct LastRideModal : Codable {
     let on_location : String?
     let totaltimeDiffrence :String?
     let totaltimeDiffrenceOnDrop : String?
+    let timeDiffrenceOnStop : String?
     let vehicle_image : String?
     let user_id : String?
     let driver_id : String?
@@ -19,7 +20,6 @@ struct LastRideModal : Codable {
     let pickup_adress : String?
     let is_destination_ride : String?
     let drop_address : String?
-    let hold_amount_status : String?
     let pikup_location : String?
     let pickup_lat : String?
     let pickup_long : String?
@@ -43,7 +43,6 @@ struct LastRideModal : Codable {
     let user_profile_pic : String?
     let total_rating : String?
     let total_driver_ride : String?
-    
     let latitude : String?
     let user_name : String?
     let longitude : String?
@@ -53,15 +52,13 @@ struct LastRideModal : Codable {
     let total_distance : String?
     let total_arrival_distance : String?
     let total_arrival_time : String?
-    let hold_amount : String?
 
     let cancellation_charge : String?
     enum CodingKeys: String, CodingKey {
 
         case ride_id = "ride_id"
         case user_id = "user_id"
-        case hold_amount = "hold_amount"
-        case hold_amount_status = "hold_amount_status"
+        case timeDiffrenceOnStop = "timeDiffrenceOnStop"
         case totaltimeDiffrenceOnDrop = "totaltimeDiffrenceOnDrop"
         case totaltimeDiffrence = "totaltimeDiffrence"
         case on_location = "on_location"
@@ -111,9 +108,8 @@ struct LastRideModal : Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         totaltimeDiffrenceOnDrop = try values.decodeIfPresent(String.self, forKey: .totaltimeDiffrenceOnDrop)
         totaltimeDiffrence = try values.decodeIfPresent(String.self, forKey: .totaltimeDiffrence)
-        hold_amount = try values.decodeIfPresent(String.self, forKey: .hold_amount)
+        timeDiffrenceOnStop = try values.decodeIfPresent(String.self, forKey: .timeDiffrenceOnStop)
         driver_lastname = try values.decodeIfPresent(String.self, forKey: .driver_lastname)
-        hold_amount_status = try values.decodeIfPresent(String.self, forKey: .hold_amount_status)
         on_location = try values.decodeIfPresent(String.self, forKey: .on_location)
         total_amount = try values.decodeIfPresent(String.self, forKey: .total_amount)
         ride_id = try values.decodeIfPresent(String.self, forKey: .ride_id)

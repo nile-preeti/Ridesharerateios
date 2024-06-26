@@ -13,11 +13,13 @@ import CoreLocation
 import  Alamofire
 
 class RideDetailsViewController: UIViewController {
-    
     //MARK:- OUTLETS
+    @IBOutlet var cancelAmount: UILabel!
+    
     @IBOutlet weak var distance_lbl: UILabel!
     @IBOutlet weak var ride_status_lbl: UILabel!
     
+    @IBOutlet var mStopAddresslbl: UILabel!
     @IBOutlet var mBGView: UIView!
     @IBOutlet weak var dateAndTime_lbl: UILabel!
     @IBOutlet weak var amount_lbl: UILabel!
@@ -92,7 +94,13 @@ class RideDetailsViewController: UIViewController {
     //MARK:- User Defined Func
     
     func setData(){
+        if self.ridesStatusData?.stops?.count != 0{
+            self.mStopAddresslbl.text = self.ridesStatusData?.stops![0].midstop_address ?? ""
+
+        }
         
+        self.cancelAmount.text = "$" + (self.ridesStatusData?.cancellation_charge ?? "")
+
         self.dateAndTime_lbl.text = self.ridesStatusData?.time ?? ""
         self.amount_lbl.text = "$" + (self.ridesStatusData?.amount ?? "")
         self.pickUpAddress_lbl.text = self.ridesStatusData?.pickupAdress ?? ""

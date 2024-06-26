@@ -26,6 +26,7 @@ struct RidesData: Codable {
     let driverMobile, driverName,driver_lastname, vehicle_name, category_name: String?
     let vehicleTypeName: String?
     let audio: [Audio]?
+    let stops : [stops]?
     let document_name: String?
     let id: String?
     let question: String?
@@ -35,6 +36,7 @@ struct RidesData: Codable {
     let email : String?
     enum CodingKeys: String, CodingKey {
         case rideID = "ride_id"
+        case stops = "stops"
         case total_waiting_time = "total_waiting_time"
         case total_waiting_charge = "total_waiting_charge"
         case email = "email"
@@ -77,6 +79,16 @@ struct RidesData: Codable {
 // MARK: - Audio
 struct Audio: Codable {
     let audio: String?
+}
+
+struct stops: Codable {
+    let stop_id: String?
+    let midstop_address: String?
+    enum CodingKeys: String, CodingKey {
+        case stop_id = "stop_id"
+        case midstop_address = "midstop_address"
+       
+    }
 }
 //enum Drop: String, Codable {
 //    case noidaSector18NoidaUttarPradesh201301India = "Noida Sector 18, Noida, Uttar Pradesh 201301, India"

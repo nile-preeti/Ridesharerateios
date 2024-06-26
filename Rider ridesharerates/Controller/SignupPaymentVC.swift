@@ -453,6 +453,7 @@ extension SignupPaymentVC {
                 if self.conn.responseCode == 1{
                     let msg = (Value["message"] as? String ?? "")
                     if (Value["status"] as? Int ?? 0) == 1{
+                        self.loginlogoutAPI(statut: "1")
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "HomeViewController") as! HomeViewController
                         self.navigationController?.pushViewController(vc, animated: true)
                         print(Value)
@@ -463,6 +464,19 @@ extension SignupPaymentVC {
                 }
             }
         }
+    
+    func loginlogoutAPI(statut: String){
+        let param = ["status": statut] as [String : Any]
+        Indicator.shared.showProgressView(self.view)
+        self.conn.startConnectionWithPostType(getUrlString: "updateloginlogout", params: param,authRequired: true) { (value) in
+            print(value)
+            Indicator.shared.hideProgressView()
+            if self.conn.responseCode == 1{
+                let msg = (value["status"] as? String ?? "")
+                print(msg)
+            }
+        }
+    }
         
     }
 

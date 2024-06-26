@@ -33,6 +33,7 @@ var kDropAddress = ""
 var kCurrentLocaLatLong = ""
 var kDestinationLatLong = ""
 var kRideStatus = ""
+var kpickupAddress = ""
 var kPickLat =  ""
 var kPickLatTap =  ""
 var kPickLong =  ""
@@ -41,6 +42,8 @@ var kCurrentAddressMarker = ""
 var kDropAddressMarker = ""
 var kDropLat =  ""
 var kDropLong =  ""
+var kstoplat = ""
+var kstoplong = ""
 var kCurrentLocaLat = ""
 var kCurrentLocaLong = ""
 var kDistanceInMiles = ""
@@ -69,7 +72,7 @@ var kPickUpLongFinal = ""
 var kPaymentRideId = ""
 var kPaymentDriverName = ""
 var kPaymentRideAmount = ""
-
+var kstops = [""]
 
 
 enum driverConfirmStatus {

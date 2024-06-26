@@ -60,6 +60,7 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                 //   addressTextField.text = fullAddress
                 
                 self.pickUpAddress_lbl.text = place.formattedAddress
+                kpickupAddress = self.pickUpAddress_lbl.text!
              //   kCurrentAddress = place.formattedAddress!
                 NSUSERDEFAULT.setValue("\(place.formattedAddress!)", forKey: kCurrentAddress)
              //   self.getNearbyDrivers()
@@ -229,9 +230,11 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                         NavigationManager.pushToLoginVC(from: self)
                     }
                     self.pickUpAddress_lbl.text = currentAddress
+                    kpickupAddress = self.pickUpAddress_lbl.text!
                  //   kCurrentAddress = currentAddress
                         // kCurrentAddress = currentAddress
                     NSUSERDEFAULT.setValue("\(currentAddress)", forKey: kCurrentAddress)
+                    NSUSERDEFAULT.value(forKey: kCurrentAddress)
                     marker.title = currentAddress
                     marker.map = self.mapView
                 }
@@ -456,6 +459,7 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                     }
                     print(addressString)
                     self.pickUpAddress_lbl.text =  addressString
+                    kpickupAddress = self.pickUpAddress_lbl.text!
                     NSUSERDEFAULT.setValue("\(addressString)", forKey: kCurrentAddress)
                   //  self.getNearbyDrivers()
                     kCurrentAddressMarker = addressString
@@ -468,6 +472,7 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                     
                     print("CURRENT ADDRESS IS HERE==\(addressString)")
                     self.pickUpAddress_lbl.text = addressString
+                    kpickupAddress = self.pickUpAddress_lbl.text!
                     // labelText gives you the address of the place
                 }
             })
