@@ -94,7 +94,7 @@ extension CompletedRidesViewController: UITableViewDataSource,UITableViewDelegat
         
         
         let paymentStatus = self.completedRidesData[indexPath.row].paymentStatus ?? ""
-        if paymentStatus == "COMPLETED"{
+       // if paymentStatus == "COMPLETED"{
           //  cell.payBtn.isHidden = true
             let cell = self.completedRides_tableView.dequeueReusableCell(withIdentifier: "CompletedTableViewCell") as! CompletedTableViewCell
             cell.pickUpLocation_lbl.text = self.completedRidesData[indexPath.row].pickupAdress ?? ""
@@ -114,22 +114,22 @@ extension CompletedRidesViewController: UITableViewDataSource,UITableViewDelegat
          //   cell.payBtn.addTarget(self, action: #selector(payBtnAvtion), for: .touchUpInside)
            
             return cell
-        }
-        else{
-          //  cell.payBtn.isHidden = false
-            let cell = self.completedRides_tableView.dequeueReusableCell(withIdentifier: "CompletedPaymentTableViewCell") as! CompletedPaymentTableViewCell
-            cell.pickUpLocation_lbl.text = self.completedRidesData[indexPath.row].pickupAdress ?? ""
-            cell.dropLocation_lbl.text = self.completedRidesData[indexPath.row].dropAddress ?? ""
-            cell.driverName_lbl.text = self.completedRidesData[indexPath.row].driver_lastname ?? "Boss"
-            cell.date_lbl.text = self.completedRidesData[indexPath.row].time ?? ""
-           // cell.time_lbl.text = self.getStringTimeFormat(date: self.completedRidesData[indexPath.row].time ?? "")
-         //   cell.viewBtnDetail.tag = indexPath.row
-            cell.payBtn.tag = indexPath.row
-         //   cell.viewBtnDetail.addTarget(self, action: #selector(viewDetailBtnAvtion), for: .touchUpInside)
-            cell.payBtn.addTarget(self, action: #selector(payBtnAvtion), for: .touchUpInside)
-           
-            return cell
-        }
+       // }
+//        else{
+//          //  cell.payBtn.isHidden = false
+//            let cell = self.completedRides_tableView.dequeueReusableCell(withIdentifier: "CompletedPaymentTableViewCell") as! CompletedPaymentTableViewCell
+//            cell.pickUpLocation_lbl.text = self.completedRidesData[indexPath.row].pickupAdress ?? ""
+//            cell.dropLocation_lbl.text = self.completedRidesData[indexPath.row].dropAddress ?? ""
+//            cell.driverName_lbl.text = self.completedRidesData[indexPath.row].driver_lastname ?? "Boss"
+//            cell.date_lbl.text = self.completedRidesData[indexPath.row].time ?? ""
+//           // cell.time_lbl.text = self.getStringTimeFormat(date: self.completedRidesData[indexPath.row].time ?? "")
+//         //   cell.viewBtnDetail.tag = indexPath.row
+//            cell.payBtn.tag = indexPath.row
+//         //   cell.viewBtnDetail.addTarget(self, action: #selector(viewDetailBtnAvtion), for: .touchUpInside)
+//            cell.payBtn.addTarget(self, action: #selector(payBtnAvtion), for: .touchUpInside)
+//           
+//            return cell
+//        }
         
        
     }

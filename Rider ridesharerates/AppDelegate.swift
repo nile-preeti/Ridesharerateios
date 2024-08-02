@@ -52,8 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         Messaging.messaging().delegate = self
       
         // stripe new test key
-       STPAPIClient.shared.publishableKey = "pk_test_51N860MAyQV9SI7qTYWyZREnZsdywfMnNSqjGsnNSVKx8l3FECtoIFlCfYGKalSkht4QpHoCIkUXCbFxEhsQc09gL00vwRY7FCI"
-      //  getStripeToken()
+     //  STPAPIClient.shared.publishableKey = "pk_test_51N860MAyQV9SI7qTYWyZREnZsdywfMnNSqjGsnNSVKx8l3FECtoIFlCfYGKalSkht4QpHoCIkUXCbFxEhsQc09gL00vwRY7FCI"
+       // getStripeToken()
         
       // STPAPIClient.shared.publishableKey = "pk_live_51N860MAyQV9SI7qTzSHJMq0AOEqGjphC8JbHHRqA6vTMPclelXDC97l8zPhtk5pwQhpwT39j4f05thTTnF30G58s00S2EufYNz"
        
@@ -77,28 +77,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate{
         
         return true
     }
-    
-    func getStripeToken() {
-        //  Indicator.shared.showProgressView(self.view)
-        self.conn.startConnectionWithGetTypeWithParam(getUrlString: "paymentgatwaykey",authRequired: true) { [self] (value) in
-            if self.conn.responseCode == 1 {
-                print(value)
-                
-                // Ensure value is a dictionary
-                if let valueDict = value as? [String: Any] {
-                    // Retrieve the stripe_publish_key from the dictionary
-                    let stripe_publish_key = valueDict["stripe_pubish_key"] as? String ?? ""
-                    
-                    // Set the Stripe publishable key
-                    STPAPIClient.shared.publishableKey = stripe_publish_key
-                } else {
-                    print("Response is not a valid dictionary")
-                }
-            } else {
-                print("Failed to get response from server")
-            }
-        }
-    }
+//    
+//    func getStripeToken() {
+//        //  Indicator.shared.showProgressView(self.view)
+//        self.conn.startConnectionWithGetTypeWithParam(getUrlString: "paymentgatwaykey",authRequired: true) { [self] (value) in
+//            if self.conn.responseCode == 1 {
+//                print(value)
+//                
+//                // Ensure value is a dictionary
+//                if let valueDict = value as? [String: Any] {
+//                    // Retrieve the stripe_publish_key from the dictionary
+//                    let stripe_publish_key = valueDict["stripe_pubish_key"] as? String ?? ""
+//                    
+//                    // Set the Stripe publishable key
+//                    STPAPIClient.shared.publishableKey = stripe_publish_key
+//                } else {
+//                    print("Response is not a valid dictionary")
+//                }
+//            } else {
+//                print("Failed to get response from server")
+//            }
+//        }
+//    }
     
     // MARK: UISceneSession Lifecycle
     

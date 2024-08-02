@@ -268,9 +268,9 @@ class SignUpViewController: UIViewController {
             self.openCamera()
         }))
 
-        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
-            self.openGallery()
-        }))
+//        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
+//            self.openGallery()
+//        }))
 
         alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
 
@@ -286,9 +286,9 @@ class SignUpViewController: UIViewController {
             self.openCamera()
         }))
 
-        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
-            self.openGallery()
-        }))
+//        alert.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { _ in
+//            self.openGallery()
+//        }))
 
         alert.addAction(UIAlertAction.init(title: "Cancel", style: .cancel, handler: nil))
 

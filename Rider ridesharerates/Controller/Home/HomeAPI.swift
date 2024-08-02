@@ -36,8 +36,8 @@ extension HomeViewController {
         print(finalPickUpLatTap)
         print(finalPickUpLongTap)
         
-        let param : [String : Any] = ["pickup_lat" : finalPickUpLatTap,
-                                      "pickup_long" : finalPickUpLongTap,
+        let param : [String : Any] = ["pickup_lat" : kPickUpLatFinal,
+                                      "pickup_long" : kPickUpLongFinal,
                                       "drop_lat" : kDropLat ,
                                       "distance" : picktodropDistance,
                                       "duration" : picktodropDuration,
@@ -221,7 +221,7 @@ extension HomeViewController {
                         let msg = detailsDict["message"] as? String ?? ""
                         print(msg)
                         if (detailsDict["status"] as? Int ?? 0) == 1 {
-                            
+                            NSUSERDEFAULT.set("", forKey: kVideoPlay)
                             let data = (detailsDict["ride_detail"] as? [String:Any] ?? [:])
                             kRideId = "\((data["ride_id"] as? Int ?? 0))"
                             kVehicle_no = "\((data["vehicle_no"] as? String ?? ""))"
@@ -504,6 +504,9 @@ extension HomeViewController {
                 let msg = (value["message"] as? String ?? "")
                 if ((value["status"] as? Int ?? 0) == 1){
                     self.timerr = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(self.failedTimer(_:)), userInfo: nil, repeats: false)
+                    // Add observer for app going into the background
+                          // NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+                     
                     kNotificationAction = "PENDING"
                     kConfirmationAction = "PENDING"
                     self.ride_tableView.reloadData()
@@ -531,6 +534,7 @@ extension HomeViewController {
                 let msg = (value["message"] as? String ?? "")
                 if ((value["status"] as? Int ?? 0) == 1){
                     // self.dropAddress_lbl.text = ""
+                    self.mTimerView.isHidden = true
                     self.dropAddress_lbl.text = "Enter Drop Location"
                     self.pickupBtn.isUserInteractionEnabled = true
                     self.dropBtn.isUserInteractionEnabled = true
@@ -617,6 +621,7 @@ extension HomeViewController {
 //                        self.timeD = self.lastRideData?.total_arrival_time  ?? ""
 //                        self.Dmiles = self.lastRideData?.total_arrival_distance  ?? ""
                         kConfirmationAction = rideStatusData
+                        kNotificationAction = rideStatusData
                         if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" || kNotificationAction == "NOT_CONFIRMED" || kConfirmationAction == "NOT_CONFIRMED" || kNotificationAction == "PENDING" || kConfirmationAction == "PENDING" || kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE" {
                             dropAddress_lbl.text = self.lastRideData?.drop_address ?? ""
                             pickUpAddress_lbl.text = self.lastRideData?.pickup_adress
@@ -658,7 +663,9 @@ extension HomeViewController {
                                 self.chooseRideViewHeight_const.constant = 0
                             }
                             if rideStatusData == "PENDING"{
-                                self.timerr = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(self.failedTimer(_:)), userInfo: nil, repeats: false)
+                             //   self.timerr = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(self.failedTimer(_:)), userInfo: nil, repeats: false)
+                            //    NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+                                  
                                 if pendingRidetimeout == "true"{
                                     self.cancelRideStatus(rideId: kRideId)
                                 }
@@ -757,12 +764,12 @@ extension HomeViewController {
                                     
                                 }
                             }
-                            else{
-                                kNotificationAction = ""
-                                kConfirmationAction = ""
-                                self.chooseRide_view.isHidden = true
-                                self.ride_tableView.isHidden = true
-                            }
+//                            else{
+//                                kNotificationAction = ""
+//                                kConfirmationAction = ""
+//                                self.chooseRide_view.isHidden = true
+//                                self.ride_tableView.isHidden = true
+//                            }
                             //           }
                             
                             
@@ -1006,6 +1013,7 @@ extension HomeViewController {
                     timerTitle.text = "Waiting time:"
                     mTimerView.isHidden = false
                 }else{
+                    timerTitle.text = "Cancellation time:"
                     if count > 240{
                         stopTimer()
                         mTimerView.isHidden = true
@@ -1024,6 +1032,13 @@ extension HomeViewController {
                     mTimerView.isHidden = true
                 }
                 
+            }else  if kNotificationAction == "MID_STOP" || kConfirmationAction == "MID_STOP"{
+                if self.lastRideData?.on_location == "AT_STOP"{
+                    timerTitle.text = "Waiting time:"
+                    mTimerView.isHidden = false
+                }else{
+                    mTimerView.isHidden = true
+                }
             }else{
                 stopTimer()
             }
@@ -1132,41 +1147,42 @@ extension HomeViewController{
 extension HomeViewController : RideStart{
     func RideStart(button: String?) {
         if button == "ridenow"{
-            mtopviewwithlocation.isHidden = true
-            if Double(holdAmount)! < Double(rideAmount)!{
-                self.showAlert("Rider RideshareRates", message: "Your Pre-authorized amount is less than your ride Amount. Please contact to admin at info@ridesharerates.com")
-                
-            }else{
-                let refreshAlert = UIAlertController(title: "Rideshare authorization" , message: "Rideshare authorized to hold $\(holdAmount) for booking your ride.", preferredStyle: UIAlertController.Style.alert)
-                let titleAttributes: [NSAttributedString.Key: Any] = [
-                    
-                    NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
-                    NSAttributedString.Key.foregroundColor: UIColor.white,
-                ]
-                let messageAttributes: [NSAttributedString.Key: Any] = [
-                    NSAttributedString.Key.font : UIFont.systemFont(ofSize: 15),
-                    .foregroundColor: UIColor.white,
-                ]
-                
-                let attributedTitle = NSAttributedString(string: "Rideshare authorization", attributes: titleAttributes)
-                let attributedMessage = NSAttributedString(string: "Rideshare authorized to hold $\(holdAmount) for booking your ride.", attributes: messageAttributes)
-                
-                // Set the attributed title and message
-                refreshAlert.setValue(attributedTitle, forKey: "attributedTitle")
-                refreshAlert.setValue(attributedMessage, forKey: "attributedMessage")
-                refreshAlert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
-                
-                refreshAlert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (action: UIAlertAction!) in
-                    
-                    self.holdpayment()
-                    //  self.updateStatus(updateStatus: "3")
-                    
-                }))
-                refreshAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
-                }))
-                present(refreshAlert, animated: true, completion: nil)
-                
-            }
+            self.rideNowApi()
+//            mtopviewwithlocation.isHidden = true
+//            if Double(holdAmount)! < Double(rideAmount)!{
+//                self.showAlert("Rider RideshareRates", message: "Your Pre-authorized amount is less than your ride Amount. Please contact to admin at info@ridesharerates.com")
+//                
+//            }else{
+//                let refreshAlert = UIAlertController(title: "Rideshare authorization" , message: "Rideshare authorized to hold $\(holdAmount) for booking your ride.", preferredStyle: UIAlertController.Style.alert)
+//                let titleAttributes: [NSAttributedString.Key: Any] = [
+//                    
+//                    NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+//                    NSAttributedString.Key.foregroundColor: UIColor.white,
+//                ]
+//                let messageAttributes: [NSAttributedString.Key: Any] = [
+//                    NSAttributedString.Key.font : UIFont.systemFont(ofSize: 15),
+//                    .foregroundColor: UIColor.white,
+//                ]
+//                
+//                let attributedTitle = NSAttributedString(string: "Rideshare authorization", attributes: titleAttributes)
+//                let attributedMessage = NSAttributedString(string: "Rideshare authorized to hold $\(holdAmount) for booking your ride.", attributes: messageAttributes)
+//                
+//                // Set the attributed title and message
+//                refreshAlert.setValue(attributedTitle, forKey: "attributedTitle")
+//                refreshAlert.setValue(attributedMessage, forKey: "attributedMessage")
+//                refreshAlert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
+//                
+//                refreshAlert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (action: UIAlertAction!) in
+//                    
+//                    self.holdpayment()
+//                    //  self.updateStatus(updateStatus: "3")
+//                    
+//                }))
+//                refreshAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
+//                }))
+//                present(refreshAlert, animated: true, completion: nil)
+//                
+//            }
         }else{
                 self.getLastRideDataApi()
                 self.mapView.clear()
@@ -1175,11 +1191,12 @@ extension HomeViewController : RideStart{
             }
         
     }
-    
+//    
     func holdpayment(){
-        let param = ["amount": holdAmount, "card_id": cardID]
+        let param = ["amount": holdAmount, "card_id": cardID, "pickup_latitude" : kPickUpLatFinal, "vehiclesubcat_id": "\(vehicleTypeId)", "pickup_longtitude":kPickUpLongFinal]
+        
         Indicator.shared.showProgressView(self.view)
-        self.conn.startConnectionWithPostType(getUrlString: "add_payment", params: param,authRequired: true) { (value) in
+        self.conn.startConnectionWithPostType(getUrlString: "add_payment_checkdriver", params: param,authRequired: true) { (value) in
             //   print(value)
             let msg = (value["message"] as? String ?? "")
             Indicator.shared.hideProgressView()
@@ -1192,6 +1209,7 @@ extension HomeViewController : RideStart{
                     self.rideNowApi()
                 }
                 else{
+                  
                     self.showAlert("Rider RideshareRates", message: msg)
                 }
             }
@@ -1204,12 +1222,291 @@ extension HomeViewController : RideStart{
     
 }
 extension HomeViewController: addstop{
-    func addstop(totalDistance: Int?, totalDuration: Int?) {
-        locationPickUpEditStatus = true
-        locationDropUpEditStatus = true
-        getVechilelist(totalDistance: totalDistance, totalDuration: totalDuration)
+    func addstop(totalDistance: Int?, totalDuration: Int?, addstop: String?) {
         
+        
+        
+        
+        if addstop == "ongoingadd"{
+            self.chooseRide_view.isHidden = false
+            self.ride_tableView.isHidden = false
+            mAddStopOngoingrideView.isHidden = true
+          //  addstopongoing(totalDistance: totalDistance, totalDuration: totalDuration)
+            holdamountapi(totalDistance: totalDistance)
+            
+            
+        }else{
+            
+            
+            locationPickUpEditStatus = true
+            locationDropUpEditStatus = true
+            getVechilelist(totalDistance: totalDistance, totalDuration: totalDuration)
+            
+        }
     }
+    
+    func holdamountapi(totalDistance: Int?){
+     //   self.routingLines(origin: kCurrentLocaLatLongTap ,destination: kDestinationLatLongTap)
+
+      
+       
+        
+        let param : [String : Any] = ["ride_id" : Int(lastRideData?.ride_id ?? "0")! as Int,
+                                      "distance" : totalDistance as Any ] as [String : Any]
+        
+//        kCurrentLocaLatLongTap =   "\(finalPickUpLatTap)" + "," + "\(finalPickUpLongTap)"
+//        kDestinationLatLongTap =  "\(kDropLat)" + "," + "\(kDropLong)"
+        print(param)
+        Indicator.shared.showProgressView(self.view)
+        let urlString = "\(baseURL)holdAmountOngoingRide"
+        let url = URL.init(string: urlString)
+        var headers: HTTPHeaders = [:]
+        headers = ["Authorization" : "Bearer " + (UserDefaults.standard.value(forKey: "token") as? String ?? "")
+        ]
+        print(headers)
+        print(param)
+        AF.request(urlString, method: .post, parameters: param, encoding: URLEncoding.default, headers: headers)
+            .responseString { response in
+                print("responseString: \(response)")
+                Indicator.shared.hideProgressView()
+                switch (response.result) {
+                case .success(let JSON):
+                    print("JSON: \(JSON)")
+                    let str =  "\(JSON)"
+                    let dict = self.convertStringToDictionary(text: str)
+                    print("Finally dict is here=======\(dict)")
+                    if let detailsDict = dict as NSDictionary? {
+                        print("Parse Data")
+                        let msg = detailsDict["message"] as? String ?? "Something went wrong"
+                        print(msg)
+                        if (dict?["status"] as? Int ?? 0) == 1 {
+                            kstops = [""]
+                            
+                            let holdAmount = dict?["stop_hold_amount"] as? String ?? "0"
+                            
+                            
+                                let refreshAlert = UIAlertController(title: "Rideshare authorization" , message: "Rideshare authorized to hold $\(holdAmount) to add stop in your ride.", preferredStyle: UIAlertController.Style.alert)
+                                let titleAttributes: [NSAttributedString.Key: Any] = [
+                                    
+                                    NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+                                    NSAttributedString.Key.foregroundColor: UIColor.white,
+                                ]
+                                let messageAttributes: [NSAttributedString.Key: Any] = [
+                                    NSAttributedString.Key.font : UIFont.systemFont(ofSize: 15),
+                                    .foregroundColor: UIColor.white,
+                                ]
+                                
+                                let attributedTitle = NSAttributedString(string: "Rideshare authorization", attributes: titleAttributes)
+                                let attributedMessage = NSAttributedString(string: "Rideshare authorized to hold $\(holdAmount) to add stop in your ride.", attributes: messageAttributes)
+                                
+                                // Set the attributed title and message
+                                refreshAlert.setValue(attributedTitle, forKey: "attributedTitle")
+                                refreshAlert.setValue(attributedMessage, forKey: "attributedMessage")
+                                refreshAlert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
+                                
+                                refreshAlert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (action: UIAlertAction!) in
+                                    
+                                    self.holdamountonstopongoing(totalDistance: totalDistance, amount: holdAmount)
+                                    //  self.updateStatus(updateStatus: "3")
+                                    
+                                }))
+                                refreshAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
+                                }))
+                            self.present(refreshAlert, animated: true, completion: nil)
+                               
+                            
+                            
+                        }
+                        else{
+                            self.showAlert("Rider RideshareRates", message: "\(msg)")
+                        }
+                    }
+                   
+                    break;
+                case .failure(let error):
+                    print(error)
+                    self.showAlert("Rider RideshareRates", message: "\(error.localizedDescription)")
+                    break
+                }
+            }
+       
+    }
+    
+    func holdamountonstopongoing(totalDistance: Int?, amount: String?){
+     //   self.routingLines(origin: kCurrentLocaLatLongTap ,destination: kDestinationLatLongTap)
+
+        let param : [String : Any] = ["ride_id" : Int(lastRideData?.ride_id ?? "0")! as Int,
+//                                      "distance" : totalDistance as Any,
+//                                      "stop_adrress" : kDropAddress,
+//                                      "stop_lat" : kDropLat ,
+//                                      "stop_long" : kDropLong,
+                                      "amount": String(amount ?? "0") ] as [String : Any]
+        
+//        kCurrentLocaLatLongTap =   "\(finalPickUpLatTap)" + "," + "\(finalPickUpLongTap)"
+//        kDestinationLatLongTap =  "\(kDropLat)" + "," + "\(kDropLong)"
+        print(param)
+        Indicator.shared.showProgressView(self.view)
+      //  let urlString = "\(baseURL)updateMidRideStop"
+        let urlString = "\(baseURL)addPaymentForOngoingRideStop"
+        
+        let url = URL.init(string: urlString)
+        var headers: HTTPHeaders = [:]
+        headers = ["Authorization" : "Bearer " + (UserDefaults.standard.value(forKey: "token") as? String ?? "")
+        ]
+        print(headers)
+        print(param)
+        AF.request(urlString, method: .post, parameters: param, encoding: URLEncoding.default, headers: headers)
+            .responseString { response in
+                print("responseString: \(response)")
+                Indicator.shared.hideProgressView()
+                switch (response.result) {
+                case .success(let JSON):
+                    print("JSON: \(JSON)")
+                    let str =  "\(JSON)"
+                    let dict = self.convertStringToDictionary(text: str)
+                    print("Finally dict is here=======\(dict)")
+                    if let detailsDict = dict as NSDictionary? {
+                        print("Parse Data")
+                        let msg = detailsDict["message"] as? String ?? "Something went wrong"
+                        print(msg)
+                        if (dict?["status"] as? Int ?? 0) == 1 {
+                            kstops = [""]
+                            self.showAlert("Rider RideshareRates", message: "\(msg)")
+                            let txnid = dict?["stop_txn_id"] as? String ?? "0"
+                          
+                            self.addstopongoing(totalDistance: totalDistance, stoptxn: txnid)
+                            //self.chooseRide_view.isHidden = true
+//                            let  data = (dict?["data"] as? [[String:AnyObject]] ?? [[:]])
+//                            print(data)
+//                          //  self.rideDistance = (dict?["distance"] as? String ?? "")
+//                            kDistanceInMiles = (dict?["distance"] as? String ?? "")
+//                            kFinalAmountMile = (dict?["amount"] as? String ?? "")
+//                            do{
+//                                let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+//                                var getAllVechileData = try newJSONDecoder().decode(vechile.self, from: jsonData)
+//                                var chooseVehicleList = chooseRideList.show
+//                                //   self.getNearbyDrivers()
+//
+//                                let next = self.storyboard!.instantiateViewController(withIdentifier: "vehiclecategoryViewID") as! vehiclecategoryView
+//                                next.allData = getAllVechileData
+//                                next.delegate = self
+//                                next.modalPresentationStyle = .overFullScreen
+//                                self.present(next, animated: true, completion: nil)
+//                                //  self.ride_tableView.reloadData()
+//                                //  print(self.getAllVechileData)
+//                            }catch{
+//                                print(error.localizedDescription)
+//                            }
+                        }
+                        else{
+                            self.showAlert("Rider RideshareRates", message: "\(msg)")
+                        }
+                    }
+                    //                    if let responseString = dict as? [String : AnyObject] ?? [:] {
+                    //
+                    //                    }
+                    //                    let msg = responseString["message"] as? String ?? ""
+                    //
+                    
+                    break;
+                case .failure(let error):
+                    print(error)
+                    self.showAlert("Rider RideshareRates", message: "\(error.localizedDescription)")
+                    break
+                }
+            }
+       
+    }
+    
+    func addstopongoing(totalDistance: Int?, stoptxn: String?){
+     //   self.routingLines(origin: kCurrentLocaLatLongTap ,destination: kDestinationLatLongTap)
+
+        let param : [String : Any] = ["ride_id" : Int(lastRideData?.ride_id ?? "0")! as Int,
+                                      "distance" : totalDistance as Any,
+                                      "stop_adrress" : kDropAddress,
+                                      "stop_lat" : kDropLat ,
+                                      "stop_long" : kDropLong,
+                                      "stop_txn_id": String(stoptxn ?? "0") ] as [String : Any]
+        
+//        kCurrentLocaLatLongTap =   "\(finalPickUpLatTap)" + "," + "\(finalPickUpLongTap)"
+//        kDestinationLatLongTap =  "\(kDropLat)" + "," + "\(kDropLong)"
+        print(param)
+        Indicator.shared.showProgressView(self.view)
+        let urlString = "\(baseURL)updateMidRideStop"
+      //  let urlString = "\(baseURL)addPaymentForOngoingRideStop"
+        
+        let url = URL.init(string: urlString)
+        var headers: HTTPHeaders = [:]
+        headers = ["Authorization" : "Bearer " + (UserDefaults.standard.value(forKey: "token") as? String ?? "")
+        ]
+        print(headers)
+        print(param)
+        AF.request(urlString, method: .post, parameters: param, encoding: URLEncoding.default, headers: headers)
+            .responseString { response in
+                print("responseString: \(response)")
+                Indicator.shared.hideProgressView()
+                switch (response.result) {
+                case .success(let JSON):
+                    print("JSON: \(JSON)")
+                    let str =  "\(JSON)"
+                    let dict = self.convertStringToDictionary(text: str)
+                    print("Finally dict is here=======\(dict)")
+                    if let detailsDict = dict as NSDictionary? {
+                        print("Parse Data")
+                        let msg = detailsDict["message"] as? String ?? "Something went wrong"
+                        print(msg)
+                        if (dict?["status"] as? Int ?? 0) == 1 {
+                            kstops = [""]
+                            self.showAlert("Rider RideshareRates", message: "\(msg)")
+                            
+                            //self.chooseRide_view.isHidden = true
+//                            let  data = (dict?["data"] as? [[String:AnyObject]] ?? [[:]])
+//                            print(data)
+//                          //  self.rideDistance = (dict?["distance"] as? String ?? "")
+//                            kDistanceInMiles = (dict?["distance"] as? String ?? "")
+//                            kFinalAmountMile = (dict?["amount"] as? String ?? "")
+//                            do{
+//                                let jsonData = try JSONSerialization.data(withJSONObject: data, options: .prettyPrinted)
+//                                var getAllVechileData = try newJSONDecoder().decode(vechile.self, from: jsonData)
+//                                var chooseVehicleList = chooseRideList.show
+//                                //   self.getNearbyDrivers()
+//
+//                                let next = self.storyboard!.instantiateViewController(withIdentifier: "vehiclecategoryViewID") as! vehiclecategoryView
+//                                next.allData = getAllVechileData
+//                                next.delegate = self
+//                                next.modalPresentationStyle = .overFullScreen
+//                                self.present(next, animated: true, completion: nil)
+//                                //  self.ride_tableView.reloadData()
+//                                //  print(self.getAllVechileData)
+//                            }catch{
+//                                print(error.localizedDescription)
+//                            }
+                        }
+                        else{
+                            self.showAlert("Rider RideshareRates", message: "\(msg)")
+                        }
+                    }
+                    //                    if let responseString = dict as? [String : AnyObject] ?? [:] {
+                    //
+                    //                    }
+                    //                    let msg = responseString["message"] as? String ?? ""
+                    //
+                    
+                    break;
+                case .failure(let error):
+                    print(error)
+                    self.showAlert("Rider RideshareRates", message: "\(error.localizedDescription)")
+                    break
+                }
+            }
+       
+    }
+//    func addstop(totalDistance: Int?, totalDuration: Int?) {
+//        locationPickUpEditStatus = true
+//        locationDropUpEditStatus = true
+//        getVechilelist(totalDistance: totalDistance, totalDuration: totalDuration)
+//        
+//    }
     
     func getVechilelist(totalDistance: Int?, totalDuration: Int?){
      //   self.routingLines(origin: kCurrentLocaLatLongTap ,destination: kDestinationLatLongTap)
@@ -1217,8 +1514,8 @@ extension HomeViewController: addstop{
       
        
         
-        let param : [String : Any] = ["pickup_lat" : kPickLat,
-                                      "pickup_long" : kPickLong,
+        let param : [String : Any] = ["pickup_lat" : kCurrentLocaLat,
+                                      "pickup_long" : kCurrentLocaLong,
                                       "drop_lat" : kDropLat ,
                                       "distance" : totalDistance as Any,
                                       "duration" : totalDuration as Any,

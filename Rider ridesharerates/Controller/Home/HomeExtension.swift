@@ -120,7 +120,7 @@ extension HomeViewController: UITableViewDataSource{
 
             self.chooseRide_view.isHidden = false
             self.rideNow_btn.isHidden = true
-            self.chooseRideViewHeight_const.constant = 140
+            self.chooseRideViewHeight_const.constant = 185
             self.ride_tableView.isHidden = false
             return 1
         }else  if kNotificationAction == "MID_STOP" || kConfirmationAction == "MID_STOP" && kRideId != "" {
@@ -128,7 +128,7 @@ extension HomeViewController: UITableViewDataSource{
 
             self.chooseRide_view.isHidden = false
             self.rideNow_btn.isHidden = true
-            self.chooseRideViewHeight_const.constant = 140
+            self.chooseRideViewHeight_const.constant = 185
             self.ride_tableView.isHidden = false
             return 1
         }
@@ -177,24 +177,39 @@ extension HomeViewController: UITableViewDataSource{
             //
             //                return cell
             //        }else
-            if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" && kRideId != "" {
+              if kNotificationAction == "NOT_CONFIRMED" || kConfirmationAction == "NOT_CONFIRMED" || kNotificationAction == "PENDING" || kConfirmationAction == "PENDING" {
+                let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "DriverConfirmationCell", for: indexPath) as! DriverConfirmationCell
+                cell.time = 1.0
+                cell.progress = 0.0
+                cell.cancelBtn.addTarget(self, action: #selector(cancelDriverCallBtnAction), for: .touchUpInside)
+                
+                
+                self.pickupBtn.isUserInteractionEnabled = false
+                self.dropBtn.isUserInteractionEnabled = false
+                self.pickupBtnCancel.isUserInteractionEnabled = false
+                self.dropBtnCancel.isUserInteractionEnabled = false
+                return cell
+            }else if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" && kRideId != "" {
                 let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "CallDriverCell", for: indexPath) as! CallDriverCell
                 
                 if modalData?.on_location == "YES"{
                     self.mTimerView.isHidden = false
                   //  mTimerLBL.text = "waiting time on "
+                    cell.cancelDriverBtn.isHidden = true
                     timerTitle.text = "Waiting time:"
                     let seccount = Int((modalData?.totaltimeDiffrence)!)
                     self.count = seccount!
                     timeupdate()
                 }else{
+                    cell.cancelDriverBtn.isHidden = false
+                    timerTitle.text = "Cancellation time:"
                     if self.pathdrawtimer == ""{
                         getDriverLatLong(driverName: modalData?.driver_name ?? "", RideID: modalData?.driver_id ?? "")
                     }
                     self.getTime()
                 }
                 
-                if NSUSERDEFAULT.value(forKey: kVideoPlay) as? String ?? ""  == ""{
+                if NSUSERDEFAULT.value(forKey: kVideoPlay) != nil || NSUSERDEFAULT.value(forKey: kVideoPlay) as! String == ""{
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let LaunchVC = storyboard.instantiateViewController(withIdentifier: "LaunchVCID") as! LaunchVC
                     LaunchVC.screen = "home"
@@ -216,6 +231,7 @@ extension HomeViewController: UITableViewDataSource{
 //                        cell.mPopupVieww.isHidden = true
 //                    }
                     cell.cancelDriverBtn.addTarget(self, action: #selector(cancelDriverCallBtnAction), for: .touchUpInside)
+                    cell.mAddSTopBTN.addTarget(self, action: #selector(addstopBtnAction), for: .touchUpInside)
                     // cell.vehicleImageView.sd_setImage(with:URL(string: modalData?.user_profile_pic ?? "" ), placeholderImage: UIImage(named: "profile"), completed: nil)
                     cell.vehicleImageView.image = UIImage(named: "carimg")
                     cell.vehicleImageView.sd_setImage(with:URL(string: modalData?.vehicle_image ?? "" ), placeholderImage: UIImage(named: "carimg"), completed: nil)
@@ -232,7 +248,7 @@ extension HomeViewController: UITableViewDataSource{
                     //                    cell.timeLabel.text =  modalData?.total_time ?? ""
                     //                }
                     //   cell.distanceLabel.text  = "\(modalData?.total_distance ?? "")" + "les"
-                    0.621371
+                 //   0.621371
                     cell.distanceLabel.text  = Dmiles + " miles"
                     cell.driverRatingLabel.text =  modalData?.total_rating ?? ""
                     cell.mUserNAme.text = kVehicle_no
@@ -272,36 +288,31 @@ extension HomeViewController: UITableViewDataSource{
 //                self.dropBtnCancel.isUserInteractionEnabled = false
 //                return cell
 //              
-            }else  if kNotificationAction == "NOT_CONFIRMED" || kConfirmationAction == "NOT_CONFIRMED" || kNotificationAction == "PENDING" || kConfirmationAction == "PENDING" {
-                let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "DriverConfirmationCell", for: indexPath) as! DriverConfirmationCell
-                cell.time = 1.0
-                cell.progress = 0.0
-                cell.cancelBtn.addTarget(self, action: #selector(cancelDriverCallBtnAction), for: .touchUpInside)
-                
-                
-                self.pickupBtn.isUserInteractionEnabled = false
-                self.dropBtn.isUserInteractionEnabled = false
-                self.pickupBtnCancel.isUserInteractionEnabled = false
-                self.dropBtnCancel.isUserInteractionEnabled = false
-                return cell
             }else  if kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE" && kRideId != "" {
                 
-               // VideoPlay = "done"
-                
-                if modalData?.on_location == "AT_DESTINATION"{
-                    self.mTimerView.isHidden = false
-                   // mTimerLBL.text = "waiting time on "
-                    timerTitle.text = "Waiting time:"
-                    let seccount = Int((modalData?.totaltimeDiffrenceOnDrop)!)
-                    self.count = seccount!
-                    timeupdate()
-                }else{
-                    if self.pathdrawtimer == ""{
-                        getDriverLatLong(driverName: modalData?.driver_name ?? "", RideID: modalData?.driver_id ?? "")
-                    }
-                }
+              
                 
                 let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "RideOnWayCell", for: indexPath) as! RideOnWayCell
+                
+                
+                
+                
+                // VideoPlay = "done"
+                 NSUSERDEFAULT.set("", forKey: kVideoPlay)
+                 if modalData?.on_location == "AT_DESTINATION"{
+                     self.mTimerView.isHidden = false
+                    // mTimerLBL.text = "waiting time on "
+                     timerTitle.text = "Waiting time:"
+                     let seccount = Int((modalData?.totaltimeDiffrenceOnDrop)!)
+                     self.count = seccount!
+                     timeupdate()
+                   //  cell.startRecordingBtn.isHidden = true
+                 }else{
+                    // cell.startRecordingBtn.isHidden = false
+                     if self.pathdrawtimer == ""{
+                         getDriverLatLong(driverName: modalData?.driver_name ?? "", RideID: modalData?.driver_id ?? "")
+                     }
+                 }
                 
                 let lastRideid = modalData?.ride_id ?? ""
                 
@@ -313,8 +324,7 @@ extension HomeViewController: UITableViewDataSource{
                     cell.nameLabel.text = "Your ride is going with " + "\( modalData?.driver_lastname ?? "Boss")"
                     cell.amountLabel.text = "Amount to be paid $" + "\( modalData?.total_amount ?? "")"
                 }
-                //  "$" + " " + "\(modalData?.amount  ?? "")"  + " " +
-                cell.startRecordingBtn.addTarget(self, action: #selector(recordingBtnAction), for: .touchUpInside)
+                cell.startRecordingBtn.addTarget(self, action: #selector(addstopBtnAction), for: .touchUpInside)
                 return cell
             }else  if kNotificationAction == "MID_STOP" || kConfirmationAction == "MID_STOP" && kRideId != ""{
                 
@@ -339,7 +349,7 @@ extension HomeViewController: UITableViewDataSource{
                     cell.amountLabel.text = "Amount to be paid $" + "\( modalData?.total_amount ?? "")"
                 }
                 //  "$" + " " + "\(modalData?.amount  ?? "")"  + " " +
-                cell.startRecordingBtn.addTarget(self, action: #selector(recordingBtnAction), for: .touchUpInside)
+                cell.startRecordingBtn.addTarget(self, action: #selector(addstopBtnAction), for: .touchUpInside)
                 return cell
                 
                 
@@ -527,6 +537,18 @@ extension HomeViewController: UITableViewDataSource{
     @objc func cancelDriverCallBtnAction(){
         self.cancelButtonAlert()
     }
+    @objc func addstopBtnAction(){
+        if lastRideData?.Stops?.count != 0{
+          //  cell.mAddSTopBTN.us
+            self.showAlert("Rider RideshareRates", message: "You have already added a stop.")
+        }else{
+            self.mdropLocLBL.text = lastRideData?.drop_address
+            self.mPickupLBLAS.text = lastRideData?.pickup_adress
+            self.chooseRide_view.isHidden = true
+            self.ride_tableView.isHidden = true
+            self.mAddStopOngoingrideView.isHidden = false
+        }
+    }
 //    @objc func cancelAutomatically(_ timer: Timer){
 //        print("cancel Automatically")
 //        var timerCountStatus = false
@@ -542,34 +564,34 @@ extension HomeViewController: UITableViewDataSource{
 //            }
 //        }
 //    }
-    @objc func recordingBtnAction(sender : UIButton){
-        print("record btn")
-        let modalData = lastRideData
-        let modalRideId = modalData?.ride_id ?? ""
-        selectRideID = modalRideId
-        let tag:NSInteger = sender.tag;
-        let indexPath = NSIndexPath(row: tag, section: 0)
-        if let cell = ride_tableView.cellForRow(at: indexPath as IndexPath ) as? RideOnWayCell {
-            cell.startRecordingBtn.setTitle("Play Recoring", for: .normal)
-            var playBtn = sender as! UIButton
-            if toggleState == 1 {
-                //  player.play()
-                toggleState = 2
-                playBtn.backgroundColor = #colorLiteral(red: 0.9176470588, green: 0.06666666667, blue: 0.05490196078, alpha: 1)
-                playBtn.setTitle("Stop Record", for: .normal)
-                showToast(message: "Recording Started")
-                startRecording()
-            } else {
-                // player.pause()
-                toggleState = 1
-                playBtn.backgroundColor = #colorLiteral(red: 0.262745098, green: 0.6235294118, blue: 0.1647058824, alpha: 1)
-                playBtn.setTitle("Start Recording", for: .normal)
-                showToast(message: "Recording Stopped")
-                finishRecording(success: true)
-            }
-        }
-        
-    }
+//    @objc func recordingBtnAction(sender : UIButton){
+//        print("record btn")
+//        let modalData = lastRideData
+//        let modalRideId = modalData?.ride_id ?? ""
+//        selectRideID = modalRideId
+//        let tag:NSInteger = sender.tag;
+//        let indexPath = NSIndexPath(row: tag, section: 0)
+//        if let cell = ride_tableView.cellForRow(at: indexPath as IndexPath ) as? RideOnWayCell {
+//            cell.startRecordingBtn.setTitle("Play Recoring", for: .normal)
+//            var playBtn = sender as! UIButton
+//            if toggleState == 1 {
+//                //  player.play()
+//                toggleState = 2
+//                playBtn.backgroundColor = #colorLiteral(red: 0.9176470588, green: 0.06666666667, blue: 0.05490196078, alpha: 1)
+//                playBtn.setTitle("Stop Record", for: .normal)
+//                showToast(message: "Recording Started")
+//                startRecording()
+//            } else {
+//                // player.pause()
+//                toggleState = 1
+//                playBtn.backgroundColor = #colorLiteral(red: 0.262745098, green: 0.6235294118, blue: 0.1647058824, alpha: 1)
+//                playBtn.setTitle("Start Recording", for: .normal)
+//                showToast(message: "Recording Stopped")
+//                finishRecording(success: true)
+//            }
+//        }
+//        
+//    }
 }
 extension HomeViewController: RatingViewDelegate {
     func updateRatingFormatValue(_ value: Int) {

@@ -27,6 +27,11 @@ class HomeViewController: UIViewController {
 //    @IBOutlet var mHomeMApV: GMSMapView!
 //    @IBOutlet var mDropTF: UITextField!
 //    @IBOutlet var mPickupTV: UITextField!
+    
+    
+    @IBOutlet var mPickupLBLAS: UILabel!
+    @IBOutlet var mAddStopOngoingrideView: UIView!
+    @IBOutlet var mdropLocLBL: UILabel!
     @IBOutlet weak var emergncyBTN: UIButton!
     
     @IBOutlet var timerTitle : UILabel!
@@ -152,6 +157,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
       //  updateAppVersionPopup()
         self.mTimerView.isHidden = true
+        self.mAddStopOngoingrideView.isHidden = true
         // appUpdateAvailable()
         //        mNewRidesView.isHidden = true
         //        mSecTableV.isHidden = true
@@ -302,8 +308,8 @@ class HomeViewController: UIViewController {
         if driverName != "" && RideID != "" {
             //   Timer.scheduledTimer(withTimeInterval: self.Dtime, repeats: false) { timer in
             let trimmedString = driverName.trimmingCharacters(in: .whitespaces) + RideID
-            self.observationHandle = ref!.child("driver").child(RideID).observe(.value, with: { snapshot in
-                self.ref!.child("driver").child(RideID).removeAllObservers()
+            self.observationHandle = ref!.child("staging_driver").child(RideID).observe(.value, with: { snapshot in
+                self.ref!.child("staging_driver").child(RideID).removeAllObservers()
                 print(self.ref)
                 
                 guard let dict = snapshot.value as? [String:Any] else {
@@ -731,11 +737,15 @@ class HomeViewController: UIViewController {
         if kRideId != "" && timerCountStatus == false {
             print("work 3 minutes")
             timerCountStatus = true
+            
+            
             if  kNotificationAction == "PENDING" && kConfirmationAction == "PENDING" {
-                self.getLastRideDataApi()
+               // self.getLastRideDataApi()
                 pendingRidetimeout = "true"
-                self.cancelRideStatus(rideId: kRideId)
+                self.getLastRideDataApi()
+               // self.cancelRideStatus(rideId: kRideId)
             }
+            
         }
     }
     
@@ -752,13 +762,37 @@ class HomeViewController: UIViewController {
         let vc = self.storyboard?.instantiateViewController(identifier: "addStopVCID") as! addStopVC
        // vc.modalPresentationStyle = .overFullScreen
         vc.modalPresentationStyle = .overFullScreen
+        
+        if dropAddress_lbl.text != "Enter Drop Location"{
+            vc.midpoint = dropAddress_lbl.text!
+        }
         vc.delegate = self
         self.present(vc, animated: true, completion: nil)
        // self.navigationController?.pushViewController(vc, animated: true)
         
     }
     
+    @IBAction func mAddStopOngoingRide(_ sender: Any) {
+        let vc = self.storyboard?.instantiateViewController(identifier: "addStopVCID") as! addStopVC
+       // vc.modalPresentationStyle = .overFullScreen
+        vc.modalPresentationStyle = .overFullScreen
+        vc.delegate = self
+        vc.ongoing = "ongoingadd"
+      //  kdroploc = (lastRideData?.drop_address)!
+        NSUSERDEFAULT.set((lastRideData?.drop_address)!, forKey: kdroploc)
+        
+       // kCurrentAddress = (lastRideData?.pickup_adress)!
+        NSUSERDEFAULT.set((lastRideData?.pickup_adress)!, forKey: kCurrentAddress)
+        
+        self.present(vc, animated: true, completion: nil)
+    }
     
+    @IBAction func mOngoingRIdeCrossbtn(_ sender: Any) {
+        self.chooseRide_view.isHidden = false
+        self.ride_tableView.isHidden = false
+        mAddStopOngoingrideView.isHidden = true
+        
+    }
 }
 extension HomeViewController: UITextFieldDelegate{
     

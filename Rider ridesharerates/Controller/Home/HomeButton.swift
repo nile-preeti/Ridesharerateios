@@ -367,6 +367,7 @@ extension HomeViewController : AVAudioRecorderDelegate, AVAudioPlayerDelegate {
         if !flag{
             finishRecording(success:false)
             print("What is this url \(recorder.url)")
+            
         }
         let refreshAlert = UIAlertController(title: Singleton.shared!.title , message: "Are you sure you want to save recording?", preferredStyle: UIAlertController.Style.alert)
         refreshAlert.addAction(UIAlertAction(title: "OK", style: .destructive, handler: { (action: UIAlertAction!) in

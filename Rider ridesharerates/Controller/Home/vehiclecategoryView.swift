@@ -14,6 +14,8 @@ import Firebase
 import FirebaseDatabase
 import MapKit
 import Alamofire
+import SystemConfiguration
+import Reachability
 protocol RideStart{
     func RideStart(button:String?)
 }
@@ -32,6 +34,7 @@ class vehiclecategoryView: UIViewController {
     var allData = [VechileData]()
     var polyline: GMSPolyline?
     var dMarker = GMSMarker()
+    let conn = webservices()
     override func viewDidLoad() {
         super.viewDidLoad()
         vehicleTypeId = ""
@@ -162,14 +165,105 @@ class vehiclecategoryView: UIViewController {
     }
     @IBAction func mRidenowBTN(_ sender: Any) {
         if vehicleTypeId != "" {
-            self.dismiss(animated: true, completion: {
-                self.delegate?.RideStart(button: "ridenow")
-            })
+            ridenow()
+           
         }else{
             self.showAlert("Rider RideshareRates", message: "Please select service")
         }
         
     }
+    
+    func ridenow(){
+       // mtopviewwithlocation.isHidden = true
+        let rideamount = rideAmount.replacingOccurrences(of: ",", with: "")
+        let holdamount = holdAmount.replacingOccurrences(of: ",", with: "")
+        if Double(holdamount)! < Double(rideamount)!{
+            self.showAlert("Rider RideshareRates", message: "Your Pre-authorized amount is less than your ride Amount. Please contact to admin at info@ridesharerates.com")
+            
+        }else{
+            let refreshAlert = UIAlertController(title: "Rideshare authorization" , message: "Rideshare authorized to hold $\(holdAmount) for booking your ride.", preferredStyle: UIAlertController.Style.alert)
+            let titleAttributes: [NSAttributedString.Key: Any] = [
+                
+                NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+                NSAttributedString.Key.foregroundColor: UIColor.white,
+            ]
+            let messageAttributes: [NSAttributedString.Key: Any] = [
+                NSAttributedString.Key.font : UIFont.systemFont(ofSize: 15),
+                .foregroundColor: UIColor.white,
+            ]
+            
+            let attributedTitle = NSAttributedString(string: "Rideshare authorization", attributes: titleAttributes)
+            let attributedMessage = NSAttributedString(string: "Rideshare authorized to hold $\(holdAmount) for booking your ride.", attributes: messageAttributes)
+            
+            // Set the attributed title and message
+            refreshAlert.setValue(attributedTitle, forKey: "attributedTitle")
+            refreshAlert.setValue(attributedMessage, forKey: "attributedMessage")
+            refreshAlert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
+            
+            refreshAlert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { (action: UIAlertAction!) in
+                
+                self.holdpayment()
+                //  self.updateStatus(updateStatus: "3")
+                
+            }))
+            refreshAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
+            }))
+            present(refreshAlert, animated: true, completion: nil)
+            
+        }
+    }
+    
+//    func holdpayment() {
+//        let param: [String: Any] = ["amount": holdAmount, "card_id": cardID, "pickup_latitude": kPickUpLatFinal, "vehiclesubcat_id": "\(vehicleTypeId)", "pickup_longtitude": kPickUpLongFinal]
+//        
+//        Indicator.shared.showProgressView(self.view)
+//        self.conn.startConnectionWithPostType(getUrlString: "add_payment_checkdriver", params: param, authRequired: true) { (value: [String: Any]) in
+//            let msg = (value["message"] as? String) ?? ""
+//            Indicator.shared.hideProgressView()
+//            if self.conn.responseCode == 1 {
+//                print(value)
+//                if (value["status"] as? Int ?? 0) == 1 {
+//                    txnID = value["txn_id"] as? String ?? ""
+//                    holdAmount = ""
+//                   // self.rideNowApi()
+//                } else {
+//                    self.showAlert("Rider RideshareRates", message: msg)
+//                }
+//            }
+//        }
+//    }
+    func holdpayment() {
+        let param: [String: Any] = ["amount": holdAmount, "card_id": cardID, "pickup_latitude": kPickUpLatFinal, "vehiclesubcat_id": "\(vehicleTypeId)", "pickup_longtitude": kPickUpLongFinal]
+        
+        Indicator.shared.showProgressView(self.view)
+        self.conn.startConnectionWithPostType(getUrlString: "add_payment_checkdriver", params: param, authRequired: true) { (value: AnyObject) in
+            if let valueDict = value as? [String: Any] {
+                let msg = (valueDict["message"] as? String) ?? ""
+                Indicator.shared.hideProgressView()
+                if self.conn.responseCode == 1 {
+                    print(valueDict)
+                    if (valueDict["status"] as? Int ?? 0) == 1 {
+                        txnID = valueDict["txn_id"] as? String ?? ""
+                        holdAmount = ""
+                        self.dismiss(animated: true, completion: {
+                            self.delegate?.RideStart(button: "ridenow")
+                        })
+                      //  self.rideNowApi()
+                    } else {
+                        self.showAlert("Rider RideshareRates", message: msg)
+                    }
+                }
+            } else {
+                // Handle the case where the value is not of the expected type
+                Indicator.shared.hideProgressView()
+               // self.showAlert("Rider RideshareRates", message: msg)
+                self.showAlert("Error", message: "Unexpected response format")
+            }
+        }
+    }
+
+    
+
     @IBAction func mMinBTN(_ sender: Any) {
         if mMinB.currentImage == UIImage(named: "minus-cirlce"){
            // popupheight = "half"

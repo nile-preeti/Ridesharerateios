@@ -23,6 +23,7 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                                                       GMSPlaceField.formattedAddress.rawValue)!
             //   autocompleteController.placeFields = fields
             viewController.placeFields = fields
+            
             if tap == 1{
                 kCurrentAddressMarker = ""
                 tapOneStatus = true
@@ -40,26 +41,27 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                 if  place.name != nil{
                     fullAddress += place.name! + ", "
                 }
-                for component in addressComponents! {
-                    let addressType = component.types[0]
-                    if addressType == "street_number" || addressType == "route" {
-                        fullAddress += component.name + ", "
-                    }else if addressType == "sublocality_level_2" || addressType == "sublocality" {
-                        fullAddress += component.name + ", "
-                    }else if addressType == "sublocality_level_1" || addressType == "sublocality" {
-                        fullAddress += component.name + ", "
-                    } else if addressType == "locality" || addressType == "administrative_area_level_1" {
-                        fullAddress += component.name + ", "
-                    } else if addressType == "postal_code" {
-                        fullAddress += component.name + ", "
-                    } else if addressType == "country" {
-                        fullAddress += component.name
-                    }
-                }
+//                for component in addressComponents! {
+//                    let addressType = component.types[0]
+//                    if addressType == "street_number" || addressType == "route" {
+//                        fullAddress += component.name + ", "
+//                    }else if addressType == "sublocality_level_2" || addressType == "sublocality" {
+//                        fullAddress += component.name + ", "
+//                    }else if addressType == "sublocality_level_1" || addressType == "sublocality" {
+//                        fullAddress += component.name + ", "
+//                    } else if addressType == "locality" || addressType == "administrative_area_level_1" {
+//                        fullAddress += component.name + ", "
+//                    } else if addressType == "postal_code" {
+//                        fullAddress += component.name + ", "
+//                    } else if addressType == "country" {
+//                        fullAddress += component.name
+//                    }
+//                }
                 // Set the full address in the text field
                 //   addressTextField.text = fullAddress
                 
-                self.pickUpAddress_lbl.text = place.formattedAddress
+            //    self.pickUpAddress_lbl.text = place.formattedAddress
+                self.pickUpAddress_lbl.text = fullAddress + place.formattedAddress!
                 kpickupAddress = self.pickUpAddress_lbl.text!
              //   kCurrentAddress = place.formattedAddress!
                 NSUSERDEFAULT.setValue("\(place.formattedAddress!)", forKey: kCurrentAddress)
@@ -113,32 +115,33 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                 if  place.name != nil{
                     fullAddress += place.name! + ", "
                 }
-                for component in addressComponents! {
-                    let addressType = component.types[0]
-                    if addressType == "street_number" || addressType == "route" {
-                        fullAddress += component.name + ", "
-                    }else if addressType == "sublocality_level_2" || addressType == "sublocality" {
-                        fullAddress += component.name + ", "
-                    }else if addressType == "sublocality_level_1" || addressType == "sublocality" {
-                        fullAddress += component.name + ", "
-                    } else if addressType == "locality" || addressType == "administrative_area_level_1" {
-                        fullAddress += component.name + ", "
-                    } else if addressType == "postal_code" {
-                        fullAddress += component.name + ", "
-                    } else if addressType == "country" {
-                        fullAddress += component.name
-                    }
-                }
+//                for component in addressComponents! {
+//                    let addressType = component.types[0]
+//                    if addressType == "street_number" || addressType == "route" {
+//                        fullAddress += component.name + ", "
+//                    }else if addressType == "sublocality_level_2" || addressType == "sublocality" {
+//                        fullAddress += component.name + ", "
+//                    }else if addressType == "sublocality_level_1" || addressType == "sublocality" {
+//                        fullAddress += component.name + ", "
+//                    } else if addressType == "locality" || addressType == "administrative_area_level_1" {
+//                        fullAddress += component.name + ", "
+//                    } else if addressType == "postal_code" {
+//                        fullAddress += component.name + ", "
+//                    } else if addressType == "country" {
+//                        fullAddress += component.name
+//                    }
+//                }
                 // Set the full address in the text field
                 //   addressTextField.text = fullAddress
                 
-                self.dropAddress_lbl.text = place.formattedAddress
+                self.dropAddress_lbl.text = fullAddress + place.formattedAddress!
+                kstops = [""]
               //  self.mHomeView.isHidden = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
                    
                     self.locationDropUpEditStatus = true
-                    kDropAddressMarker = fullAddress
-                    kDropAddress = fullAddress
+                    kDropAddressMarker = self.dropAddress_lbl.text!
+                    kDropAddress = self.dropAddress_lbl.text!
                     if self.pathD != "draw"{
                         let camera = GMSCameraPosition.camera(withLatitude: place.coordinate.latitude, longitude: place.coordinate.longitude, zoom: 18.0)
                         self.mapView.animate(to: camera)
@@ -479,56 +482,56 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
         }
         
         
-        func convertLatLongToAddressDrop(latitude:Double, longitude:Double) {
-            locationDropUpEditStatus = true
-            let geoCoder = CLGeocoder()
-            let location = CLLocation(latitude: latitude, longitude: longitude)
-            geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
-
-                var placeMark: CLPlacemark!
-                placeMark = placemarks?[0]
-                if placeMark != nil{
-                    var addressString : String = ""
-                    if placeMark.thoroughfare != nil {
-                        addressString = addressString + placeMark.thoroughfare! + ", "
-                    }
-                    if placeMark.subThoroughfare != nil {
-                        addressString = addressString + placeMark.subThoroughfare! + ", "
-                    }
-                    if placeMark.administrativeArea != nil {
-                        addressString = addressString + placeMark.administrativeArea! + ", "
-                    }
-                    if placeMark.subLocality != nil {
-                        addressString = addressString + placeMark.subLocality! + ", "
-                    }
-                    if placeMark.locality != nil {
-                        addressString = addressString + placeMark.locality! + ", "
-                    }
-                    if placeMark.country != nil {
-                        addressString = addressString + placeMark.country! + ", "
-                    }
-                    if placeMark.postalCode != nil {
-                        addressString = addressString + placeMark.postalCode! + " "
-                    }
-                    print(addressString)
-                    DispatchQueue.main.async {
-                        NavigationManager.pushToLoginVC(from: self)
-                    }
-                    self.dropAddress_lbl.text =  addressString
-                    kDropAddressMarker = addressString
-                    kDropAddress = addressString
-                    print(kDropAddressMarker)
-                    print(placeMark.country as Any)
-                    print(placeMark.locality as Any)
-                    print(placeMark.subLocality as Any)
-                    print(placeMark.thoroughfare as Any)
-                    print(placeMark.postalCode as Any)
-                    print(placeMark.subThoroughfare as Any)
-                    
-                    print("DROP ADDRESS IS HERE==\(addressString)")
-                    // labelText gives you the address of the place
-                }
-            })
-        }
+//        func convertLatLongToAddressDrop(latitude:Double, longitude:Double) {
+//            locationDropUpEditStatus = true
+//            let geoCoder = CLGeocoder()
+//            let location = CLLocation(latitude: latitude, longitude: longitude)
+//            geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
+//
+//                var placeMark: CLPlacemark!
+//                placeMark = placemarks?[0]
+//                if placeMark != nil{
+//                    var addressString : String = ""
+//                    if placeMark.thoroughfare != nil {
+//                        addressString = addressString + placeMark.thoroughfare! + ", "
+//                    }
+//                    if placeMark.subThoroughfare != nil {
+//                        addressString = addressString + placeMark.subThoroughfare! + ", "
+//                    }
+//                    if placeMark.administrativeArea != nil {
+//                        addressString = addressString + placeMark.administrativeArea! + ", "
+//                    }
+//                    if placeMark.subLocality != nil {
+//                        addressString = addressString + placeMark.subLocality! + ", "
+//                    }
+//                    if placeMark.locality != nil {
+//                        addressString = addressString + placeMark.locality! + ", "
+//                    }
+//                    if placeMark.country != nil {
+//                        addressString = addressString + placeMark.country! + ", "
+//                    }
+//                    if placeMark.postalCode != nil {
+//                        addressString = addressString + placeMark.postalCode! + " "
+//                    }
+//                    print(addressString)
+//                    DispatchQueue.main.async {
+//                        NavigationManager.pushToLoginVC(from: self)
+//                    }
+//                    self.dropAddress_lbl.text =  addressString
+//                    kDropAddressMarker = addressString
+//                    kDropAddress = addressString
+//                    print(kDropAddressMarker)
+//                    print(placeMark.country as Any)
+//                    print(placeMark.locality as Any)
+//                    print(placeMark.subLocality as Any)
+//                    print(placeMark.thoroughfare as Any)
+//                    print(placeMark.postalCode as Any)
+//                    print(placeMark.subThoroughfare as Any)
+//                    
+//                    print("DROP ADDRESS IS HERE==\(addressString)")
+//                    // labelText gives you the address of the place
+//                }
+//            })
+//        }
     }
 

@@ -44,6 +44,7 @@ class CompletedDetailVC: UIViewController {
         }else{
             mDriverNAme.text = "For Category: \(ridesStatusData?.category_name ?? ""), \n Vehicle: \(ridesStatusData?.vehicle_name ?? ""). Driven by \(ridesStatusData?.driver_lastname ?? "Boss")."
             }
+        
       //  mRiderNAME.text = "Thanks for ride, \(ridesStatusData?.userName ?? "")."
         mCancelfees.text = "$\(ridesStatusData?.cancellation_charge ?? "")"
         var str = ridesStatusData?.userName ?? ""

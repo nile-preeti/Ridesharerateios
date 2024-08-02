@@ -26,6 +26,12 @@ class LaunchVC: UIViewController {
             // Path to the local video file
             
             if screen == "home"{
+                do {
+                           try AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback, options: [])
+                           try AVAudioSession.sharedInstance().setActive(true)
+                       } catch {
+                           print("Failed to set audio session category: \(error)")
+                       }
                 let videoPath = Bundle.main.path(forResource: "last_final_video", ofType: "mp4")
                 let videoURL = URL(fileURLWithPath: videoPath!)
                 
@@ -53,6 +59,13 @@ class LaunchVC: UIViewController {
                 NotificationCenter.default.addObserver(self, selector: #selector(videoDidFinishPlaying(_:)), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
                 NotificationCenter.default.addObserver(self, selector: #selector(videoDidFinishPlaying(_:)), name: .AVPlayerItemDidPlayToEndTime, object: playerItem)
             }else{
+                do {
+                           try AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback, options: [])
+                           try AVAudioSession.sharedInstance().setActive(true)
+                       } catch {
+                           print("Failed to set audio session category: \(error)")
+                       }
+                
                 let videoPath = Bundle.main.path(forResource: "intro_rideshare", ofType: "mp4")
                 let videoURL = URL(fileURLWithPath: videoPath!)
                 

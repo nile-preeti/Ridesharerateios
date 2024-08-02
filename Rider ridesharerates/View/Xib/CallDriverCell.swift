@@ -22,6 +22,7 @@ class CallDriverCell: UITableViewCell {
     @IBOutlet weak var callDriverBtn: UIButton!
     @IBOutlet weak var cancelDriverBtn: UIButton!
 
+    @IBOutlet var mAddSTopBTN: UIButton!
     @IBOutlet weak var mUserNAme: UILabel!
     //MARK:- Default Func
     override func awakeFromNib() {

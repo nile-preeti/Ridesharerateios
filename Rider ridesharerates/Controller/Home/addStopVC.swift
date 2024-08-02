@@ -19,7 +19,7 @@ struct CellData {
     var id: Int
 }
 protocol addstop{
-    func addstop(totalDistance:Int?, totalDuration:Int?)
+    func addstop(totalDistance:Int?, totalDuration:Int?, addstop:String?)
 }
 
 class addStopVC: UIViewController {
@@ -45,11 +45,21 @@ class addStopVC: UIViewController {
     var locationManager = CLLocationManager()
     var cellDataArray: [CellData] = [CellData(id: 0)]
     var selectedTextField: UITextField?
-    
+    var ongoing = ""
+    var midpoint = ""
+  
+    var allMarkers: [GMSMarker] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         let loc = NSUSERDEFAULT.value(forKey: kCurrentAddress) as! String
         pickuplocation.text = loc
+       
+        if ongoing == "ongoingadd"{
+            let stop = NSUSERDEFAULT.value(forKey: kdroploc) as! String
+            droplocation.text = stop
+        }else{
+            droplocation.text = midpoint
+        }
         pickuplocation.delegate = self
                 droplocation.delegate = self
                
@@ -140,10 +150,18 @@ class addStopVC: UIViewController {
             self.showAlert("Rider RideshareRates", message: "Please enter drop location")
             return
         }else{
-            kDistanceInMiles = String(self.totalDistance)
-            self.dismiss(animated: false, completion: {
-                self.delegate?.addstop(totalDistance: self.totalDistance, totalDuration: self.totalDuration)
-            })
+            if ongoing == "ongoingadd"{
+                kDistanceInMiles = String(self.totalDistance)
+                self.dismiss(animated: false, completion: {
+                    self.delegate?.addstop(totalDistance: self.totalDistance, totalDuration: self.totalDuration, addstop: "ongoingadd")
+                })
+            }else{
+                kDistanceInMiles = String(self.totalDistance)
+                self.dismiss(animated: false, completion: {
+                    self.delegate?.addstop(totalDistance: self.totalDistance, totalDuration: self.totalDuration, addstop: "")
+                })
+            }
+            
         }
         
     }
@@ -160,13 +178,26 @@ class addStopVC: UIViewController {
         return nil
     }
     @IBAction func mdroplocBTN(_ sender: Any) {
-        self.dismiss(animated: false, completion: nil)
+        
+        if droplocation.text != ""{
+            droplocation.text = ""
+           
+            self.mapView.clear()
+           
+        }else{
+            self.dismiss(animated: false, completion: nil)
+        }
     }
     
     
     
     @IBAction func mstop1BTN(_ sender: Any) {
-        self.dismiss(animated: false, completion: nil)
+        if stoplocation.text != ""{
+            stoplocation.text = ""
+            self.mapView.clear()
+        }else{
+            self.dismiss(animated: false, completion: nil)
+        }
     }
     
     
@@ -217,8 +248,29 @@ extension addStopVC : UITextFieldDelegate, GMSAutocompleteViewControllerDelegate
 //       }
     func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
             dismiss(animated: true, completion: nil)
-
-            selectedTextField?.text = place.formattedAddress
+        var fullAddress = ""
+        if  place.name != nil{
+            fullAddress += place.name! + ", "
+        }
+        let addressComponents = place.addressComponents
+        
+//        for component in addressComponents! {
+//            let addressType = component.types[0]
+//            if addressType == "street_number" || addressType == "route" {
+//                fullAddress += component.name + ", "
+//            }else if addressType == "sublocality_level_2" || addressType == "sublocality" {
+//                fullAddress += component.name + ", "
+//            }else if addressType == "sublocality_level_1" || addressType == "sublocality" {
+//                fullAddress += component.name + ", "
+//            } else if addressType == "locality" || addressType == "administrative_area_level_1" {
+//                fullAddress += component.name + ", "
+//            } else if addressType == "postal_code" {
+//                fullAddress += component.name + ", "
+//            } else if addressType == "country" {
+//                fullAddress += component.name
+//            }
+//        }
+        selectedTextField?.text = fullAddress + place.formattedAddress!
         
         if let textField = selectedTextField {
                    // textField.text = place.formattedAddress
@@ -343,181 +395,9 @@ extension addStopVC: CLLocationManagerDelegate{
 }
 extension addStopVC{
     
-//    func routingLines(origin: String,destination: String){
-//        print("PICK UP LAT LONG======\(origin)")
-//        print("DROP LAT LONG======\(destination)")
-//            let googleapi = "AIzaSyABQXS9DNSgpuGVZnC5bwfpj1mrl4dd4Z8"
-//            let url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(origin)&destination=\(destination)&mode=driving&alternativeRoute=true&key=\(googleapi)"
-//        let headers: HTTPHeaders = [
-//            "X-Ios-Bundle-Identifier": "com.riderRideshare.app"
-//        ]
-//        print(url)
-//            AF.request(url, headers: headers).responseJSON { response in
-//                switch response.result {
-//                case .success(let value):
-//                    print(value)
-//                    
-//                    guard let json = value as? [String: Any],
-//                          let routes = json["routes"] as? [[String: Any]],
-//                          let route = routes.first,
-//                          let polyline = route["overview_polyline"] as? [String: Any],
-//                          let points = polyline["points"] as? String,
-//                          let legs = route["legs"] as? [[String: Any]],
-//                                         let leg = legs.first,
-//                                         let distance = leg["distance"] as? [String: Any],
-//                          let distanceValue = distance["value"] as? Int,
-//                          let duration = leg["duration"] as? [String: Any],
-//                          let durationValue = duration["value"] as? Int,
-//                          let startLocation = leg["start_location"] as? [String: Any],
-//                                           let startLat = startLocation["lat"] as? CLLocationDegrees,
-//                                           let startLng = startLocation["lng"] as? CLLocationDegrees,
-//                                           let endLocation = leg["end_location"] as? [String: Any],
-//                                           let endLat = endLocation["lat"] as? CLLocationDegrees,
-//                                           let endLng = endLocation["lng"] as? CLLocationDegrees
-//                         //   print(distanceValue)
-//                            
-//                            
-//                    else {
-//                        // Handle parsing error or invalid response
-//                        return
-//                    }
-//                    print(distanceValue)
-//                    // Decode the polyline points
-//                    let path = GMSPath(fromEncodedPath: points)
-//                    
-//                    // Remove existing polyline from the map if it exists
-//                    self.polyline?.map = nil
-//                    
-//                    // Create a new GMSPolyline and add it to the map
-//                    let newPolyline = GMSPolyline(path: path)
-//                    newPolyline.strokeColor = #colorLiteral(red: 0.9921568627, green: 0.9607843137, blue: 0.6901960784, alpha: 1)
-//                    newPolyline.strokeWidth = 5
-//                    newPolyline.map = self.mapView
-//                    self.polyline = newPolyline
-//                    let bounds = GMSCoordinateBounds(path: path!)
-//                    let update = GMSCameraUpdate.fit(bounds, withPadding: 50.0)
-//                    self.mapView.animate(with: update)
-//                    
-//                    let pickupMarker = GMSMarker()
-//                               pickupMarker.position = CLLocationCoordinate2D(latitude: startLat, longitude: startLng)
-//                               pickupMarker.title = "origin"
-//                    pickupMarker.icon = GMSMarker.markerImage(with: .blue)
-//                   // pickupMarker.icon = UIImage(named: "custom_blue_marker") // Replace with your image name
-//
-//                               pickupMarker.map = self.mapView
-//                               
-//                              
-//                    // Add marker for drop location
-//                              
-//                    let dropMarker = GMSMarker()
-//                               dropMarker.position = CLLocationCoordinate2D(latitude: endLat, longitude: endLng)
-//                               dropMarker.title = "destination"
-//                    
-//                               dropMarker.map = self.mapView
-//                case .failure(let error):
-//                   
-//                    print("Error: \(error)")
-//                }
-//            }
-//    }
-    
-//    func routingLines(origin: String, stop: String, destination: String) {
-//        print("PICK UP LAT LONG======\(origin)")
-//        print("STOP LAT LONG======\(stop)")
-//        print("DROP LAT LONG======\(destination)")
-//        
-//        let googleapi = "AIzaSyABQXS9DNSgpuGVZnC5bwfpj1mrl4dd4Z8"
-//        let url = "https://maps.googleapis.com/maps/api/directions/json?origin=\(origin)&destination=\(destination)&waypoints=\(stop)&mode=driving&alternativeRoute=true&key=\(googleapi)"
-//        let headers: HTTPHeaders = [
-//            "X-Ios-Bundle-Identifier": "com.riderRideshare.app"
-//        ]
-//        
-//        print(url)
-//        
-//        AF.request(url, headers: headers).responseJSON { response in
-//            switch response.result {
-//            case .success(let value):
-//                print(value)
-//                
-//                guard let json = value as? [String: Any],
-//                      let routes = json["routes"] as? [[String: Any]],
-//                      let route = routes.first,
-//                      let polyline = route["overview_polyline"] as? [String: Any],
-//                      let points = polyline["points"] as? String,
-//                      let legs = route["legs"] as? [[String: Any]]
-//                else {
-//                    // Handle parsing error or invalid response
-//                    return
-//                }
-//                
-//                var allMarkers: [GMSMarker] = []
-//                
-//                for (index, leg) in legs.enumerated() {
-//                    guard let startLocation = leg["start_location"] as? [String: Any],
-//                          let startLat = startLocation["lat"] as? CLLocationDegrees,
-//                          let startLng = startLocation["lng"] as? CLLocationDegrees,
-//                          let endLocation = leg["end_location"] as? [String: Any],
-//                          let endLat = endLocation["lat"] as? CLLocationDegrees,
-//                          let endLng = endLocation["lng"] as? CLLocationDegrees
-//                    else {
-//                        continue
-//                    }
-//                    
-//                    // Create a marker for the start location
-//                    let startMarker = GMSMarker()
-//                    startMarker.position = CLLocationCoordinate2D(latitude: startLat, longitude: startLng)
-//                    startMarker.map = self.mapView
-//                    allMarkers.append(startMarker)
-//                    
-//                    // Create a marker for the end location (if it's the last leg)
-//                    if index == legs.count - 1 {
-//                        let endMarker = GMSMarker()
-//                        endMarker.position = CLLocationCoordinate2D(latitude: endLat, longitude: endLng)
-//                        endMarker.map = self.mapView
-//                        allMarkers.append(endMarker)
-//                    }
-//                }
-//                
-//                // Assign titles and icons to markers
-//                if let firstMarker = allMarkers.first {
-//                    firstMarker.title = "origin"
-//                    firstMarker.icon = GMSMarker.markerImage(with: .blue)
-//                }
-//                
-//                if allMarkers.count > 2 {
-//                    let stopMarker = allMarkers[1]
-//                    stopMarker.title = "stop"
-//                    stopMarker.icon = GMSMarker.markerImage(with: .green)
-//                }
-//                
-//                if let lastMarker = allMarkers.last {
-//                    lastMarker.title = "destination"
-//                }
-//                
-//                // Decode the polyline points
-//                let path = GMSPath(fromEncodedPath: points)
-//                
-//                // Remove existing polyline from the map if it exists
-//                self.polyline?.map = nil
-//                
-//                // Create a new GMSPolyline and add it to the map
-//                let newPolyline = GMSPolyline(path: path)
-//                newPolyline.strokeColor = #colorLiteral(red: 0.9921568627, green: 0.9607843137, blue: 0.6901960784, alpha: 1)
-//                newPolyline.strokeWidth = 5
-//                newPolyline.map = self.mapView
-//                self.polyline = newPolyline
-//                
-//                let bounds = GMSCoordinateBounds(path: path!)
-//                let update = GMSCameraUpdate.fit(bounds, withPadding: 50.0)
-//                self.mapView.animate(with: update)
-//                
-//            case .failure(let error):
-//                print("Error: \(error)")
-//            }
-//        }
-//    }
 
     // Function to draw the polyline with the selected locations
+    
     func routingLineswithstop(origin: String, stops: [String], destination: String) {
         print("PICK UP LAT LONG======\(origin)")
         print("STOPS LAT LONG======\(stops)")
@@ -550,6 +430,12 @@ extension addStopVC{
                     return
                 }
 
+                // Clear existing markers from the map
+                for marker in self.allMarkers {
+                    marker.map = nil
+                }
+                self.allMarkers.removeAll()
+
                 // Reset total distance and duration
                 self.totalDistance = 0
                 self.totalDuration = 0
@@ -571,7 +457,6 @@ extension addStopVC{
                 print("Total Distance: \(self.totalDistance) meters")
                 print("Total Duration: \(self.totalDuration) seconds")
 
-                var allMarkers: [GMSMarker] = []
                 var markerIndex = 0
 
                 // Add origin marker
@@ -583,7 +468,7 @@ extension addStopVC{
                     originMarker.title = "Origin"
                     originMarker.icon = UIImage(named: "red_marker") // Set your red marker image here
                     originMarker.map = self.mapView
-                    allMarkers.append(originMarker)
+                    self.allMarkers.append(originMarker)
                     markerIndex += 1
                 }
 
@@ -595,14 +480,13 @@ extension addStopVC{
                     else {
                         continue
                     }
-
                     // Create a marker for each leg end location
                     let endMarker = GMSMarker()
                     endMarker.position = CLLocationCoordinate2D(latitude: endLat, longitude: endLng)
                     endMarker.title = "Stop \(markerIndex)"
                     endMarker.icon = self.createNumberedMarkerIcon(number: markerIndex)
                     endMarker.map = self.mapView
-                    allMarkers.append(endMarker)
+                    self.allMarkers.append(endMarker)
                     markerIndex += 1
                 }
 
@@ -628,6 +512,8 @@ extension addStopVC{
             }
         }
     }
+
+   
 
 
 

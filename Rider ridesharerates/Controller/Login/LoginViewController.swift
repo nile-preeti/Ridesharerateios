@@ -7,6 +7,7 @@
 
 
 import UIKit
+import StripeCore
 
 class LoginViewController: UIViewController {
     
@@ -186,6 +187,7 @@ extension LoginViewController{
                     NSUSERDEFAULT.set(userId, forKey: kUserID)
                     NSUSERDEFAULT.setValue(self.password_txtField.text!, forKey: kPassword)
                     UserDefaults.standard.synchronize()
+                    self.getStripeToken()
                     if add_card == 0{
                         NSUSERDEFAULT.set(true, forKey: kUserLogin)
                         self.loginlogoutAPI(statut: "1")
@@ -208,7 +210,29 @@ extension LoginViewController{
             }
         })
     }
-    // MARK:- update login logout status api 
+    
+    func getStripeToken() {
+        //  Indicator.shared.showProgressView(self.view)
+        self.conn.startConnectionWithGetTypeWithParam(getUrlString: "paymentgatwaykey",authRequired: true) { [self] (value) in
+            if self.conn.responseCode == 1 {
+                print(value)
+                
+                // Ensure value is a dictionary
+                if let valueDict = value as? [String: Any] {
+                    // Retrieve the stripe_publish_key from the dictionary
+                    let stripe_publish_key = valueDict["stripe_pubish_key"] as? String ?? ""
+                    
+                    // Set the Stripe publishable key
+                    STPAPIClient.shared.publishableKey = stripe_publish_key
+                } else {
+                    print("Response is not a valid dictionary")
+                }
+            } else {
+                print("Failed to get response from server")
+            }
+        }
+    }
+    // MARK:- update login logout status api
     func loginlogoutAPI(statut: String){
         let param = ["status": statut] as [String : Any]
         Indicator.shared.showProgressView(self.view)

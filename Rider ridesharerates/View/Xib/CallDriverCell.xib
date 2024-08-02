@@ -3,7 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -32,7 +32,7 @@
                         <rect key="frame" x="5" y="5" width="356" height="285"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxz-1D-RH0">
-                                <rect key="frame" x="316" y="5" width="20" height="22"/>
+                                <rect key="frame" x="316.5" y="5" width="19.5" height="22"/>
                                 <color key="tintColor" name="green"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="minus.square.fill" catalog="system"/>
@@ -195,7 +195,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Call Driver" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BdW-7o-knM">
-                                        <rect key="frame" x="37.5" y="30" width="65" height="12"/>
+                                        <rect key="frame" x="37.5" y="30" width="65" height="12.5"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="65" id="2mS-gh-Raa"/>
                                         </constraints>
@@ -229,24 +229,49 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WsE-f0-w49" customClass="SetButton" customModule="Rider_ridesharerates" customModuleProvider="target">
-                                <rect key="frame" x="10" y="240" width="336" height="40"/>
-                                <color key="backgroundColor" name="app_theme"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="oE5-nf-b7J">
+                                <rect key="frame" x="10" y="243" width="336" height="42"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WsE-f0-w49" customClass="SetButton" customModule="Rider_ridesharerates" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="40"/>
+                                        <color key="backgroundColor" name="red"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="62k-ud-xCJ"/>
+                                            <constraint firstAttribute="width" constant="150" id="DXj-2I-ezP"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="MontserratItalic-Bold" family="Montserrat" pointSize="14"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" name="white"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="CornRadius">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nbR-ji-cxS" customClass="SetButton" customModule="Rider_ridesharerates" customModuleProvider="target">
+                                        <rect key="frame" x="160" y="0.0" width="176" height="40"/>
+                                        <color key="backgroundColor" name="AccentColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="Udq-TS-G3F"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="MontserratItalic-Bold" family="Montserrat" pointSize="14"/>
+                                        <state key="normal" title="Add Stop">
+                                            <color key="titleColor" name="black"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="CornRadius">
+                                                <real key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="62k-ud-xCJ"/>
+                                    <constraint firstAttribute="height" constant="42" id="Yho-3V-pTb"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="MontserratItalic-Bold" family="Montserrat" pointSize="14"/>
-                                <state key="normal" title="Cancel">
-                                    <color key="titleColor" name="white"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="CornRadius">
-                                        <real key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
+                            </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MKM-Ix-CQo">
-                                <rect key="frame" x="2" y="206" width="352" height="29"/>
+                                <rect key="frame" x="2" y="206" width="352" height="32"/>
                                 <string key="text">For your safety and privacy, please answer! 
 All calls are kept PRIVATE.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -259,17 +284,17 @@ All calls are kept PRIVATE.</string>
                             <constraint firstAttribute="trailing" secondItem="tEq-7k-rZE" secondAttribute="trailing" constant="10" id="3ov-PN-UTI"/>
                             <constraint firstAttribute="trailing" secondItem="MKM-Ix-CQo" secondAttribute="trailing" constant="2" id="7ib-gZ-Z5M"/>
                             <constraint firstItem="tEq-7k-rZE" firstAttribute="leading" secondItem="fv0-6o-dcU" secondAttribute="leading" constant="10" id="CFh-zk-2na"/>
+                            <constraint firstAttribute="trailing" secondItem="oE5-nf-b7J" secondAttribute="trailing" constant="10" id="EMX-tG-uag"/>
                             <constraint firstAttribute="trailing" secondItem="gxz-1D-RH0" secondAttribute="trailing" constant="20" id="J40-eQ-he9"/>
+                            <constraint firstAttribute="bottom" secondItem="oE5-nf-b7J" secondAttribute="bottom" id="JNU-Rt-Qzl"/>
                             <constraint firstItem="gxz-1D-RH0" firstAttribute="top" secondItem="fv0-6o-dcU" secondAttribute="top" constant="5" id="OY5-uZ-61K"/>
-                            <constraint firstAttribute="bottom" secondItem="WsE-f0-w49" secondAttribute="bottom" constant="5" id="QFS-l8-ZHx"/>
                             <constraint firstItem="MKM-Ix-CQo" firstAttribute="leading" secondItem="fv0-6o-dcU" secondAttribute="leading" constant="2" id="ZDW-AR-49h"/>
                             <constraint firstItem="tEq-7k-rZE" firstAttribute="top" secondItem="fv0-6o-dcU" secondAttribute="top" constant="26" id="btw-7b-3nj"/>
                             <constraint firstItem="Z5h-Fx-OFX" firstAttribute="top" secondItem="tEq-7k-rZE" secondAttribute="bottom" constant="10" id="csg-HC-5F9"/>
                             <constraint firstItem="MKM-Ix-CQo" firstAttribute="top" secondItem="Z5h-Fx-OFX" secondAttribute="bottom" constant="5" id="dJ8-qm-Sox"/>
-                            <constraint firstItem="WsE-f0-w49" firstAttribute="top" secondItem="MKM-Ix-CQo" secondAttribute="bottom" constant="5" id="dmk-kY-ttJ"/>
-                            <constraint firstItem="WsE-f0-w49" firstAttribute="leading" secondItem="fv0-6o-dcU" secondAttribute="leading" constant="10" id="eSZ-7P-TAu"/>
+                            <constraint firstItem="oE5-nf-b7J" firstAttribute="leading" secondItem="fv0-6o-dcU" secondAttribute="leading" constant="10" id="dqb-Dv-vk5"/>
                             <constraint firstItem="Z5h-Fx-OFX" firstAttribute="centerX" secondItem="tEq-7k-rZE" secondAttribute="centerX" id="g24-it-fZf"/>
-                            <constraint firstAttribute="trailing" secondItem="WsE-f0-w49" secondAttribute="trailing" constant="10" id="rfo-M5-7nr"/>
+                            <constraint firstItem="oE5-nf-b7J" firstAttribute="top" secondItem="MKM-Ix-CQo" secondAttribute="bottom" constant="5" id="sgJ-vg-lAd"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -290,6 +315,7 @@ All calls are kept PRIVATE.</string>
                 <outlet property="driverImageView" destination="mQZ-tK-sjo" id="Goe-1g-Z3w"/>
                 <outlet property="driverNameLabel" destination="WwC-qg-cer" id="MFc-HY-cq0"/>
                 <outlet property="driverRatingLabel" destination="1SU-F2-hHw" id="pci-xT-JuX"/>
+                <outlet property="mAddSTopBTN" destination="nbR-ji-cxS" id="x24-zs-fAe"/>
                 <outlet property="mPopupMinMaxPopup" destination="gxz-1D-RH0" id="2Gv-in-aTD"/>
                 <outlet property="mPopupVieww" destination="tEq-7k-rZE" id="JCZ-BL-4Sk"/>
                 <outlet property="mUserNAme" destination="zCN-a9-3gK" id="Txd-Aj-WDh"/>
@@ -315,14 +341,23 @@ All calls are kept PRIVATE.</string>
         <image name="phone" catalog="system" width="128" height="115"/>
         <image name="star" width="12" height="12"/>
         <image name="user" width="9" height="9"/>
+        <namedColor name="AccentColor">
+            <color red="1" green="0.79199999570846558" blue="0.15700000524520874" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="app_theme">
             <color red="0.8666666666666667" green="0.56862745098039214" blue="0.38039215686274508" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="black">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="green">
             <color red="0.8666666666666667" green="0.56862745098039214" blue="0.37647058823529411" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="linear">
             <color red="0.8666666666666667" green="0.89411764705882357" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="red">
+            <color red="0.91764705882352937" green="0.066666666666666666" blue="0.054901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="white">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -38,7 +38,7 @@ class AcceptedRequestViewController: UIViewController {
             NavigationManager.pushToLoginVC(from: self)
         }
         self.navigationController?.navigationBar.topItem?.title = ""
-        self.navigationItem.title = "Accepted Requests"
+        self.navigationItem.title = "Accepted Rides"
         self.acceptedRidesDetailsApi()
     }
     
