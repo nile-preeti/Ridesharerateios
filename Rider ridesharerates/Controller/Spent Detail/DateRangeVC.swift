@@ -95,10 +95,10 @@ class DateRangeVC: UIViewController {
     @IBAction func subnmitBtn(_ sender: Any) {
         print("FROM====\(kFromDate)TO=====\(kToDate)")
         if fromDateLabel.text == "Select From Date"{
-            self.showAlert("Rider RideshareRates", message: "Please Select From Date")
+            self.showAlert("Rider RideshareRates", message: "Please select from date")
         }
         if toDateLabel.text == "Select To Date"{
-            self.showAlert("Rider RideshareRates", message: "Please Select To Date")
+            self.showAlert("Rider RideshareRates", message: "Please select to date")
         }
         
         

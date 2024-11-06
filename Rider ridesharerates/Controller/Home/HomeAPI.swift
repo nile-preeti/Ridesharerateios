@@ -68,7 +68,9 @@ extension HomeViewController {
                         print("Parse Data")
                         let msg = detailsDict["message"] as? String ?? "Something went wrong"
                         print(msg)
-                        if (dict?["status"] as? Int ?? 0) == 1 {                        self.chooseRide_view.isHidden = true
+                        if (dict?["status"] as? Int ?? 0) == 1 {
+                            
+                            self.chooseRide_view.isHidden = true
                             let  data = (dict?["data"] as? [[String:AnyObject]] ?? [[:]])
                             print(data)
                             self.rideDistance = (dict?["distance"] as? String ?? "")
@@ -187,6 +189,7 @@ extension HomeViewController {
                                         "stops": kstops,
                                         "stop_latitude" : kstoplat,
                                         "stop_longitude" : kstoplong,
+                                        "device_type":"ios",
                                         
                                         //vehicleTypeId
                                         
@@ -223,7 +226,7 @@ extension HomeViewController {
                         if (detailsDict["status"] as? Int ?? 0) == 1 {
                             NSUSERDEFAULT.set("", forKey: kVideoPlay)
                             let data = (detailsDict["ride_detail"] as? [String:Any] ?? [:])
-                            kRideId = "\((data["ride_id"] as? Int ?? 0))"
+                            kRideId = "\((data["ride_id"] as? String ?? ""))"
                             kVehicle_no = "\((data["vehicle_no"] as? String ?? ""))"
                             kPaymentRideId = "\((data["ride_id"] as? Int ?? 0))"
                             kPaymentRideAmount = "\((data["amount"] as? String ?? ""))"
@@ -377,6 +380,7 @@ extension HomeViewController {
                     self.feedBackStatus = true
                     let data = (value["data"] as? [[String:AnyObject]] ?? [[:]])
                     self.chooseRide_view.isHidden = true
+                    self.mtopviewwithlocation.isHidden = false
                     self.ride_tableView.isHidden = true
                     NSUSERDEFAULT.set(true, forKey: kFeedBack)
                     kNotificationAction = ""
@@ -386,6 +390,19 @@ extension HomeViewController {
                     self.dropBtn.isUserInteractionEnabled = true
                     self.pickupBtnCancel.isUserInteractionEnabled = true
                     self.dropBtnCancel.isUserInteractionEnabled = true
+                  //  currentloc.text = NSUSERDEFAULT.value(forKey: kCurrentAddress) as! String
+                   
+//                    let savedDictionary = UserDefaults.standard.object(forKey: "SavedCurrentLocation") as? [String: Any] ?? [String: Any]()
+//                    let ad1 = savedDictionary["address1"] as? String
+//                    let ad2 = savedDictionary["address2"] as? String
+//                    let  city = savedDictionary["city"] as? String
+//                    let state = savedDictionary["state"] as? String
+//                    let country = savedDictionary["country"] as? String
+////                    self.pickUpAddress_lbl.text = ad1 + ad2 + city + state + country
+//                    self.pickUpAddress_lbl.text = "\(ad1), \(ad2), \(city), \(state), \(country)"
+
+                    
+                    self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
                     self.dropAddress_lbl.text = "Enter Drop Location"
                     kPaymentRideId = ""
                     kPaymentRideAmount = ""
@@ -535,6 +552,7 @@ extension HomeViewController {
                 if ((value["status"] as? Int ?? 0) == 1){
                     // self.dropAddress_lbl.text = ""
                     self.mTimerView.isHidden = true
+                    self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
                     self.dropAddress_lbl.text = "Enter Drop Location"
                     self.pickupBtn.isUserInteractionEnabled = true
                     self.dropBtn.isUserInteractionEnabled = true
@@ -551,7 +569,7 @@ extension HomeViewController {
                         self.showAlert("Rider RideshareRates", message: "No Driver available near to your Pick up location. Please Try again after sometime.")
                         self.getLastRideDataApi()
                     }else{
-                        self.showAlert("Rider RideshareRates", message: "Ride has been successfully cancelled.")
+                        self.showAlert("Rider RideshareRates", message: "Ride has been cancelled successfully.")
                         self.getLastRideDataApi()
                     }
                   
@@ -633,7 +651,7 @@ extension HomeViewController {
                         
                         if rideStatusData != ""{
                             if rideStatusData == "CANCELLED"{
-                                self.mtopviewwithlocation.isHidden = false
+                              //  self.mtopviewwithlocation.isHidden = false
 
                                 self.mapView.clear()
                                 kNotificationAction = ""
@@ -643,6 +661,8 @@ extension HomeViewController {
                                 self.dropBtn.isUserInteractionEnabled = true
                                 self.pickupBtnCancel.isUserInteractionEnabled = true
                                 self.dropBtnCancel.isUserInteractionEnabled = true
+                                self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+                                self.dropAddress_lbl.text = "Enter Drop Location"
                                 self.chooseRide_view.isHidden = true
                                 self.ride_tableView.isHidden = true
                                 self.chooseRideViewHeight_const.constant = 0
@@ -683,7 +703,6 @@ extension HomeViewController {
 //                                kConfirmationAction = "START_RIDE"
 //                            }
                             if rideStatusData == "COMPLETED"{
-                                self.mtopviewwithlocation.isHidden = false
 
                             //    self.getRideStatus(ride_id: kRideId)
                                 kNotificationAction = "COMPLETED"
@@ -742,7 +761,7 @@ extension HomeViewController {
                             
                         }
                         if paymentStatusData == "COMPLETED"{
-                            self.mtopviewwithlocation.isHidden = false
+                          //  self.mtopviewwithlocation.isHidden = false
 
                             kRideId = ""
                             //                            if is_technical_issue == "Yes"{
@@ -756,6 +775,7 @@ extension HomeViewController {
                                 if feedbackStatus == "1"{
                                     kNotificationAction = ""
                                     kConfirmationAction = ""
+                                    self.mtopviewwithlocation.isHidden = false
                                 }
                                 else{
                                     kNotificationAction = "FEEDBACK"
@@ -1457,6 +1477,7 @@ extension HomeViewController: addstop{
                         print(msg)
                         if (dict?["status"] as? Int ?? 0) == 1 {
                             kstops = [""]
+                            self.getLastRideDataApi()
                             self.showAlert("Rider RideshareRates", message: "\(msg)")
                             
                             //self.chooseRide_view.isHidden = true

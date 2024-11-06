@@ -463,6 +463,8 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                     print(addressString)
                     self.pickUpAddress_lbl.text =  addressString
                     kpickupAddress = self.pickUpAddress_lbl.text!
+                    //NSUSERDEFAULT.setValue("\(addressString)", forKey: kCurrentAddress1)
+
                     NSUSERDEFAULT.setValue("\(addressString)", forKey: kCurrentAddress)
                   //  self.getNearbyDrivers()
                     kCurrentAddressMarker = addressString

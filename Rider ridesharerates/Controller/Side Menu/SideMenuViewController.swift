@@ -191,7 +191,7 @@ extension SideMenuViewController: UITableViewDelegate{
                 NavigationManager.pushToLoginVC(from: self)
             }
             
-            let refreshAlert = UIAlertController(title: "Are you sure you want to delete account?" , message: " When you delete your account. you won't be able to retrieve the content and ride information on app.", preferredStyle: UIAlertController.Style.alert)
+            let refreshAlert = UIAlertController(title: "Are you sure you want to delete account?" , message: "When you delete your account. you won't be able to retrieve the content and ride information on app.", preferredStyle: UIAlertController.Style.alert)
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),

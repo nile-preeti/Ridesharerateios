@@ -14,7 +14,7 @@ import Firebase
 import FirebaseDatabase
 import MapKit
 import Alamofire
-
+import UserNotifications
 protocol payRideProtocol {
     func payRide(rideID: String ,amount:String,status:Bool)
 }
@@ -156,6 +156,10 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
       //  updateAppVersionPopup()
+        
+        
+        
+        
         self.mTimerView.isHidden = true
         self.mAddStopOngoingrideView.isHidden = true
         // appUpdateAvailable()
@@ -183,7 +187,70 @@ class HomeViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(loadForegroundList), name: NSNotification.Name(rawValue: "ReceiveDataForeground1"), object: nil)
         NotificationCenter.default.addObserver(self, selector:#selector(appMovedToForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         applyMapStyle()
+        checkNotificationPermission()
     }
+    
+    
+    func checkNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        center.getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                switch settings.authorizationStatus {
+                case .authorized:
+                    print("Notifications are allowed")
+                    // Notifications are allowed
+                    break
+                case .denied:
+                    print("Notifications are denied")
+                    self.showAlertToEnableNotifications()
+                case .notDetermined:
+                    print("Notifications are not determined")
+                    self.requestNotificationPermission()
+                default:
+                    break
+                }
+            }
+        }
+    }
+    func requestNotificationPermission() {
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                print("Permission granted")
+            } else {
+                print("Permission denied")
+                self.showAlertToEnableNotifications()
+            }
+        }
+    }
+    func showAlertToEnableNotifications() {
+        let refreshAlert = UIAlertController(title: "Notifications Disabled" , message: "Please enable notifications in settings to stay updated.", preferredStyle: UIAlertController.Style.alert)
+        let titleAttributes: [NSAttributedString.Key: Any] = [
+            
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+        ]
+        let messageAttributes: [NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.font : UIFont.systemFont(ofSize: 15),
+            .foregroundColor: UIColor.white,
+        ]
+
+        let attributedTitle = NSAttributedString(string: "Notifications Disabled", attributes: titleAttributes)
+        let attributedMessage = NSAttributedString(string: "Please enable notifications in settings to stay updated.", attributes: messageAttributes)
+
+        // Set the attributed title and message
+        refreshAlert.setValue(attributedTitle, forKey: "attributedTitle")
+        refreshAlert.setValue(attributedMessage, forKey: "attributedMessage")
+        refreshAlert.view.subviews.first?.subviews.first?.subviews.first?.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
+        refreshAlert.addAction(UIAlertAction(title: "Settings", style: .destructive, handler: { (action: UIAlertAction!) in
+            UIApplication.shared.open(URL(string:UIApplication.openSettingsURLString)!)
+        }))
+     //   refreshAlert.addAction(UIAlertAction(title: "No", style: .cancel, handler: { (action: UIAlertAction!) in
+      //  }))
+        present(refreshAlert, animated: true, completion: nil)
+    }
+
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -237,16 +304,15 @@ class HomeViewController: UIViewController {
             self.getLastRideDataApi()
         }
         self.savedCardApi()
+        checkNotificationPermission()
+
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.stoptimer = "stop"
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("ReceiveDataBackground1"), object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name("ReceiveDataForeground1"), object: nil)
-       
     }
-    
-    
     // MARK: Check AppVersion
       func updateAppVersionPopup() {
         guard let appStoreURL = URL(string: "http://itunes.apple.com/lookup?bundleId=com.riderRideshare.app") else {
@@ -300,16 +366,18 @@ class HomeViewController: UIViewController {
             UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
         }
     }
-    
-    
     //MARK:- Get LAt long
     func getDriverLatLong(driverName:String, RideID :String){
         self.ref = Database.database().reference()
         if driverName != "" && RideID != "" {
             //   Timer.scheduledTimer(withTimeInterval: self.Dtime, repeats: false) { timer in
             let trimmedString = driverName.trimmingCharacters(in: .whitespaces) + RideID
-            self.observationHandle = ref!.child("staging_driver").child(RideID).observe(.value, with: { snapshot in
-                self.ref!.child("staging_driver").child(RideID).removeAllObservers()
+           
+            self.observationHandle = ref!.child("driver").child(RideID).observe(.value, with: { snapshot in
+                self.ref!.child("driver").child(RideID).removeAllObservers()
+//            self.observationHandle = ref!.child("staging_driver").child(RideID).observe(.value, with: { snapshot in
+//                self.ref!.child("staging_driver").child(RideID).removeAllObservers()
+//              
                 print(self.ref)
                 
                 guard let dict = snapshot.value as? [String:Any] else {

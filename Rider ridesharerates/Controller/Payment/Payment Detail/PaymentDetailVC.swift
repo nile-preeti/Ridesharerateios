@@ -167,7 +167,7 @@ extension PaymentDetailVC : UITextFieldDelegate{
                     print("Entered Date Is Right")
                 } else {
                     print("Entered Date Is Wrong")
-                    self.showAlert("Rider RideshareRates", message: "Entered Furure Year")
+                    self.showAlert("Rider RideshareRates", message: "Entered Year Is Wrong")
                 }
             } else {
                 print("Entered Date Is Wrong")

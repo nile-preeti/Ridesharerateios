@@ -332,9 +332,9 @@ class SignUpViewController: UIViewController {
     @IBAction func tapSignUp_btn(_ sender: Any) {
         
         if self.name_txtField.text == ""{
-            self.showAlert("Rider RideshareRates", message: "Please enter First name")
+            self.showAlert("Rider RideshareRates", message: "Please enter first name")
         }else if self.mLastname.text == ""{
-            self.showAlert("Rider RideshareRates", message: "Please enter Last name")
+            self.showAlert("Rider RideshareRates", message: "Please enter last name")
         }else if self.emailAddress_txtField.text == ""{
             self.showAlert("Rider RideshareRates", message: "Please enter email address")
         }else if !(Validation().isValidEmail(self.emailAddress_txtField.text!)){
@@ -346,7 +346,7 @@ class SignUpViewController: UIViewController {
         }else if self.confirmPass_txtField.text == "" {
             self.showAlert("Rider RideshareRates", message: "Please enter confirm password")
         }else if !(self.password_txtField.text == self.confirmPass_txtField.text){
-            self.showAlert("Rider RideshareRates", message: "Password and Confirm Password does not match")
+            self.showAlert("Rider RideshareRates", message: "Password and confirm password does not match")
         }else  if self.mCountryPicker.text == ""{
             self.showAlert("Rider RideshareRates", message: "Please select country code")
         }else if self.mobileNo_txtField.text == ""{

@@ -147,7 +147,7 @@ class helpDetailVC: UIViewController {
     }
     @IBAction func mSubmitBTN(_ sender: Any) {
         if mDetailTF.text == "Write Short Description" || mDetailTF.text == ""{
-            self.showAlert("Rider RideshareRates", message: "Please enter Description to submit")
+            self.showAlert("Rider RideshareRates", message: "Please enter description to submit")
         }else{
             helpPOST()
         }

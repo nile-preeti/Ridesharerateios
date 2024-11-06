@@ -85,6 +85,8 @@ extension HomeViewController {
                         present(refreshAlert, animated: true, completion: nil)
                         kNotificationAction = ""
                         kConfirmationAction = ""
+                        self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+                        self.dropAddress_lbl.text = "Enter Drop Location"
                         self.chooseRide_view.isHidden = true
                         self.ride_tableView.isHidden = true
                     }else{
@@ -98,6 +100,8 @@ extension HomeViewController {
                     kNotificationAction = ""
                     kConfirmationAction = ""
                     self.mapView.clear()
+                    self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+                    self.dropAddress_lbl.text = "Enter Drop Location"
                     self.chooseRide_view.isHidden = true
                     self.ride_tableView.isHidden = true
                     self.chooseRideViewHeight_const.constant = 0
@@ -254,6 +258,8 @@ extension HomeViewController {
         DispatchQueue.main.async {
             NavigationManager.pushToLoginVC(from: self)
         }
+        self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+      //  self.dropAddress_lbl.text = "Enter Drop Location"
         self.dropAddress_lbl.text = "Enter Drop Location"
         self.chooseRide_view.isHidden = true
         self.rideNow_btn.isHidden = true

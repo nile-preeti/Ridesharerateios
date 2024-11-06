@@ -8,12 +8,9 @@
 import UIKit
 
 class CompletedRidesViewController: UIViewController {
-    
     //MARK:- OUTLETS
-    
     @IBOutlet weak var completedRides_tableView: UITableView!
     //MARK:- Variables
-    
     let conn = webservices()
     var completedRidesData = [RidesData]()
     var vcCome = comeFrom.CompletedRequest

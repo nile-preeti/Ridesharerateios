@@ -63,7 +63,7 @@ extension HomeViewController: UITableViewDataSource{
         }
         else if kNotificationAction == "COMPLETED" || kConfirmationAction == "COMPLETED" && kRideId != "" {
             self.chooseRideViewHeight_const.constant = 250
-            self.mtopviewwithlocation.isHidden = false
+           // self.mtopviewwithlocation.isHidden = false
 
             self.chooseRide_view.isHidden = false
             chooseLbl.text = "Ride Completed!"
@@ -74,7 +74,7 @@ extension HomeViewController: UITableViewDataSource{
         }
         else  if kNotificationAction == "FEEDBACK" || kConfirmationAction == "FEEDBACK" && kRideId != "" {
             self.chooseRideViewHeight_const.constant = 300
-            self.mtopviewwithlocation.isHidden = false
+          //  self.mtopviewwithlocation.isHidden = false
 
             self.chooseRide_view.isHidden = false
             chooseLbl.text = "Ride Completed!"
@@ -84,10 +84,11 @@ extension HomeViewController: UITableViewDataSource{
             return 1
         }
         else  if kNotificationAction == "CANCELLED" || kConfirmationAction == "CANCELLED" && kRideId != "" {
-            self.mtopviewwithlocation.isHidden = false
+        //    self.mtopviewwithlocation.isHidden = false
 
             if chooseVehicleList == .hide{
                 self.mapView.clear()
+                self.mtopviewwithlocation.isHidden = false
                 self.chooseRide_view.isHidden = true
                 self.rideNow_btn.isHidden = true
                 self.ride_tableView.isHidden = true
@@ -134,6 +135,7 @@ extension HomeViewController: UITableViewDataSource{
         }
         else{
             if chooseVehicleList == .hide{
+                self.mtopviewwithlocation.isHidden = false
                 self.chooseRide_view.isHidden = true
                 self.rideNow_btn.isHidden = true
                 self.ride_tableView.isHidden = true
@@ -142,6 +144,7 @@ extension HomeViewController: UITableViewDataSource{
             }
             else{
                 driverConfirmation = driverConfirmStatus.notConfirmed
+                self.mtopviewwithlocation.isHidden = false
                 self.chooseRide_view.isHidden = true
                 self.rideNow_btn.isHidden = true
                 self.ride_tableView.isHidden = false
@@ -182,8 +185,6 @@ extension HomeViewController: UITableViewDataSource{
                 cell.time = 1.0
                 cell.progress = 0.0
                 cell.cancelBtn.addTarget(self, action: #selector(cancelDriverCallBtnAction), for: .touchUpInside)
-                
-                
                 self.pickupBtn.isUserInteractionEnabled = false
                 self.dropBtn.isUserInteractionEnabled = false
                 self.pickupBtnCancel.isUserInteractionEnabled = false
@@ -209,7 +210,7 @@ extension HomeViewController: UITableViewDataSource{
                     self.getTime()
                 }
                 
-                if NSUSERDEFAULT.value(forKey: kVideoPlay) != nil || NSUSERDEFAULT.value(forKey: kVideoPlay) as! String == ""{
+                if NSUSERDEFAULT.value(forKey: kVideoPlay) as! String == "" {
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let LaunchVC = storyboard.instantiateViewController(withIdentifier: "LaunchVCID") as! LaunchVC
                     LaunchVC.screen = "home"
@@ -538,6 +539,7 @@ extension HomeViewController: UITableViewDataSource{
         self.cancelButtonAlert()
     }
     @objc func addstopBtnAction(){
+        getLastRideDataApi()
         if lastRideData?.Stops?.count != 0{
           //  cell.mAddSTopBTN.us
             self.showAlert("Rider RideshareRates", message: "You have already added a stop.")

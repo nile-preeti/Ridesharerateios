@@ -137,7 +137,7 @@ class PaymentVC: UIViewController {
             }
            
         }else{
-            self.showAlert("Rider RideshareRates", message: "Please Select the Card")
+            self.showAlert("Rider RideshareRates", message: "Please select the card")
             print("Please Select the Card")
         }
     }

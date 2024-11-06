@@ -123,6 +123,7 @@
 		840761EA2AC41393009544C2 /* DriverConfirmationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 840761772AC41393009544C2 /* DriverConfirmationCell.xib */; };
 		840761EB2AC41393009544C2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 840761782AC41393009544C2 /* LaunchScreen.storyboard */; };
 		840761EC2AC41393009544C2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8407617A2AC41393009544C2 /* Main.storyboard */; };
+		841D453E2C746A100089A08D /* example.caf in Resources */ = {isa = PBXBuildFile; fileRef = 841D453D2C746A100089A08D /* example.caf */; };
 		843604A62C2C250D00246908 /* intro_rideshare.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 843604A52C2C250D00246908 /* intro_rideshare.mp4 */; };
 		843604A82C2C251800246908 /* last_final_video.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 843604A72C2C251800246908 /* last_final_video.mp4 */; };
 		845A35DE2B3AE38300B3D2B9 /* BookingFeeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845A35DD2B3AE38300B3D2B9 /* BookingFeeVC.swift */; };
@@ -137,7 +138,7 @@
 		848D399A2AF5213A002F03FB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 848D39992AF5213A002F03FB /* FirebaseStorage */; };
 		8491F5442BFE054A0048A1E7 /* addStopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491F5432BFE054A0048A1E7 /* addStopVC.swift */; };
 		8491F5462BFE05840048A1E7 /* addStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491F5452BFE05840048A1E7 /* addStopTableViewCell.swift */; };
-		84C5EC9F2B3B034A00A360C8 /* example.caf in Resources */ = {isa = PBXBuildFile; fileRef = 84C5EC9E2B3B034A00A360C8 /* example.caf */; };
+		84D907312C6B7E750080AFDF /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 84D907302C6B7E750080AFDF /* FirebaseCrashlytics */; };
 		84EB584E2BBFFE5200FCA582 /* FirebaseMessagingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB584D2BBFFE5200FCA582 /* FirebaseMessagingManager.swift */; };
 		BDF9507D9E988802AEACA4AC /* Pods_Rider_ridesharerates_Rider_rideshareratesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 060D6C10B33DC4288B837755 /* Pods_Rider_ridesharerates_Rider_rideshareratesUITests.framework */; };
 		D308B09C876E1EBDD94C9CEF /* Pods_Rider_rideshareratesTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E2F1E209C69EA68F85B252 /* Pods_Rider_rideshareratesTests.framework */; };
@@ -288,6 +289,7 @@
 		840761772AC41393009544C2 /* DriverConfirmationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DriverConfirmationCell.xib; sourceTree = "<group>"; };
 		840761792AC41393009544C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8407617B2AC41393009544C2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		841D453D2C746A100089A08D /* example.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = example.caf; sourceTree = "<group>"; };
 		8432362B2AC5B162002208CA /* Rider ridesharerates.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Rider ridesharerates.entitlements"; sourceTree = "<group>"; };
 		843604A52C2C250D00246908 /* intro_rideshare.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = intro_rideshare.mp4; sourceTree = "<group>"; };
 		843604A72C2C251800246908 /* last_final_video.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = last_final_video.mp4; sourceTree = "<group>"; };
@@ -297,7 +299,6 @@
 		8483D0012B10E11F00C51418 /* CompletedDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedDetailVC.swift; sourceTree = "<group>"; };
 		8491F5432BFE054A0048A1E7 /* addStopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addStopVC.swift; sourceTree = "<group>"; };
 		8491F5452BFE05840048A1E7 /* addStopTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addStopTableViewCell.swift; sourceTree = "<group>"; };
-		84C5EC9E2B3B034A00A360C8 /* example.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = example.caf; sourceTree = "<group>"; };
 		84EB584D2BBFFE5200FCA582 /* FirebaseMessagingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseMessagingManager.swift; sourceTree = "<group>"; };
 		97E2F1E209C69EA68F85B252 /* Pods_Rider_rideshareratesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rider_rideshareratesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -312,6 +313,7 @@
 				848D39922AF5213A002F03FB /* FirebaseAuth in Frameworks */,
 				848D39942AF5213A002F03FB /* FirebaseDatabase in Frameworks */,
 				848D399A2AF5213A002F03FB /* FirebaseStorage in Frameworks */,
+				84D907312C6B7E750080AFDF /* FirebaseCrashlytics in Frameworks */,
 				848D39962AF5213A002F03FB /* FirebaseFirestore in Frameworks */,
 				28B2A1159D28296B53DCC1E4 /* Pods_Rider_ridesharerates.framework in Frameworks */,
 			);
@@ -392,7 +394,7 @@
 				840760C12AC4119B009544C2 /* Info.plist */,
 				84799A382B5920A70066C34E /* GoogleService-Info.plist */,
 				843604A72C2C251800246908 /* last_final_video.mp4 */,
-				84C5EC9E2B3B034A00A360C8 /* example.caf */,
+				841D453D2C746A100089A08D /* example.caf */,
 				840760E72AC41389009544C2 /* Controller */,
 				8407615A2AC41393009544C2 /* Model */,
 				840760E42AC41388009544C2 /* Networking */,
@@ -846,6 +848,7 @@
 				840760AE2AC4119A009544C2 /* Resources */,
 				43635BA5B72E7D3A39AAD293 /* [CP] Embed Pods Frameworks */,
 				A88DEFE9C01B43406B0A4F37 /* [CP] Copy Pods Resources */,
+				84D907322C6B7EF10080AFDF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -859,6 +862,7 @@
 				848D39952AF5213A002F03FB /* FirebaseFirestore */,
 				848D39972AF5213A002F03FB /* FirebaseMessaging */,
 				848D39992AF5213A002F03FB /* FirebaseStorage */,
+				84D907302C6B7E750080AFDF /* FirebaseCrashlytics */,
 			);
 			productName = "Rider ridesharerates";
 			productReference = 840760B02AC4119A009544C2 /* Rider ridesharerates.app */;
@@ -965,7 +969,6 @@
 				840761C72AC41393009544C2 /* Montserrat-VariableFont_wght.ttf in Resources */,
 				8407618F2AC41393009544C2 /* PaymentButtonVCCell.xib in Resources */,
 				840761D82AC41393009544C2 /* SearchTableViewCell.xib in Resources */,
-				84C5EC9F2B3B034A00A360C8 /* example.caf in Resources */,
 				840760BD2AC4119B009544C2 /* Assets.xcassets in Resources */,
 				840761EA2AC41393009544C2 /* DriverConfirmationCell.xib in Resources */,
 				840761E12AC41393009544C2 /* CallDriverCell.xib in Resources */,
@@ -983,6 +986,7 @@
 				843604A62C2C250D00246908 /* intro_rideshare.mp4 in Resources */,
 				840761E62AC41393009544C2 /* RideCompletedCell.xib in Resources */,
 				840761BB2AC41393009544C2 /* CountryView.xib in Resources */,
+				841D453E2C746A100089A08D /* example.caf in Resources */,
 				840761832AC41393009544C2 /* dark_map_style.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1059,6 +1063,28 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Rider ridesharerates-Rider rideshareratesUITests/Pods-Rider ridesharerates-Rider rideshareratesUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		84D907322C6B7EF10080AFDF /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
 		};
 		8CB0F0642430BA7ACCB12D0D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1422,6 +1448,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 78SJ85YAAU;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1448,7 +1475,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.18;
+				MARKETING_VERSION = 1.21;
 				PRODUCT_BUNDLE_IDENTIFIER = com.riderRideshare.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1497,7 +1524,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.18;
+				MARKETING_VERSION = 1.21;
 				PRODUCT_BUNDLE_IDENTIFIER = com.riderRideshare.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1671,6 +1698,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 848D39902AF5213A002F03FB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		84D907302C6B7E750080AFDF /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

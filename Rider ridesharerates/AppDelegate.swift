@@ -155,11 +155,36 @@ extension AppDelegate :  CLLocationManagerDelegate
                     let dict = ["address1": placemark.thoroughfare ?? "", "address2": placemark.subThoroughfare ?? "" ,"city" : placemark.locality ?? "","state": placemark.administrativeArea ?? "", "zip code" : placemark.postalCode ?? "","country" : placemark.country ?? "" , "latitude" : myLocation.latitude , "longitude" : myLocation.longitude ] as [String : Any]
                     defaults.set(dict, forKey: "SavedCurrentLocation")
                     
+                    
+                    let savedDictionary = UserDefaults.standard.object(forKey: "SavedCurrentLocation") as? [String: Any] ?? [String: Any]()
+
+                    var addressParts: [String] = []
+
+                    if let ad1 = savedDictionary["address1"] as? String, !ad1.isEmpty {
+                        addressParts.append(ad1)
+                    }
+                    if let ad2 = savedDictionary["address2"] as? String, !ad2.isEmpty {
+                        addressParts.append(ad2)
+                    }
+                    if let city = savedDictionary["city"] as? String, !city.isEmpty {
+                        addressParts.append(city)
+                    }
+                    if let state = savedDictionary["state"] as? String, !state.isEmpty {
+                        addressParts.append(state)
+                    }
+                    if let country = savedDictionary["country"] as? String, !country.isEmpty {
+                        addressParts.append(country)
+                    }
+
+                    let currentad = addressParts.joined(separator: ", ")
+                    NSUSERDEFAULT.setValue("\(currentad)", forKey: kpCurrentAdd)
+
+                    
+                    
                 }
             }
         }
         manager.stopUpdatingLocation()
-
     }
 }
 extension AppDelegate : MessagingDelegate {
@@ -203,6 +228,11 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
             print("willPresent Method\(userInfo)")
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ReceiveDataBackground1"), object: nil , userInfo: userInfo)
            // completionHandler(<#UNNotificationPresentationOptions#>)
+            if #available(iOS 14.0, *) {
+                completionHandler([.banner, .sound, .badge])
+            } else {
+                // Fallback on earlier versions
+            }
             completionHandler([.alert, .badge, .sound])
         }
     }

@@ -69,7 +69,7 @@ class SignupPaymentVC: UIViewController {
             return
         }
         guard let cardNumber = cardNumberTf.text, cardNumber != "" else {
-            self.showAlert("Rider RideshareRates", message: "Please enter card Number!")
+            self.showAlert("Rider RideshareRates", message: "Please enter card number!")
             return
         }
         guard let cardExpiry = cardExpiryTf.text, cardExpiry != "" else {
@@ -85,11 +85,11 @@ class SignupPaymentVC: UIViewController {
 //            return
 //        }
         guard let billingAdd = billingAddress.text, billingAdd != "Billing Address" else {
-            self.showAlert("Rider RideshareRates", message: "Please enter billing Address")
+            self.showAlert("Rider RideshareRates", message: "Please enter billing address")
             return
         }
         if billingAddress!.text!.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty {
-            self.showAlert("Rider RideshareRates", message: "Please enter billing Address")
+            self.showAlert("Rider RideshareRates", message: "Please enter billing address")
             return
         }
         if cardNameTf.text != "" && cardNumberTf.text != "" && cardExpiryTf.text != "" && cardCvvTf.text != ""{
@@ -195,7 +195,7 @@ extension SignupPaymentVC : UITextFieldDelegate{
                     print("Entered Date Is Right")
                 } else {
                     print("Entered Date Is Wrong")
-                    self.showAlert("Rider RideshareRates", message: "Entered Furure Year")
+                    self.showAlert("Rider RideshareRates", message: "Entered Year Is Wrong")
                 }
             } else {
                 print("Entered Date Is Wrong")
