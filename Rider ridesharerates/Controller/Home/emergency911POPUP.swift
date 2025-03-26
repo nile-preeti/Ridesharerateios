@@ -16,7 +16,7 @@ class emergency911POPUP: UIViewController {
         super.viewDidLoad()
       //  arrowImageView.alpha = 0
                 
-        currentloc.text = NSUSERDEFAULT.value(forKey: kCurrentAddress) as! String
+        currentloc.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
        // ("\(place.formattedAddress!)", forKey: kCurrentAddress)
         
                 // Add pan gesture recognizer to the button

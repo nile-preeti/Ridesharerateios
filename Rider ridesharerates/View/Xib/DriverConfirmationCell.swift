@@ -17,9 +17,10 @@ class DriverConfirmationCell: UITableViewCell {
     @IBOutlet weak var imageVw: UIImageView!
     //MARK:- Default Func
     var timer: Timer?
+    var time = 1.0
     var elapsedTime: TimeInterval = 0
     let totalTime: TimeInterval = 120
-    var time = 1.0
+   
     var progress = 0.0
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,6 +38,7 @@ class DriverConfirmationCell: UITableViewCell {
         // Configure the view for the selected state
     }
     func startProgressBar() {
+       
         timer = Timer.scheduledTimer(timeInterval: time, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
     }
     

@@ -25,7 +25,9 @@ extension HomeViewController {
                     print(dictDataRideID)
                 }
                 if kNotificationAction == "ACCEPTED"{
-                    self.ride_tableView.reloadData()
+                    DispatchQueue.main.async {
+                        self.getLastRideDataApi()
+                    }
                 }
                 else  if kNotificationAction == "COMPLETED"  {
                     if dict["is_technical_issue"] as? String == "Yes"{
@@ -86,6 +88,7 @@ extension HomeViewController {
                         kNotificationAction = ""
                         kConfirmationAction = ""
                         self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+                        kpickupAddress = self.pickUpAddress_lbl.text!
                         self.dropAddress_lbl.text = "Enter Drop Location"
                         self.chooseRide_view.isHidden = true
                         self.ride_tableView.isHidden = true
@@ -101,6 +104,7 @@ extension HomeViewController {
                     kConfirmationAction = ""
                     self.mapView.clear()
                     self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+                    kpickupAddress = self.pickUpAddress_lbl.text!
                     self.dropAddress_lbl.text = "Enter Drop Location"
                     self.chooseRide_view.isHidden = true
                     self.ride_tableView.isHidden = true
@@ -151,7 +155,9 @@ extension HomeViewController {
 //                }
                 
                 if kNotificationAction == "ACCEPTED"{
-                    self.ride_tableView.reloadData()
+                    DispatchQueue.main.async {
+                        self.getLastRideDataApi()
+                    }
                 }
                 else  if kNotificationAction == "COMPLETED"  {
                  //   self.ride_tableView.reloadData()
@@ -259,6 +265,7 @@ extension HomeViewController {
             NavigationManager.pushToLoginVC(from: self)
         }
         self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+        kpickupAddress = self.pickUpAddress_lbl.text!
       //  self.dropAddress_lbl.text = "Enter Drop Location"
         self.dropAddress_lbl.text = "Enter Drop Location"
         self.chooseRide_view.isHidden = true

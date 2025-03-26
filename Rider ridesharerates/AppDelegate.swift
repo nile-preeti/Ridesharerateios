@@ -158,12 +158,26 @@ extension AppDelegate :  CLLocationManagerDelegate
                     
                     let savedDictionary = UserDefaults.standard.object(forKey: "SavedCurrentLocation") as? [String: Any] ?? [String: Any]()
 
+                    
+                    
+//                    let houseNumber = placemark.subThoroughfare ?? ""
+//                    let street = placemark.thoroughfare ?? ""
+//                    let city = placemark.locality ?? ""
+//                    let state = placemark.administrativeArea ?? ""
+//                    let postalCode = placemark.postalCode ?? ""
+//                    let country = placemark.country ?? ""
+//                    
+//                    
+//                    let address = "\(houseNumber) \(street), \(city), \(state), \(postalCode), \(country)"
+//                    print(address)
+                    
+                    
                     var addressParts: [String] = []
 
-                    if let ad1 = savedDictionary["address1"] as? String, !ad1.isEmpty {
+                    if let ad1 = savedDictionary["address2"] as? String, !ad1.isEmpty {
                         addressParts.append(ad1)
                     }
-                    if let ad2 = savedDictionary["address2"] as? String, !ad2.isEmpty {
+                    if let ad2 = savedDictionary["address1"] as? String, !ad2.isEmpty {
                         addressParts.append(ad2)
                     }
                     if let city = savedDictionary["city"] as? String, !city.isEmpty {
@@ -175,12 +189,12 @@ extension AppDelegate :  CLLocationManagerDelegate
                     if let country = savedDictionary["country"] as? String, !country.isEmpty {
                         addressParts.append(country)
                     }
-
                     let currentad = addressParts.joined(separator: ", ")
+                    
                     NSUSERDEFAULT.setValue("\(currentad)", forKey: kpCurrentAdd)
+                    NSUSERDEFAULT.setValue("\(location.coordinate.latitude)", forKey: kpCurrentAddLAT)
+                    NSUSERDEFAULT.setValue("\(location.coordinate.longitude)", forKey: kpCurrentAddLONG)
 
-                    
-                    
                 }
             }
         }

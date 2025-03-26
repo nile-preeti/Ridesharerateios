@@ -51,17 +51,22 @@ class addStopVC: UIViewController {
     var allMarkers: [GMSMarker] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        let loc = NSUSERDEFAULT.value(forKey: kCurrentAddress) as! String
-        pickuplocation.text = loc
-       
+        
         if ongoing == "ongoingadd"{
+            
+            
+            let loc = NSUSERDEFAULT.value(forKey: OGCurrentAdd) as! String
+            pickuplocation.text = loc
+            
             let stop = NSUSERDEFAULT.value(forKey: kdroploc) as! String
             droplocation.text = stop
         }else{
+            let loc = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+            pickuplocation.text = loc
             droplocation.text = midpoint
         }
         pickuplocation.delegate = self
-                droplocation.delegate = self
+        droplocation.delegate = self
                
         mtableview.delegate = self
         mtableview.dataSource = self
@@ -103,14 +108,12 @@ class addStopVC: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = .black
         self.navigationController?.navigationBar.barStyle = .black
         setNeedsStatusBarAppearanceUpdate()
-       
         currentlocation()
     }
     func currentlocation(){
         locationManager.delegate = self
                locationManager.requestWhenInUseAuthorization()
                locationManager.startUpdatingLocation()
-               
         // Enable My Location on the map
                 mapView.isMyLocationEnabled = true
                 mapView.settings.myLocationButton = true
@@ -280,9 +283,8 @@ extension addStopVC : UITextFieldDelegate, GMSAutocompleteViewControllerDelegate
                     let longitude = String(place.coordinate.longitude)
 
                     if textField == pickuplocation {
-                       
-                        kPickUpLatFinal = latitude
-                        kPickUpLongFinal = longitude
+                        kCurrentLocaLat = latitude
+                        kCurrentLocaLong = longitude
                         
                     } else if textField == droplocation {
 //                        kDropLat = latitude
@@ -300,7 +302,7 @@ extension addStopVC : UITextFieldDelegate, GMSAutocompleteViewControllerDelegate
         
             // Gather the selected locations
             let origin = pickuplocation.text
-        kpickupAddress = self.pickuplocation.text!
+          kpickupAddress = self.pickuplocation.text!
             let destination = droplocation.text
             var stops = [String]()
         if let destination = droplocation.text, !destination.isEmpty {
@@ -323,7 +325,20 @@ extension addStopVC : UITextFieldDelegate, GMSAutocompleteViewControllerDelegate
                 kDropAddress = destination
                 stops.removeLast()
                 kstops = stops
-                routingLineswithstop(origin: origin, stops: stops, destination: destination)
+                
+                if ongoing == "ongoingadd"{
+                    
+                    let stop = NSUSERDEFAULT.value(forKey: kdroploc) as! String
+                   // droplocation.text = stop
+                    
+                    routingLineswithstop(origin: stop, stops: [""], destination: destination)
+
+                }else{
+                    routingLineswithstop(origin: origin, stops: stops, destination: destination)
+
+                }
+                
+                
             }
         }
         }

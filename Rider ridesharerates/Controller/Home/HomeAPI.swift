@@ -150,31 +150,47 @@ extension HomeViewController {
     
     //MARK:- ride now api
     func rideNowApi(){
-        
-        
         Indicator.shared.showProgressView(self.view)
-       
-        
         var finalPickUpLatTap : String?
         var finalPickUpLongTap : String?
         
-        
+        NSUSERDEFAULT.set("", forKey: kVideoPlay)
         if locationPickUpEditStatus == false && locationDropUpEditStatus == true{
             print("pickup not tap")
-            finalPickUpLatTap =   kCurrentLocaLat
-            finalPickUpLongTap = kCurrentLocaLong
+            finalPickUpLatTap = NSUSERDEFAULT.value(forKey: kpCurrentAddLAT) as? String ?? ""
+            finalPickUpLongTap = NSUSERDEFAULT.value(forKey: kpCurrentAddLONG) as? String ?? ""
         }
         if locationPickUpEditStatus == true && locationDropUpEditStatus == true {
             print("pickup tap")
-            finalPickUpLatTap =   kPickUpLatFinal
+            finalPickUpLatTap = kPickUpLatFinal
             finalPickUpLongTap = kPickUpLongFinal
         }
         print(finalPickUpLatTap)
         print(finalPickUpLongTap)
         
+//        Task {
+//            do {
+//              //  let address = "1600 Amphitheatre Parkway, Mountain View, CA"
+//                if let coordinates = try await convertAddressToCoordinates(address: kpickupAddress) {
+//                    print("Coordinates: \(coordinates.latitude), \(coordinates.longitude)")
+//                    
+//                    
+//                    finalPickUpLatTap = "\(coordinates.latitude)"
+//                    finalPickUpLongTap = "\(coordinates.longitude)"
+//                    
+//                } else {
+//                    print("No coordinates found.")
+//                }
+//            } catch {
+//                print("Error: \(error.localizedDescription)")
+//            }
+//        }
+        
+        
+        
         let param : [String : Any] = [  "pickup_lat" : finalPickUpLatTap ?? kCurrentLocaLat ,
                                         "pickup_long": finalPickUpLongTap ?? kCurrentLocaLong ,
-                                        "pickup_adress" : kpickupAddress ,
+                                        "pickup_adress" : kpickupAddress,
                                         "pikup_location" : kpickupAddress,
                                         "drop_address": kDropAddress,
                                         "drop_locatoin": kDropAddress,
@@ -190,7 +206,6 @@ extension HomeViewController {
                                         "stop_latitude" : kstoplat,
                                         "stop_longitude" : kstoplong,
                                         "device_type":"ios",
-                                        
                                         //vehicleTypeId
                                         
         ] as [String : Any]
@@ -208,8 +223,9 @@ extension HomeViewController {
             .responseString { response in
                 print("responseString: \(response)")
                 Indicator.shared.hideProgressView()
+              //  self.locationPickUpEditStatus = true
                 self.locationPickUpEditStatus = false
-                self.locationDropUpEditStatus = false
+                self.locationDropUpEditStatus = true
                 kstops = [""]
                 switch (response.result) {
                 case .success(let JSON):
@@ -235,7 +251,6 @@ extension HomeViewController {
                             self.chooseRide_view.isHidden = true
                             self.acceptRejectStatus(rideId: kRideId)
                             self.ride_tableView.reloadData()
-                            
                         }
                         else{
                             self.showAlert("Rider RideshareRates", message: "\(msg)")
@@ -249,7 +264,27 @@ extension HomeViewController {
                 }
             }
     }
-    
+    func convertAddressToCoordinates(address: String) async throws -> (latitude: Double, longitude: Double)? {
+        let geocoder = CLGeocoder()
+        return try await withCheckedThrowingContinuation { continuation in
+            geocoder.geocodeAddressString(address) { placemarks, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                
+                guard let placemark = placemarks?.first,
+                      let location = placemark.location else {
+                    continuation.resume(returning: nil)
+                    return
+                }
+                
+                let latitude = location.coordinate.latitude
+                let longitude = location.coordinate.longitude
+                continuation.resume(returning: (latitude, longitude))
+            }
+        }
+    }
     //MARK:- api for profile data get
     func getProfileDataApi() {
         Indicator.shared.showProgressView(self.view)
@@ -329,7 +364,6 @@ extension HomeViewController {
                         let lat = data["latitude"] as? String ?? ""
                         let long = data["longitude"] as? String ?? ""
                         let name = data["name"] as? String ?? ""
-                        
                         let latDouble = lat.toDouble()
                         let longDouble = long.toDouble()
                         //
@@ -338,13 +372,12 @@ extension HomeViewController {
                         //                        self.marker.position = location
                         //                        self.marker.map = self.mapView
                         //                        self.marker.icon = UIImage(named: "car")
-                        
-                        
                         if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" || kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE"{
                             self.marker.map = nil
-                            
                         }else{
-                            
+                            self.marker.map = nil
+                            self.mapView.clear()
+                           // self.mapView
                             let puppyGif = UIImage(named: "car")
                             // var marker = GMSMarker()
                             let imageView = UIImageView(image: puppyGif)
@@ -403,6 +436,7 @@ extension HomeViewController {
 
                     
                     self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+                    kpickupAddress = self.pickUpAddress_lbl.text!
                     self.dropAddress_lbl.text = "Enter Drop Location"
                     kPaymentRideId = ""
                     kPaymentRideAmount = ""
@@ -520,7 +554,9 @@ extension HomeViewController {
                 print(value)
                 let msg = (value["message"] as? String ?? "")
                 if ((value["status"] as? Int ?? 0) == 1){
-                    self.timerr = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(self.failedTimer(_:)), userInfo: nil, repeats: false)
+                    
+                   // self.pendingTime = 0
+                    self.checktime()
                     // Add observer for app going into the background
                           // NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
                      
@@ -539,6 +575,9 @@ extension HomeViewController {
             }
         }
     }
+    func checktime(){
+        self.timerr = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(self.failedTimer(_:)), userInfo: nil, repeats: false)
+    }
     //MARK:- accept or reject ride api with CANCELLED status
     func cancelRideStatus(rideId : String){
         let param = [ "ride_id" : rideId ,"status" : "CANCELLED"]
@@ -553,6 +592,7 @@ extension HomeViewController {
                     // self.dropAddress_lbl.text = ""
                     self.mTimerView.isHidden = true
                     self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+                    kpickupAddress = self.pickUpAddress_lbl.text!
                     self.dropAddress_lbl.text = "Enter Drop Location"
                     self.pickupBtn.isUserInteractionEnabled = true
                     self.dropBtn.isUserInteractionEnabled = true
@@ -567,12 +607,13 @@ extension HomeViewController {
                     
                     if self.pendingRidetimeout == "true"{
                         self.showAlert("Rider RideshareRates", message: "No Driver available near to your Pick up location. Please Try again after sometime.")
+                        self.pendingRidetimeout = "false"
                         self.getLastRideDataApi()
                     }else{
                         self.showAlert("Rider RideshareRates", message: "Ride has been cancelled successfully.")
                         self.getLastRideDataApi()
                     }
-                  
+                    self.getLastRideDataApi()
                     //   self.ride_tableView.reloadData()
                 }else{
                     self.showAlert("Rider RideshareRates", message: "No Driver available near to your Pick up location. Please Try again after sometime.")
@@ -584,6 +625,12 @@ extension HomeViewController {
             }
         }
     }
+    
+    
+    
+    
+    
+    
     //MARK:- api to change ride status
 //    func changeRideStatus(rideId : String,status : String){
 //        let param = ["ride_id": rideId , "status" : status]
@@ -643,6 +690,7 @@ extension HomeViewController {
                         if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" || kNotificationAction == "NOT_CONFIRMED" || kConfirmationAction == "NOT_CONFIRMED" || kNotificationAction == "PENDING" || kConfirmationAction == "PENDING" || kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE" {
                             dropAddress_lbl.text = self.lastRideData?.drop_address ?? ""
                             pickUpAddress_lbl.text = self.lastRideData?.pickup_adress
+                            kpickupAddress = self.pickUpAddress_lbl.text!
                             kCurrentLocaLatLongTap =   "\(self.lastRideData?.pickup_lat ?? "")" + "," + "\(self.lastRideData?.pickup_long ?? "")"
                             
                             kDestinationLatLongTap = "\(self.lastRideData?.drop_lat ?? "")" + "," + "\(self.lastRideData?.drop_long ?? "")"
@@ -657,16 +705,28 @@ extension HomeViewController {
                                 kNotificationAction = ""
                                 kConfirmationAction = ""
                                 kRideId = ""
+                                self.mTimerView.isHidden = true
+                                self.mtopviewwithlocation.isHidden = false
                                 self.pickupBtn.isUserInteractionEnabled = true
                                 self.dropBtn.isUserInteractionEnabled = true
                                 self.pickupBtnCancel.isUserInteractionEnabled = true
                                 self.dropBtnCancel.isUserInteractionEnabled = true
-                                self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+                                if kpCurrentAdd != "kpCurrentAdd"{
+                                    self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as? String
+
+                                }
+                                kpickupAddress = self.pickUpAddress_lbl.text!
                                 self.dropAddress_lbl.text = "Enter Drop Location"
                                 self.chooseRide_view.isHidden = true
                                 self.ride_tableView.isHidden = true
                                 self.chooseRideViewHeight_const.constant = 0
                                 
+                            }
+                            if rideStatusData == "ACCEPTED"{
+                                self.pathdrawtimer = ""
+                                DispatchQueue.main.async {
+                                    self.ride_tableView.reloadData()
+                                }
                             }
                             if rideStatusData == "DELETED"{
                                 kNotificationAction = ""
@@ -678,6 +738,9 @@ extension HomeViewController {
                             if rideStatusData == "FAILED"{
                                 kNotificationAction = ""
                                 kConfirmationAction = ""
+                                self.pickUpAddress_lbl.text = NSUSERDEFAULT.value(forKey: kpCurrentAdd) as! String
+                                kpickupAddress = self.pickUpAddress_lbl.text!
+                                self.dropAddress_lbl.text = "Enter Drop Location"
                                 self.chooseRide_view.isHidden = true
                                 self.ride_tableView.isHidden = true
                                 self.chooseRideViewHeight_const.constant = 0
@@ -685,9 +748,21 @@ extension HomeViewController {
                             if rideStatusData == "PENDING"{
                              //   self.timerr = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(self.failedTimer(_:)), userInfo: nil, repeats: false)
                             //    NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
-                                  
+                                NSUSERDEFAULT.set("", forKey: kVideoPlay)
                                 if pendingRidetimeout == "true"{
                                     self.cancelRideStatus(rideId: kRideId)
+                                }else{
+                                    checktime()
+                                }
+                            }
+                            if rideStatusData == "NOT_CONFIRMED"{
+                             //   self.timerr = Timer.scheduledTimer(timeInterval: 120.0, target: self, selector: #selector(self.failedTimer(_:)), userInfo: nil, repeats: false)
+                            //    NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+                                NSUSERDEFAULT.set("", forKey: kVideoPlay)
+                                if pendingRidetimeout == "true"{
+                                    self.cancelRideStatus(rideId: kRideId)
+                                }else{
+                                    checktime()
                                 }
                             }
 //                            if rideStatusData == "ACCEPTED"{
@@ -794,6 +869,7 @@ extension HomeViewController {
                             
                             
                         }
+                        self.stopTimer()
                         self.ride_tableView.reloadData()
                     }
                     catch{
@@ -817,8 +893,15 @@ extension HomeViewController {
     }
     //MARK:- cancel ride popup
     func cancelButtonAlert() {
+        var msg = ""
+        if mTimerView.isHidden == true {
+             msg = "You've exceeded your cancellation window. Cancellation fee is $\(self.lastRideData?.cancellation_charge ?? "")"
+        }else{
+            msg = "If you cancel the confirmed ride after 4 min than $\(self.lastRideData?.cancellation_charge ?? "") cancellation charge will be added in your current ride. Do you want to cancel this ride?"
+        }
+        
         if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" && kRideId != "" {
-            var refreshAlert = UIAlertController(title: "Rider RideshareRates" , message: "If you cancel the confirmed ride after 4 min than $\(self.lastRideData?.cancellation_charge ?? "") cancellation charge will be added in your current ride. Do you want to cancel this ride?", preferredStyle: UIAlertController.Style.alert)
+            var refreshAlert = UIAlertController(title: "Rider RideshareRates" , message: msg, preferredStyle: UIAlertController.Style.alert)
             let titleAttributes: [NSAttributedString.Key: Any] = [
                 
                 NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 16),
@@ -830,7 +913,7 @@ extension HomeViewController {
             ]
 
             let attributedTitle = NSAttributedString(string: "Rider RideshareRates", attributes: titleAttributes)
-            let attributedMessage = NSAttributedString(string: "If you cancel the confirmed ride after 4 min than $\(self.lastRideData?.cancellation_charge ?? "") cancellation charge will be added in your current ride. Do you want to cancel this ride?", attributes: messageAttributes)
+            let attributedMessage = NSAttributedString(string: msg, attributes: messageAttributes)
 
             // Set the attributed title and message
             refreshAlert.setValue(attributedTitle, forKey: "attributedTitle")
@@ -930,6 +1013,7 @@ extension HomeViewController {
                             
                             if let result = dict!["result"] as? [String: Any] {
                                 // Access current_time and ride_created_time
+                                self.count = 0
                                 if let currentTime = result["current_time"] as? String,
                                    let rideCreatedTime = result["ride_created_time"] as? String {
                                     print("Current Time: \(currentTime)")
@@ -957,20 +1041,16 @@ extension HomeViewController {
         // Assuming you have the ride_created_time and current_time as strings
 //        let rideCreatedTimeString = "2024-01-19 12:01:34"
 //        let currentTimeString = "2024-01-19 12:14:33"
-
         // Create date formatters
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
-      
-
         // Parse the date strings
         if let rideCreatedTime = dateFormatter.date(from: rideCreatedTimeString),
            let currentTime = dateFormatter.date(from: currentTimeString) {
-            
+            stopTimer()
             // Calculate the time difference
             let timeDifference = currentTime.timeIntervalSince(rideCreatedTime)
-            
+            self.count = 0
             // Convert the time difference to seconds
             let secondsDifference = Int(timeDifference)
             self.count = secondsDifference
@@ -983,8 +1063,9 @@ extension HomeViewController {
     func timeupdate(){
      //   count = NSUSERDEFAULT.value(forKey: Ktimer) as? Int ?? 0
       //  NavigationManager.pushToLoginVC(from: self)
-        stopTimer()
+       
         DispatchQueue.main.async {
+            self.stopTimer()
             self.timerS =  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.updateTimervalue), userInfo: nil, repeats: true)
             print("1.0")
         }
@@ -1003,7 +1084,6 @@ extension HomeViewController {
         }else{
             let time = timeString(time: TimeInterval(self.count))
             DispatchQueue.main.async {
-              
                 self.mTimerLBL.text = time
                 print(time)
             }
@@ -1014,27 +1094,16 @@ extension HomeViewController {
         let hours = Int(time) / 3600
         let minutes = Int(time) / 60 % 60
         let seconds = Int(time) % 60
-        self.count = self.count + 1
+        self.count = 0
+        self.count = Int(time + 1)
         print(count)
-//        if count > 240{
-//            if lastRideData?.on_location == "YES"{
-//                timerTitle.text = "Waiting time:"
-//                mTimerView.isHidden = false
-//            }else if lastRideData?.on_location == "AT_DESTINATION"{
-//                timerTitle.text = "Waiting time:"
-//                mTimerView.isHidden = false
-//            }else{
-//                mTimerView.isHidden = true
-//            }
-//           
- //       }else{
             if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED"{
                if lastRideData?.on_location == "YES"{
                     timerTitle.text = "Waiting time:"
                     mTimerView.isHidden = false
                 }else{
                     timerTitle.text = "Cancellation time:"
-                    if count > 240{
+                    if self.count > 240{
                         stopTimer()
                         mTimerView.isHidden = true
                     }else{
@@ -1051,7 +1120,6 @@ extension HomeViewController {
                 }else{
                     mTimerView.isHidden = true
                 }
-                
             }else  if kNotificationAction == "MID_STOP" || kConfirmationAction == "MID_STOP"{
                 if self.lastRideData?.on_location == "AT_STOP"{
                     timerTitle.text = "Waiting time:"
@@ -1063,8 +1131,12 @@ extension HomeViewController {
                 stopTimer()
             }
 //        }
-        
-        return String(format:"%02i:%02i:%02i", hours, minutes, seconds)
+        if hours == 0 {
+               return String(format: "%02i:%02i", minutes, seconds)
+           } else {
+               return String(format: "%02i:%02i:%02i", hours, minutes, seconds)
+           }
+        //return String(format:"%02i:%02i:%02i", hours, minutes, seconds)
     }
 }
 extension HomeViewController : tipPopup{
@@ -1205,6 +1277,9 @@ extension HomeViewController : RideStart{
 //            }
         }else{
                 self.getLastRideDataApi()
+            self.update = true
+            locationManager.delegate = self
+            locationManager.requestWhenInUseAuthorization()
                 self.mapView.clear()
                 self.dropAddress_lbl.text = "Enter Drop Location"
                 
@@ -1236,41 +1311,24 @@ extension HomeViewController : RideStart{
             
         }
     }
-        
-    
-    
-    
 }
 extension HomeViewController: addstop{
     func addstop(totalDistance: Int?, totalDuration: Int?, addstop: String?) {
-        
-        
-        
-        
         if addstop == "ongoingadd"{
             self.chooseRide_view.isHidden = false
             self.ride_tableView.isHidden = false
             mAddStopOngoingrideView.isHidden = true
           //  addstopongoing(totalDistance: totalDistance, totalDuration: totalDuration)
             holdamountapi(totalDistance: totalDistance)
-            
-            
         }else{
-            
-            
-            locationPickUpEditStatus = true
-            locationDropUpEditStatus = true
+//            locationPickUpEditStatus = true
+//            locationDropUpEditStatus = true
             getVechilelist(totalDistance: totalDistance, totalDuration: totalDuration)
-            
         }
     }
     
     func holdamountapi(totalDistance: Int?){
      //   self.routingLines(origin: kCurrentLocaLatLongTap ,destination: kDestinationLatLongTap)
-
-      
-       
-        
         let param : [String : Any] = ["ride_id" : Int(lastRideData?.ride_id ?? "0")! as Int,
                                       "distance" : totalDistance as Any ] as [String : Any]
         

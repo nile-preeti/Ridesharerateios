@@ -78,6 +78,7 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                     
                     print("1Pickup Latitude is ===\(place.coordinate.latitude)")
                     print("1Pickup Longitude is ===\(place.coordinate.longitude)")
+                    self.locationPickUpEditStatus = true
                     //  self.convertLatLongToAddress(latitude:place.coordinate.latitude , longitude: place.coordinate.longitude)
                     //self.reverseGeocodingPickUp(marker: marker)
                     if self.pathD != "draw"{
@@ -155,6 +156,7 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                     marker.map = self.mapView
                     self.currentMarker = marker
                     // self.reverseGeocodingDropUp(marker: marker)
+                   // kCurrentLocaLatLongTap = "\(kPickUpLatFinal)" + "," + "\(kPickUpLatFinal)"
                     if kCurrentLocaLatLongTap != "" && kDestinationLatLongTap != ""{
                         if self.tapOneStatus || self.tapTwoStatus == true{
                             self.chooseRide_view.isHidden = false
@@ -218,31 +220,32 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
         func mapView(_ mapView: GMSMapView, didDrag marker: GMSMarker) {
             print("didDrag")
         }
-        func reverseGeocodingCurrent(marker: GMSMarker) {
-            let geocoder = GMSGeocoder()
-            let coordinate = CLLocationCoordinate2DMake(Double(marker.position.latitude),Double(marker.position.longitude))
-            var currentAddress = String()
-            geocoder.reverseGeocodeCoordinate(coordinate) { response , error in
-                if let address = response?.firstResult() {
-                    let lines = address.lines! as [String]
-                    print("Response Geocoding is = \(address)")
-                    print("Response Geocoding is = \(lines)")
-                    currentAddress = lines.joined(separator: "\n")
-                    
-                    DispatchQueue.main.async {
-                        NavigationManager.pushToLoginVC(from: self)
-                    }
-                    self.pickUpAddress_lbl.text = currentAddress
-                    kpickupAddress = self.pickUpAddress_lbl.text!
-                 //   kCurrentAddress = currentAddress
-                        // kCurrentAddress = currentAddress
-                    NSUSERDEFAULT.setValue("\(currentAddress)", forKey: kCurrentAddress)
-                    NSUSERDEFAULT.value(forKey: kCurrentAddress)
-                    marker.title = currentAddress
-                    marker.map = self.mapView
-                }
-            }
-        }
+//        func reverseGeocodingCurrent(marker: GMSMarker) {
+//            let geocoder = GMSGeocoder()
+//            let coordinate = CLLocationCoordinate2DMake(Double(marker.position.latitude),Double(marker.position.longitude))
+//            var currentAddress = String()
+//            geocoder.reverseGeocodeCoordinate(coordinate) { response , error in
+//                if let address = response?.firstResult() {
+//                    let lines = address.lines! as [String]
+//                    print("Response Geocoding is = \(address)")
+//                    print("Response Geocoding is = \(lines)")
+//                    
+//                    currentAddress = lines.joined(separator: "\n")
+//                    
+//                    DispatchQueue.main.async {
+//                        NavigationManager.pushToLoginVC(from: self)
+//                    }
+//                    self.pickUpAddress_lbl.text = currentAddress
+//                    kpickupAddress = self.pickUpAddress_lbl.text!
+//                 //   kCurrentAddress = currentAddress
+//                        // kCurrentAddress = currentAddress
+//                    NSUSERDEFAULT.setValue("\(currentAddress)", forKey: kCurrentAddress)
+//                    NSUSERDEFAULT.value(forKey: kCurrentAddress)
+//                    marker.title = currentAddress
+//                    marker.map = self.mapView
+//                }
+//            }
+//        }
         func routingLines(origin: String,destination: String){
             print("PICK UP LAT LONG======\(origin)")
             print("DROP LAT LONG======\(destination)")
@@ -275,29 +278,36 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                             // Handle parsing error or invalid response
                             return
                         }
+                        self.mapView.clear()
                         print(distanceValue)
                         let time = self.formatSecondsToTime(seconds: durationValue)
                         self.timeD = String(time)
                         let totalmiles = Double(distanceValue) * 0.000621371
                         let roundedNumber = (totalmiles * 10).rounded() / 10
                         self.Dmiles = String(roundedNumber)
+                        if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED"{
+                            NSUSERDEFAULT.set(self.timeD, forKey: ktimeDis)
+                            NSUSERDEFAULT.set(self.Dmiles, forKey: kmilesDis)
+                            DispatchQueue.main.async {
+                                self.ride_tableView.reloadData()
+                            }
+                        }else{
+                            NSUSERDEFAULT.set(0, forKey: ktimeDis)
+                            NSUSERDEFAULT.set(0.0, forKey: kmilesDis)
+                        }
+                            
                         self.picktodropDistance = distanceValue
                         self.picktodropDuration = durationValue
-                        if self.pickvalue == "nil"{
-                            self.getVechileTypeApi()
-                            self.pickvalue = ""
-                        }
                         
-                        if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED"{
-                                      self.getLastRideDataApi()
-                                    }
+//                        if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED"{
+//                                      self.getLastRideDataApi()
+//                                    }
                     //    self.getVechileTypeApi()
                         // Decode the polyline points
                         let path = GMSPath(fromEncodedPath: points)
-                        
                         // Remove existing polyline from the map if it exists
                         self.polyline?.map = nil
-                        
+                       
                         // Create a new GMSPolyline and add it to the map
                         let newPolyline = GMSPolyline(path: path)
                         newPolyline.strokeColor = #colorLiteral(red: 0.9921568627, green: 0.9607843137, blue: 0.6901960784, alpha: 1)
@@ -307,6 +317,12 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                         let bounds = GMSCoordinateBounds(path: path!)
                         let update = GMSCameraUpdate.fit(bounds, withPadding: 50.0)
                         self.mapView.animate(with: update)
+                       
+
+                        if self.pickvalue == "nil"{
+                            self.getVechileTypeApi()
+                            self.pickvalue = ""
+                        }
                         
                     case .failure(let error):
                        
@@ -315,13 +331,25 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
                 }
         }
     func formatSecondsToTime(seconds: Int) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute, .second]
-        formatter.unitsStyle = .positional
-        formatter.zeroFormattingBehavior = .pad
+//        let formatter = DateComponentsFormatter()
+//        formatter.allowedUnits = [.hour, .minute, .second]
+//        formatter.unitsStyle = .positional
+//        formatter.zeroFormattingBehavior = .pad
+//
+//        let formattedString = formatter.string(from: TimeInterval(seconds)) ?? "00:00:00"
+        let hours = seconds / 3600
+           let minutes = (seconds % 3600) / 60
+           let seconds = seconds % 60
 
-        let formattedString = formatter.string(from: TimeInterval(seconds)) ?? "00:00:00"
-        return formattedString
+        
+        if hours > 0 {
+               return String(format: "%02d:%02d:%02d ", hours, minutes, seconds)
+           } else {
+               return String(format: "%02d", minutes)
+           }
+        
+        
+     //   return formattedString
     }
         func convertStringToCoordinates(_ coordinatesString: String) -> CLLocationCoordinate2D? {
             let coordinateComponents = coordinatesString.components(separatedBy: ",")
@@ -364,7 +392,7 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
     //    }
     }
     //MARK:- Get User Location
-    extension HomeViewController: CLLocationManagerDelegate{
+extension HomeViewController: CLLocationManagerDelegate{
     //    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
     //        let location = locations.last! as CLLocation
     //        if self.update == true{
@@ -391,97 +419,148 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
     //
     //    }
     //
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            let location = locations.last! as CLLocation
-            let myLocation = CLLocationCoordinate2DMake(location.coordinate.latitude,location.coordinate.longitude)
-            let geocoder = CLGeocoder()
-            if self.update == true{
-                kPickLatTap = "\(location.coordinate.latitude)"
-                kPickLongTap = "\(location.coordinate.longitude)"
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.last! as CLLocation
+        let myLocation = CLLocationCoordinate2DMake(location.coordinate.latitude,location.coordinate.longitude)
+        
+        
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        let geocoder = CLGeocoder()
+        if self.update == true{
+            kPickLatTap = "\(location.coordinate.latitude)"
+            kPickLongTap = "\(location.coordinate.longitude)"
+            kCurrentLocaLat = "\(location.coordinate.latitude)"
+            kCurrentLocaLong = "\(location.coordinate.longitude)"
+            NSUSERDEFAULT.setValue("\(location.coordinate.latitude)", forKey: kCurrentLat)
+            NSUSERDEFAULT.setValue("\(location.coordinate.longitude)", forKey: kCurrentLong)
+            if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" || kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE"{
+                // self.marker.map = nil
                 
-                NSUSERDEFAULT.setValue("\(location.coordinate.latitude)", forKey: kCurrentLat)
-                NSUSERDEFAULT.setValue("\(location.coordinate.longitude)", forKey: kCurrentLong)
-                if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" || kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE"{
-                   // self.marker.map = nil
-                    
-                }else{
-                    DispatchQueue.main.async {
-                        self.getNearbyDrivers()
-                    }
+            }else{
+                DispatchQueue.main.async {
+                    self.getNearbyDrivers()
                 }
-                kCurrentLocaLatLong = "\(location.coordinate.latitude)" + "," + "\(location.coordinate.longitude)"
-                kCurrentLocaLat   = "\(location.coordinate.latitude)"
-                kCurrentLocaLong   = "\(location.coordinate.longitude)"
-                kCurrentLocaLatLongTap = "\(location.coordinate.latitude)" + "," + "\(location.coordinate.longitude)"
-                self.convertLatLongToAddress(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-                kPickUpLatFinal = "\(location.coordinate.latitude)"
-                kPickUpLongFinal = "\(location.coordinate.longitude)"
-                if self.pathD != "draw"{
-                    let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 18.0)
-                    self.mapView.camera = camera
-                  //  self.mHomeMApV.camera = camera
-                }
-                mapView.isMyLocationEnabled = true
-                self.mapView.settings.myLocationButton = true
-                // Creates a marker in the center of the map.
-                marker.map = self.mapView
-                self.update = false
             }
-        }
-       
-       
-        func convertLatLongToAddress(latitude:Double, longitude:Double) {
-            locationPickUpEditStatus = true
-
-            let geoCoder = CLGeocoder()
-            let location = CLLocation(latitude: latitude, longitude: longitude)
-            geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
-
-                var placeMark: CLPlacemark!
-                placeMark = placemarks?[0]
-
-                if placeMark != nil {
-                    var addressString : String = ""
-                    if (placeMark.subThoroughfare != nil) {
-                        addressString = addressString + placeMark.subThoroughfare! + ", "
-                    }
-                    if placeMark.thoroughfare != nil {
-                        addressString = addressString + placeMark.thoroughfare! + ", "
-                    }
-                    if placeMark.subLocality != nil {
-                        addressString = addressString + placeMark.subLocality! + ", "
-                    }
-                    if placeMark.locality != nil {
-                        addressString = addressString + placeMark.locality! + ", "
-                    }
-                    if placeMark.country != nil {
-                        addressString = addressString + placeMark.country! + ", "
-                    }
-                    if placeMark.postalCode != nil {
-                        addressString = addressString + placeMark.postalCode! + " "
-                    }
-                    print(addressString)
-                    self.pickUpAddress_lbl.text =  addressString
-                    kpickupAddress = self.pickUpAddress_lbl.text!
-                    //NSUSERDEFAULT.setValue("\(addressString)", forKey: kCurrentAddress1)
-
-                    NSUSERDEFAULT.setValue("\(addressString)", forKey: kCurrentAddress)
-                  //  self.getNearbyDrivers()
-                    kCurrentAddressMarker = addressString
-                    print(placeMark.country as Any)
-                    print(placeMark.locality as Any)
-                    print(placeMark.subLocality as Any)
-                    print(placeMark.thoroughfare as Any)
-                    print(placeMark.postalCode as Any)
-                    print(placeMark.subThoroughfare as Any)
-                    
-                    print("CURRENT ADDRESS IS HERE==\(addressString)")
-                    self.pickUpAddress_lbl.text = addressString
-                    kpickupAddress = self.pickUpAddress_lbl.text!
-                    // labelText gives you the address of the place
+            kCurrentLocaLatLong = "\(location.coordinate.latitude)" + "," + "\(location.coordinate.longitude)"
+            kCurrentLocaLat = "\(location.coordinate.latitude)"
+            kCurrentLocaLong = "\(location.coordinate.longitude)"
+            kCurrentLocaLatLongTap = "\(location.coordinate.latitude)" + "," + "\(location.coordinate.longitude)"
+            // kCurrentLocaLatLongTap
+            
+            
+            //  let geocoder = CLGeocoder()
+            geocoder.reverseGeocodeLocation(location) { placemarks, error in
+                guard let placemark = placemarks?.first, error == nil else {
+                    print("Error fetching address: \(error?.localizedDescription ?? "Unknown error")")
+                    return
                 }
-            })
+                
+                // Extract address details
+                let name =  placemark.name ?? ""
+                let houseNumber = placemark.subThoroughfare ?? ""
+                let street = placemark.thoroughfare ?? ""
+                let city = placemark.locality ?? ""
+                let state = placemark.administrativeArea ?? ""
+                let postalCode = placemark.postalCode ?? ""
+                let country = placemark.country ?? ""
+                
+                
+                let address = "\(name) \(houseNumber) \(street)  \(city), \(state), \(postalCode), \(country)"
+                print(address)
+                NSUSERDEFAULT.setValue("\(address)", forKey: kpCurrentAdd)
+                NSUSERDEFAULT.setValue("\(location.coordinate.latitude)", forKey: kpCurrentAddLAT)
+                NSUSERDEFAULT.setValue("\(location.coordinate.longitude)", forKey: kpCurrentAddLONG)
+
+                // Set the address to the label
+                DispatchQueue.main.async {
+                    self.pickUpAddress_lbl.text = address
+                    kpickupAddress = self.pickUpAddress_lbl.text!
+                }
+                
+                // self.pickUpAddress_lbl.text =
+                
+            }
+            //self.convertLatLongToAddress(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            kCurrentLocaLat = "\(location.coordinate.latitude)"
+            kCurrentLocaLong = "\(location.coordinate.longitude)"
+            kPickUpLatFinal = "\(location.coordinate.latitude)"
+            kPickUpLongFinal = "\(location.coordinate.longitude)"
+            if self.pathD != "draw"{
+                let camera = GMSCameraPosition.camera(withLatitude: location.coordinate.latitude, longitude: location.coordinate.longitude, zoom: 18.0)
+                self.mapView.camera = camera
+                //  self.mHomeMApV.camera = camera
+            }
+            self.mapView.isMyLocationEnabled = true
+            self.mapView.settings.myLocationButton = true
+            // Creates a marker in the center of the map.
+            self.marker.map = self.mapView
+            self.update = false
+            
         }
+    }
+}
+       
+       
+//        func convertLatLongToAddress(latitude:Double, longitude:Double) {
+//            locationPickUpEditStatus = true
+//
+//            let geoCoder = CLGeocoder()
+//            let location = CLLocation(latitude: latitude, longitude: longitude)
+//            geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) -> Void in
+//
+//                var placeMark: CLPlacemark!
+//                placeMark = placemarks?[0]
+//
+//                if placeMark != nil {
+//                    var addressString : String = ""
+//                    if (placeMark.subThoroughfare != nil) {
+//                        addressString = addressString + placeMark.subThoroughfare! + ", "
+//                    }
+//                    if placeMark.thoroughfare != nil {
+//                        addressString = addressString + placeMark.thoroughfare! + ", "
+//                    }
+//                    if placeMark.subLocality != nil {
+//                        addressString = addressString + placeMark.subLocality! + ", "
+//                    }
+//                    if placeMark.locality != nil {
+//                        addressString = addressString + placeMark.locality! + ", "
+//                    }
+//                    if placeMark.country != nil {
+//                        addressString = addressString + placeMark.country! + ", "
+//                    }
+//                    if placeMark.postalCode != nil {
+//                        addressString = addressString + placeMark.postalCode! + " "
+//                    }
+//                    
+//                    
+//                    
+//                    
+//                    
+//                    
+//                    
+//                    
+//                    print(addressString)
+//                    self.pickUpAddress_lbl.text =  addressString
+//                    kpickupAddress = self.pickUpAddress_lbl.text!
+//                    //NSUSERDEFAULT.setValue("\(addressString)", forKey: kCurrentAddress1)
+//
+//                    NSUSERDEFAULT.setValue("\(addressString)", forKey: kCurrentAddress)
+//                  //  self.getNearbyDrivers()
+//                    kCurrentAddressMarker = addressString
+//                    print(placeMark.country as Any)
+//                    print(placeMark.locality as Any)
+//                    print(placeMark.subLocality as Any)
+//                    print(placeMark.thoroughfare as Any)
+//                    print(placeMark.postalCode as Any)
+//                    print(placeMark.subThoroughfare as Any)
+//                    
+//                    print("CURRENT ADDRESS IS HERE==\(addressString)")
+//                    self.pickUpAddress_lbl.text = addressString
+//                    kpickupAddress = self.pickUpAddress_lbl.text!
+//                    // labelText gives you the address of the place
+//                }
+//            })
+//        }
         
         
 //        func convertLatLongToAddressDrop(latitude:Double, longitude:Double) {
@@ -535,5 +614,5 @@ extension HomeViewController: GMSAutocompleteViewControllerDelegate ,GMSMapViewD
 //                }
 //            })
 //        }
-    }
+ //   }
 

@@ -83,43 +83,42 @@ class SignUpViewController: UIViewController {
         mIssueDateTF.delegate = self
         mExpirydateTF.delegate = self
         //        dOBTF.delegate = self
-        
-      //  updateAppVersionPopup()
+        updateAppVersionPopup()
     }
         // MARK: Check AppVersion
-          func updateAppVersionPopup() {
-            guard let appStoreURL = URL(string: "http://itunes.apple.com/lookup?bundleId=com.riderRideshare.app") else {
-                return
-            }
-            let task = URLSession.shared.dataTask(with: appStoreURL) { (data, response, error) in
-                if let error = error {
-                    print("Error: \(error.localizedDescription)")
-                    return
-                }
-                
-                guard let data = data else {
-                    return
-                }
-                
-                do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                       let results = json["results"] as? [[String: Any]],
-                       let appStoreVersion = results.first?["version"] as? String,
-                       let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
-                        
-                        if appStoreVersion != currentVersion {
-                            DispatchQueue.main.async {
-                                self.showUpdatePopup()
-                            }
-                        }
-                    }
-                } catch {
-                    print("Error parsing JSON: \(error.localizedDescription)")
-                }
-            }
-            task.resume()
-        }
-        func showUpdatePopup() {
+          func updateAppVersionPopup(){
+              guard let appStoreURL = URL(string: "https://itunes.apple.com/lookup?bundleId=com.riderRideshare.app") else {
+                  return
+              }
+              let task = URLSession.shared.dataTask(with: appStoreURL) { (data, response, error) in
+                  if let error = error {
+                      print("Error: \(error.localizedDescription)")
+                      return
+                  }
+                  
+                  guard let data = data else {
+                      return
+                  }
+                  
+                  do {
+                      if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                         let results = json["results"] as? [[String: Any]],
+                         let appStoreVersion = results.first?["version"] as? String,
+                         let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
+                          
+                          if appStoreVersion != currentVersion {
+                              DispatchQueue.main.async {
+                                  self.showUpdatePopup()
+                              }
+                          }
+                      }
+                  } catch {
+                      print("Error parsing JSON: \(error.localizedDescription)")
+                  }
+              }
+              task.resume()
+          }
+        func showUpdatePopup(){
             let alertController = UIAlertController(title: "New Version Available", message: "Please update to the latest version of the app.", preferredStyle: .alert)
        // https://apps.apple.com/in/app/rider-ridesharerates/id6476266125
             let updateAction = UIAlertAction(title: "Update", style: .cancel) { (_) in

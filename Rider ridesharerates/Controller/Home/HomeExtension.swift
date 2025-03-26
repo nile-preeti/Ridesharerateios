@@ -11,12 +11,8 @@ import GoogleMaps
 import GooglePlaces
 import CoreLocation
 import Alamofire
-
 //MARK:- Side Table View Datasource
-
 extension HomeViewController: UITableViewDataSource{
-    
-    
 //    func numberOfSections(in tableView: UITableView) -> Int {
 //      //  if tableView == mSecTableV{
 //            return sectionTitles.count
@@ -40,10 +36,10 @@ extension HomeViewController: UITableViewDataSource{
         if kNotificationAction == "ACCEPTED"  || kConfirmationAction == "ACCEPTED" && kRideId != "" {
             self.chooseRide_view.isHidden = false
             self.mtopviewwithlocation.isHidden = true
-            if popupheight == "full"{
-                self.chooseRideViewHeight_const.constant = 350
+            if self.popupheight == "full"{
+                self.chooseRideViewHeight_const.constant = 420
             }else{
-                self.chooseRideViewHeight_const.constant = 200
+                self.chooseRideViewHeight_const.constant = 120
             }
             
             chooseLbl.text = ""
@@ -169,9 +165,9 @@ extension HomeViewController: UITableViewDataSource{
         //    }
         
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            let modalData = lastRideData
-            self.mTimerView.isHidden = true
-            self.stopTimer()
+            let modalData = self.lastRideData
+          //  self.mTimerView.isHidden = true
+          //  self.stopTimer()
             //        if tableView == mSecTableV{
             //            let cell = tableView.dequeueReusableCell(withIdentifier: "HomeSectionsTableViewCellID", for: indexPath) as! HomeSectionsTableViewCell
             //
@@ -181,6 +177,10 @@ extension HomeViewController: UITableViewDataSource{
             //                return cell
             //        }else
               if kNotificationAction == "NOT_CONFIRMED" || kConfirmationAction == "NOT_CONFIRMED" || kNotificationAction == "PENDING" || kConfirmationAction == "PENDING" {
+                  // VideoPlay = "done"
+                  mTimerView.isHidden = true
+                   NSUSERDEFAULT.set("", forKey: kVideoPlay)
+                  self.chooseRide_view.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
                 let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "DriverConfirmationCell", for: indexPath) as! DriverConfirmationCell
                 cell.time = 1.0
                 cell.progress = 0.0
@@ -192,12 +192,14 @@ extension HomeViewController: UITableViewDataSource{
                 return cell
             }else if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" && kRideId != "" {
                 let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "CallDriverCell", for: indexPath) as! CallDriverCell
-                
+            //    mTimerView.isHidden = true
+               // self.chooseRide_view.backgroundColor = .clear
                 if modalData?.on_location == "YES"{
                     self.mTimerView.isHidden = false
                   //  mTimerLBL.text = "waiting time on "
                     cell.cancelDriverBtn.isHidden = true
                     timerTitle.text = "Waiting time:"
+                    self.count = 0
                     let seccount = Int((modalData?.totaltimeDiffrence)!)
                     self.count = seccount!
                     timeupdate()
@@ -210,7 +212,10 @@ extension HomeViewController: UITableViewDataSource{
                     self.getTime()
                 }
                 
-                if NSUSERDEFAULT.value(forKey: kVideoPlay) as! String == "" {
+                if NSUSERDEFAULT.value(forKey: kVideoPlay) as? String == nil || NSUSERDEFAULT.value(forKey: kVideoPlay) as? String == "" {
+//                    if self.pathdrawtimer == ""{
+//                        getDriverLatLong(driverName: modalData?.driver_name ?? "", RideID: modalData?.driver_id ?? "")
+//                    }
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
                     let LaunchVC = storyboard.instantiateViewController(withIdentifier: "LaunchVCID") as! LaunchVC
                     LaunchVC.screen = "home"
@@ -220,17 +225,23 @@ extension HomeViewController: UITableViewDataSource{
                    // self.navigationController?.pushViewController(LaunchVC, animated: true)
                 }else{
                     
+                    if self.pathdrawtimer == ""{
+                        getDriverLatLong(driverName: modalData?.driver_name ?? "", RideID: modalData?.driver_id ?? "")
+                        if modalData?.driver_name ?? "" == ""{
+                            getLastRideDataApi()
+                        }
+                    }
                     cell.callDriverBtn.addTarget(self, action: #selector(callDriverBtnAction), for: .touchUpInside)
                     cell.mPopupMinMaxPopup.tag = indexPath.row
                     cell.mPopupMinMaxPopup.addTarget(self, action: #selector(popupExtend(sender:)), for: .touchUpInside)
-                    /// cell.mPopupMinMaxPopup.addTarget(self, action: #selector(popupExtend), for: .touchUpInside)
-//                    if popupheight == "full"{
-//                        cell.mViewHeight.constant = 120
-//                        cell.mPopupVieww.isHidden = false
-//                    }else{
-//                        cell.mViewHeight.constant = 0
-//                        cell.mPopupVieww.isHidden = true
-//                    }
+                    // cell.mPopupMinMaxPopup.addTarget(self, action: #selector(popupExtend), for: .touchUpInside)
+                    if popupheight == "full"{
+                        cell.mViewHeight.constant = 288
+                        cell.mPopupVieww.isHidden = false
+                    }else{
+                        cell.mViewHeight.constant = 0
+                        cell.mPopupVieww.isHidden = true
+                    }
                     cell.cancelDriverBtn.addTarget(self, action: #selector(cancelDriverCallBtnAction), for: .touchUpInside)
                     cell.mAddSTopBTN.addTarget(self, action: #selector(addstopBtnAction), for: .touchUpInside)
                     // cell.vehicleImageView.sd_setImage(with:URL(string: modalData?.user_profile_pic ?? "" ), placeholderImage: UIImage(named: "profile"), completed: nil)
@@ -244,15 +255,23 @@ extension HomeViewController: UITableViewDataSource{
                         cell.driverNameLabel.text = modalData?.driver_lastname ?? ""
                     }
                     //  if timeD != ""{
-                    cell.timeLabel.text = timeD + " hrs"
+                    cell.timeLabel.text = NSUSERDEFAULT.value(forKey: ktimeDis) as? String ?? ""
+                    
                     //                }else{
                     //                    cell.timeLabel.text =  modalData?.total_time ?? ""
                     //                }
                     //   cell.distanceLabel.text  = "\(modalData?.total_distance ?? "")" + "les"
                  //   0.621371
-                    cell.distanceLabel.text  = Dmiles + " miles"
-                    cell.driverRatingLabel.text =  modalData?.total_rating ?? ""
-                    cell.mUserNAme.text = kVehicle_no
+                    cell.distanceLabel.text  =  NSUSERDEFAULT.value(forKey: kmilesDis) as? String ?? ""
+                    cell.driverRatingLabel.text =  modalData?.total_rating ?? "0"
+                    
+                    if kVehicle_no != ""{
+                        cell.mUserNAme.text = kVehicle_no
+                    }else{
+                        cell.mUserNAme.text = modalData?.vehicle_no ?? "0"
+                    }
+                    
+                   
                     driverNumber =   modalData?.mobile ?? ""
                     self.pickupBtn.isUserInteractionEnabled = false
                     self.dropBtn.isUserInteractionEnabled = false
@@ -290,25 +309,23 @@ extension HomeViewController: UITableViewDataSource{
 //                return cell
 //              
             }else  if kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE" && kRideId != "" {
-                
-              
-                
+                self.chooseRide_view.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
+             //   self.chooseRide_view.backgroundColor =
+                mTimerView.isHidden = true
                 let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "RideOnWayCell", for: indexPath) as! RideOnWayCell
-                
-                
-                
-                
                 // VideoPlay = "done"
                  NSUSERDEFAULT.set("", forKey: kVideoPlay)
                  if modalData?.on_location == "AT_DESTINATION"{
                      self.mTimerView.isHidden = false
                     // mTimerLBL.text = "waiting time on "
                      timerTitle.text = "Waiting time:"
+                     self.count = 0
                      let seccount = Int((modalData?.totaltimeDiffrenceOnDrop)!)
                      self.count = seccount!
                      timeupdate()
                    //  cell.startRecordingBtn.isHidden = true
                  }else{
+                     mTimerView.isHidden = true
                     // cell.startRecordingBtn.isHidden = false
                      if self.pathdrawtimer == ""{
                          getDriverLatLong(driverName: modalData?.driver_name ?? "", RideID: modalData?.driver_id ?? "")
@@ -328,14 +345,17 @@ extension HomeViewController: UITableViewDataSource{
                 cell.startRecordingBtn.addTarget(self, action: #selector(addstopBtnAction), for: .touchUpInside)
                 return cell
             }else  if kNotificationAction == "MID_STOP" || kConfirmationAction == "MID_STOP" && kRideId != ""{
-                
+                self.chooseRide_view.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
                 if self.lastRideData?.on_location == "AT_STOP"{
                     self.mTimerView.isHidden = false
                    // mTimerLBL.text = "waiting time on "
                     timerTitle.text = "Waiting time:"
+                    self.count = 0
                     let seccount = Int((modalData?.timeDiffrenceOnStop)!)
                     self.count = seccount!
                     timeupdate()
+                }else{
+                    mTimerView.isHidden = true
                 }
                 let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "RideOnWayCell", for: indexPath) as! RideOnWayCell
                 
@@ -355,6 +375,8 @@ extension HomeViewController: UITableViewDataSource{
                 
                 
             } else  if kNotificationAction == "FEEDBACK" || kConfirmationAction == "FEEDBACK"{
+                mTimerView.isHidden = true
+                self.chooseRide_view.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
                 let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "RideCompletedCell", for: indexPath) as! RideCompletedCell
                 cell.rateView.delegate = self
                 cell.rateView.maxCount = 5
@@ -371,6 +393,8 @@ extension HomeViewController: UITableViewDataSource{
                 self.dropBtnCancel.isUserInteractionEnabled = false
                 return cell
             }else{
+                mTimerView.isHidden = true
+                self.chooseRide_view.backgroundColor = #colorLiteral(red: 0.1490196078, green: 0.1490196078, blue: 0.1490196078, alpha: 0.96)
                 self.mapView.clear()
               //  self.dropAddress_lbl.text = "Enter Drop Location"
                 let cell = self.ride_tableView.dequeueReusableCell(withIdentifier: "SideMenuTableViewCell", for: indexPath) as! SideMenuTableViewCell
@@ -458,19 +482,19 @@ extension HomeViewController: UITableViewDataSource{
         
         if sender.currentImage == UIImage(systemName: "minus.square.fill"){
             popupheight = "half"
-            self.chooseRideViewHeight_const.constant = 200
+          //  self.chooseRideViewHeight_const.constant = 130
             sender.setImage(UIImage(systemName: "arrow.up.left.and.arrow.down.right.circle.fill"), for: .normal)
-            cell.mViewHeight.constant = 0
-            cell.mPopupVieww.isHidden = true
+//            cell.mViewHeight.constant = 0
+//            cell.mPopupVieww.isHidden = true
             
         }else{
             popupheight = "full"
-            self.chooseRideViewHeight_const.constant = 350
-           
-            cell.mViewHeight.constant = 120
-            cell.mPopupVieww.isHidden = false
+          //  self.chooseRideViewHeight_const.constant = 420
+//            cell.mViewHeight.constant = 288
+//            cell.mPopupVieww.isHidden = false
             sender.setImage(UIImage(systemName: "minus.square.fill"), for: .normal)
         }
+        ride_tableView.reloadData()
         
 //            if popupheight == "full"{
 //                self.chooseRideViewHeight_const.constant = 350
@@ -486,7 +510,7 @@ extension HomeViewController: UITableViewDataSource{
 //        }
         
         
-      //  ride_tableView.reloadData()
+      //
       //  getLastRideDataApi()
         
     }
@@ -539,7 +563,7 @@ extension HomeViewController: UITableViewDataSource{
         self.cancelButtonAlert()
     }
     @objc func addstopBtnAction(){
-        getLastRideDataApi()
+       // getLastRideDataApi()
         if lastRideData?.Stops?.count != 0{
           //  cell.mAddSTopBTN.us
             self.showAlert("Rider RideshareRates", message: "You have already added a stop.")
@@ -662,6 +686,7 @@ extension HomeViewController: UITableViewDelegate{
     }
 }
 extension HomeViewController: launchvc{
+    
     func launchvc() {
         getLastRideDataApi()
     }

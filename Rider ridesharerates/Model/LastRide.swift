@@ -43,6 +43,7 @@ struct LastRideModal : Codable {
     let profile_pic : String?
     let user_profile_pic : String?
     let total_rating : String?
+    let vehicle_no : String?
     let total_driver_ride : String?
     let latitude : String?
     let user_name : String?
@@ -60,6 +61,7 @@ struct LastRideModal : Codable {
         case ride_id = "ride_id"
         case user_id = "user_id"
         case Stops = "stops"
+        case vehicle_no = "vehicle_no"
         case timeDiffrenceOnStop = "timeDiffrenceOnStop"
         case totaltimeDiffrenceOnDrop = "totaltimeDiffrenceOnDrop"
         case totaltimeDiffrence = "totaltimeDiffrence"
@@ -110,6 +112,7 @@ struct LastRideModal : Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         totaltimeDiffrenceOnDrop = try values.decodeIfPresent(String.self, forKey: .totaltimeDiffrenceOnDrop)
         totaltimeDiffrence = try values.decodeIfPresent(String.self, forKey: .totaltimeDiffrence)
+        vehicle_no = try values.decodeIfPresent(String.self, forKey: .vehicle_no)
         timeDiffrenceOnStop = try values.decodeIfPresent(String.self, forKey: .timeDiffrenceOnStop)
         driver_lastname = try values.decodeIfPresent(String.self, forKey: .driver_lastname)
         on_location = try values.decodeIfPresent(String.self, forKey: .on_location)

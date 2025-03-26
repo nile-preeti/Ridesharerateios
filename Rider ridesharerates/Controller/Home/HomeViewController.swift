@@ -33,7 +33,6 @@ class HomeViewController: UIViewController {
     @IBOutlet var mAddStopOngoingrideView: UIView!
     @IBOutlet var mdropLocLBL: UILabel!
     @IBOutlet weak var emergncyBTN: UIButton!
-    
     @IBOutlet var timerTitle : UILabel!
     @IBOutlet var mTimerView: UIView!
     @IBOutlet var mtopviewwithlocation : UIView!
@@ -128,6 +127,8 @@ class HomeViewController: UIViewController {
     var polyline: GMSPolyline?
     var dMarker = GMSMarker()
     var Dtime = 0.0
+    
+    var pendingTime = 0 
     //map
     var pendingRidetimeout = ""
     var initialCameraPosition: GMSCameraPosition?
@@ -155,7 +156,7 @@ class HomeViewController: UIViewController {
     //MARK:- Default Func
     override func viewDidLoad() {
         super.viewDidLoad()
-      //  updateAppVersionPopup()
+        updateAppVersionPopup()
         
         
         
@@ -315,7 +316,7 @@ class HomeViewController: UIViewController {
     }
     // MARK: Check AppVersion
       func updateAppVersionPopup() {
-        guard let appStoreURL = URL(string: "http://itunes.apple.com/lookup?bundleId=com.riderRideshare.app") else {
+        guard let appStoreURL = URL(string: "https://itunes.apple.com/lookup?bundleId=com.riderRideshare.app") else {
             return
         }
         let task = URLSession.shared.dataTask(with: appStoreURL) { (data, response, error) in
@@ -466,18 +467,19 @@ class HomeViewController: UIViewController {
                 }
             })
             //  }
-        }
-        if pathdrawtimer == ""{
-            pathdrawtimer = "hit"
-            DispatchQueue.main.asyncAfter(deadline: .now() + 120.0) {
-                if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" || kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE"{
-                    self.pathdrawtimer = ""
-                        self.getDriverLatLong(driverName: driverName,RideID: RideID)
-                   
+            if self.pathdrawtimer == ""{
+                self.pathdrawtimer = "hit"
+                DispatchQueue.main.asyncAfter(deadline: .now() + 25.0) {
+                    if kNotificationAction == "ACCEPTED" || kConfirmationAction == "ACCEPTED" || kNotificationAction == "START_RIDE" || kConfirmationAction == "START_RIDE"{
+                        self.pathdrawtimer = ""
+                            self.getDriverLatLong(driverName: driverName,RideID: RideID)
+                        }
                     }
                 }
-               
-            }
+        }else{
+            getLastRideDataApi()
+        }
+       
         
         
     }
@@ -797,24 +799,31 @@ class HomeViewController: UIViewController {
     }
     @objc func failedTimer(_ timer: Timer){
         print("Failded Timer Start")
-        var timerCountStatus = false
-        if kRideId != "" && timerCountStatus == true {
-            print("work 3 minutes more")
-            timerCountStatus = false
-        }
-        if kRideId != "" && timerCountStatus == false {
-            print("work 3 minutes")
-            timerCountStatus = true
+//        var timerCountStatus = false
+//        if kRideId != "" && timerCountStatus == true {
+//            print("work 3 minutes more")
+//            timerCountStatus = false
+//        }
+//        if kRideId != "" && timerCountStatus == false {
+//            print("work 3 minutes")
+//            timerCountStatus = true
             
             
-            if  kNotificationAction == "PENDING" && kConfirmationAction == "PENDING" {
+            if  kNotificationAction == "PENDING" && kConfirmationAction == "PENDING"  {
                // self.getLastRideDataApi()
                 pendingRidetimeout = "true"
                 self.getLastRideDataApi()
                // self.cancelRideStatus(rideId: kRideId)
             }
-            
+        
+        if  kNotificationAction == "NOT_CONFIRMED" && kConfirmationAction == "NOT_CONFIRMED"  {
+           // self.getLastRideDataApi()
+            pendingRidetimeout = "true"
+            self.getLastRideDataApi()
+           // self.cancelRideStatus(rideId: kRideId)
         }
+            
+     //  }
     }
     
     @IBAction func mHelpBTN(_ sender: Any) {
@@ -847,6 +856,9 @@ class HomeViewController: UIViewController {
         vc.delegate = self
         vc.ongoing = "ongoingadd"
       //  kdroploc = (lastRideData?.drop_address)!
+        
+        NSUSERDEFAULT.set((lastRideData?.pickup_adress)!, forKey: OGCurrentAdd)
+
         NSUSERDEFAULT.set((lastRideData?.drop_address)!, forKey: kdroploc)
         
        // kCurrentAddress = (lastRideData?.pickup_adress)!
@@ -987,6 +999,9 @@ extension HomeViewController {
         marker.map = nil
         polyLine.map = nil
         let autocompleteController = GMSAutocompleteViewController()
+        let filter = GMSAutocompleteFilter()
+        filter.type = .noFilter
+        autocompleteController.autocompleteFilter = filter
         autocompleteController.delegate = self
         autocompleteController.primaryTextColor = UIColor.lightGray
         autocompleteController.primaryTextHighlightColor = UIColor.white

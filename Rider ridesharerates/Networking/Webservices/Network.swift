@@ -9,30 +9,23 @@
 import Foundation
 import UIKit
 import Alamofire
-
 enum methodType {
     case POST,GET
 }
-var baseURL = "https://app.ridesharerates.com/"
-//var baseURL = "https://app.ridesharerates.com/staging_ridesharerates/"
+//var baseURL = "https://app.ridesharerates.com/"
+var baseURL = "https://app.ridesharerates.com/staging_ridesharerates/"
 //var baseURL = "https://app.ridesharerates.com/development/"
 var imgURL = "https://promatics.xyz/azy/public/images/product/"
 var profileImg = "https://promatics.xyz/azy/public/images/profile/"
-
 //"http://13.233.185.124/azy/public/images/product/"
-
-
 var chatImgUrl = ""
 var pdfURL = ""
-
-
-class Connectivity {
+class Connectivity{
     class var isConnectedToInternet:Bool {
         return NetworkReachabilityManager()!.isReachable
     }
 }
-
-class webservices {
+class webservices{
     init(){}
     var responseCode = 0;
     var connectionError = ""
@@ -879,19 +872,12 @@ class webservices {
     //    }
     
 }
-
 extension UIImageView {
-    
     func downLoadImage(ImageURL: String , PlaceholderImage: UIImage) {
-        
         self.image = PlaceholderImage
-        
         self.accessibilityHint = (imgURL + ImageURL).replacingOccurrences(of: " ", with: "%20")
-        
         //print(imgURL + ImageURL)
-        
         AF.request((imgURL + ImageURL).replacingOccurrences(of: " ", with: "%20")).responseData { (response) in
-            
             if "\(response.request!)" == self.accessibilityHint {
                 
                 if response.error == nil {
@@ -966,6 +952,5 @@ extension UIImageView {
             }
         }
     }
-    
 }
 

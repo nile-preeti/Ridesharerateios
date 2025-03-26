@@ -138,6 +138,7 @@
 		848D399A2AF5213A002F03FB /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 848D39992AF5213A002F03FB /* FirebaseStorage */; };
 		8491F5442BFE054A0048A1E7 /* addStopVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491F5432BFE054A0048A1E7 /* addStopVC.swift */; };
 		8491F5462BFE05840048A1E7 /* addStopTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8491F5452BFE05840048A1E7 /* addStopTableViewCell.swift */; };
+		84D09B702D095E4300333395 /* EDA143.txt in Resources */ = {isa = PBXBuildFile; fileRef = 84D09B6F2D095E4300333395 /* EDA143.txt */; };
 		84D907312C6B7E750080AFDF /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 84D907302C6B7E750080AFDF /* FirebaseCrashlytics */; };
 		84EB584E2BBFFE5200FCA582 /* FirebaseMessagingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84EB584D2BBFFE5200FCA582 /* FirebaseMessagingManager.swift */; };
 		BDF9507D9E988802AEACA4AC /* Pods_Rider_ridesharerates_Rider_rideshareratesUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 060D6C10B33DC4288B837755 /* Pods_Rider_ridesharerates_Rider_rideshareratesUITests.framework */; };
@@ -299,6 +300,7 @@
 		8483D0012B10E11F00C51418 /* CompletedDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedDetailVC.swift; sourceTree = "<group>"; };
 		8491F5432BFE054A0048A1E7 /* addStopVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addStopVC.swift; sourceTree = "<group>"; };
 		8491F5452BFE05840048A1E7 /* addStopTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addStopTableViewCell.swift; sourceTree = "<group>"; };
+		84D09B6F2D095E4300333395 /* EDA143.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = EDA143.txt; sourceTree = "<group>"; };
 		84EB584D2BBFFE5200FCA582 /* FirebaseMessagingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseMessagingManager.swift; sourceTree = "<group>"; };
 		97E2F1E209C69EA68F85B252 /* Pods_Rider_rideshareratesTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rider_rideshareratesTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -829,6 +831,7 @@
 				840761732AC41393009544C2 /* RideCompletedCell.xib */,
 				840761742AC41393009544C2 /* PaymentPopUpVCCell.xib */,
 				840761752AC41393009544C2 /* CompletedTableViewCell.swift */,
+				84D09B6F2D095E4300333395 /* EDA143.txt */,
 				840761762AC41393009544C2 /* PaymentPopUpVCCell.swift */,
 				840761772AC41393009544C2 /* DriverConfirmationCell.xib */,
 			);
@@ -963,6 +966,7 @@
 				843604A82C2C251800246908 /* last_final_video.mp4 in Resources */,
 				840761E42AC41393009544C2 /* SideMenuTableViewCell.xib in Resources */,
 				8407619E2AC41393009544C2 /* MySpendCell.xib in Resources */,
+				84D09B702D095E4300333395 /* EDA143.txt in Resources */,
 				840761DC2AC41393009544C2 /* CompletedPaymentTableViewCell.xib in Resources */,
 				84799A392B5920A70066C34E /* GoogleService-Info.plist in Resources */,
 				840761AD2AC41393009544C2 /* splashLogo.png in Resources */,
@@ -1470,12 +1474,12 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21;
+				MARKETING_VERSION = 1.28;
 				PRODUCT_BUNDLE_IDENTIFIER = com.riderRideshare.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1519,12 +1523,12 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.21;
+				MARKETING_VERSION = 1.28;
 				PRODUCT_BUNDLE_IDENTIFIER = com.riderRideshare.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
